@@ -27,7 +27,7 @@ const exportedMethods = {
   validateStringArray(arr, varName) {
     //We will allow an empty array for this,
     //if it's not empty, we will make sure all tags are strings
-    if (!arr || !Array.isArray(arr))
+    /*if (!arr || !Array.isArray(arr))
       throw `You must provide an array of ${varName}`;
     for (let i in arr) {
       if (typeof arr[i] !== 'string' || arr[i].trim().length === 0) {
@@ -35,7 +35,7 @@ const exportedMethods = {
       }
       arr[i] = arr[i].trim();
     }
-
+*/
     return arr;
   },
 
@@ -71,9 +71,9 @@ const exportedMethods = {
 
   validateUrl(input) {
     const pattern = /^http:\/\/www\..{5,}\.com$/;
-    if (typeof input !== "string" || !pattern.test(input)) {
+    /*if (typeof input !== "string" || !pattern.test(input)) {
       throw 'Manufacturer website must start with http://www. and end in .com with at least 5 characters in-between';
-    }
+    }*/
   },
 };
 
