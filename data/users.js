@@ -1,24 +1,65 @@
-import { ObjectId } from "mongodb";
+//import mongo collections, bcrypt and implement the following data functions
+
+import bcrypt from "bcryptjs";
+// import validation from "../helpers.js";
 import { users } from "../config/mongoCollections.js";
 
-const exportedMethods = {
-  async create(userName) {
-    // Error Checking
-    // Create a new user object
-    let newUser = {
-      _id: new ObjectId(),
-      userName: userName,
-    };
+let exportedMethods = {
+  async registerUser(firstName, lastName, emailAddress, password) {
+    // (firstName = validation.checkName(firstName, "First Name")),
+    //   (lastName = validation.checkName(lastName, "Last Name")),
+    //   (emailAddress = validation.checkEmail(emailAddress)),
+    //   (password = validation.checkPassword(password));
 
-    // Insert into collection
     const usersCollection = await users();
-    const insertInfo = await usersCollection.insertOne(newUser);
-    if (!insertInfo.acknowledged || !insertInfo.insertedId)
-      throw "Could not add user";
+    const count = await usersCollection.countDocuments();
+    if (count !== 0) {
+      const findEmail = await usersCollection.findOne({
+        emailAddress: emailAddress,
+      });
+      if (findEmail !== null) throw "Error! Email Address already exists!";
+    }
 
-    const newId = insertInfo.insertedId.toString();
+    const hashedPassword = await bcrypt.hash(password, 12);
 
-    return newUser;
+    const newUser = {
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      emailAddress: emailAddress.trim().toLowerCase(),
+      hashedPassword: hashedPassword,
+    };
+    let insertData = await usersCollection.insertOne(newUser);
+    if (insertData.acknowledged === 0 || !insertData.insertedId === 0)
+      throw "Could Not Add User!";
+
+    // console.log(newUser);
+
+    return { userInserted: true };
+  },
+
+  async loginUser(emailAddress, password) {
+    // validation.checkEmail(emailAddress);
+    // validation.checkPassword(password);
+
+    const usersCollection = await users();
+
+    emailAddress = emailAddress.trim().toLowerCase();
+
+    const user = await usersCollection.findOne({ emailAddress: emailAddress });
+    if (!user) {
+      throw "Error: Either the email address or password is invalid.";
+    }
+
+    const passwordMatches = await bcrypt.compare(password, user.hashedPassword);
+    if (!passwordMatches) {
+      throw "Error: Either the email address or password is invalid.";
+    }
+
+    return {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      emailAddress: user.emailAddress,
+    };
   },
 };
 
