@@ -49,14 +49,14 @@ const createChannel = async (
   }
 };
 
-const getAll = async () => {
+const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection.find({}, {projection: { _id: 1, channelTitle: 1 }}).toArray();
     
   return channelList;
 };
 
-const get = async (channelId) => {
+const getChannel = async (channelId) => {
   //validation: channelId
   channelId = validation.validateId(channelId);
   
@@ -72,7 +72,7 @@ const get = async (channelId) => {
 
 //REMOVE?
 //only for authorized channel user
-const remove = async (channelId) => {
+const removeChannel = async (channelId) => {
   //validation: productId
   channelId = validation.validateId(channelId);
 
@@ -88,7 +88,7 @@ const remove = async (channelId) => {
 
 //updating channel's keyword amd categories??
 //only for authorized channel user
-const update = async (
+const updateChannel = async (
   channelTitle,
   channelDescription,
   channelWebsite,
@@ -132,4 +132,4 @@ const update = async (
   return updateResult;
 };
 
-export { createChannel, getAll, get, remove, update };
+export { createChannel, getAllChannel, getChannel, removeChannel, updateChannel };
