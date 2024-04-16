@@ -140,51 +140,79 @@ import * as helpers from '../helpers.js';
       
       const removeReview = async (reviewId) => {
       
-        //Validate the input.
-        helpers.validate([{ value: reviewId, type: 'string', name: 'reviewId' }]);
+        if (!reviewId) throw new Error('Review ID must be provided');
+        if (typeof reviewId !== 'string' || reviewId.trim().length === 0) throw new Error('Review ID must be a non-empty string');
+        if (!ObjectId.isValid(reviewId)) throw new Error('Review ID is not a valid ObjectId');
       
-        if (!ObjectId.isValid(reviewId)) {
-          throw new Error('Error: Review ID provided is not a valid Object ID.');
-        }
-      
-        //Obtain a connection to the channel collection.
-        const channelCollection = await channels();
-      
-        //Convert string id to ObjectId.
-        const objReviewId = new ObjectId(reviewId);
-      
-        //Find the channel containing the review.
-        const channel = await channelCollection.findOne({ "reviews._id": objReviewId });
-      
-        //If no channel was found that contains the review with the provided id, throw an error.
-        if (!channel) {
-          throw new Error('Error: No channel was found for the specified review.');
-        }
-      
-        //Remove the review from the channel.
-        const updateInfo = await channelCollection.updateOne(
-          { _id: channel._id },
-          { $pull: { reviews: { _id: objReviewId } } }
+        const channelsCollection = await channels();
+        
+        const result = await channelsCollection.findOneAndUpdate(
+            { 'reviews._id': new ObjectId(reviewId) },
+            { $pull: { reviews: { _id: new ObjectId(reviewId) } } },
+            { returnDocument: 'after' }
         );
       
-        //If no channels matched the filter or no modification was made, throw an error.
-        if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
-          throw new Error('Error: Failed to remove the review.');
+        if (!result.value) throw new Error('Review not found');
+      
+        let averageRating = 0;
+        if (result.value.reviews.length > 0) {
+            const totalRating = result.value.reviews.reduce((acc, cur) => acc + cur.rating, 0);
+            averageRating = totalRating / result.value.reviews.length;
         }
       
-        //Recalculate the average rating by passing an array of all the reviews besides the one that was just removed to the function.
-        const newAverageRating = helpers.calculateNewAverage(channel.reviews.filter(review => review._id.toString() !== reviewId));
-      
-        //Update the average rating of the channel from which the review was removed.
-        await channelCollection.updateOne(
-          { _id: channel._id },
-          { $set: { averageRating: newAverageRating }}
+        await channelsCollection.updateOne(
+            { _id: result.value._id },
+            { $set: { averageRating: averageRating } }
         );
       
-        //Return the updated channel.
-        return await channelCollection.findOne( { _id: channel._id});
+        return result.value;
+      }
+
+        // //Validate the input.
+        // helpers.validate([{ value: reviewId, type: 'string', name: 'reviewId' }]);
       
-      };
+        // if (!ObjectId.isValid(reviewId)) {
+        //   throw new Error('Error: Review ID provided is not a valid Object ID.');
+        // }
+      
+        // //Obtain a connection to the channel collection.
+        // const channelCollection = await channels();
+      
+        // //Convert string id to ObjectId.
+        // const objReviewId = new ObjectId(reviewId);
+      
+        // //Find the channel containing the review.
+        // const channel = await channelCollection.findOne({ "reviews._id": objReviewId });
+      
+        // //If no channel was found that contains the review with the provided id, throw an error.
+        // if (!channel) {
+        //   throw new Error('Error: No channel was found for the specified review.');
+        // }
+      
+        // //Remove the review from the channel.
+        // const updateInfo = await channelCollection.updateOne(
+        //   { _id: channel._id },
+        //   { $pull: { reviews: { _id: objReviewId } } }
+        // );
+      
+        // //If no channels matched the filter or no modification was made, throw an error.
+        // if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
+        //   throw new Error('Error: Failed to remove the review.');
+        // }
+      
+        // //Recalculate the average rating by passing an array of all the reviews besides the one that was just removed to the function.
+        // const newAverageRating = helpers.calculateNewAverage(channel.reviews.filter(review => review._id.toString() !== reviewId));
+      
+        // //Update the average rating of the channel from which the review was removed.
+        // await channelCollection.updateOne(
+        //   { _id: channel._id },
+        //   { $set: { averageRating: newAverageRating }}
+        // );
+      
+        // //Return the updated channel.
+        // return await channelCollection.findOne( { _id: channel._id});
+      
+      // };
       
       export {
         createReview,
