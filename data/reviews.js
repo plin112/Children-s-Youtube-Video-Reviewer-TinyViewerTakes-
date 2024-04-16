@@ -164,7 +164,7 @@ import * as helpers from '../helpers.js';
         //Remove the review from the channel.
         const updateInfo = await channelCollection.updateOne(
           { _id: channel._id },
-          { $pull: { reviews: { _id: objreviewId } } }
+          { $pull: { reviews: { _id: objReviewId } } }
         );
       
         //If no channels matched the filter or no modification was made, throw an error.
