@@ -91,12 +91,12 @@ const removeChannel = async (channelId) => {
 //updating channel's keyword amd categories??
 //only for authorized channel user
 const updateChannel = async (
-    channelId,
-    channelTitle,
-    channelOwnerName,
-    channelDescription,
-    keywords,
-    categories
+  channelId,
+  channelTitle,
+  channelOwnerName,
+  channelDescription,
+  keywords,
+  categories
 ) => {
   if (!channelId ||
     !channelTitle ||

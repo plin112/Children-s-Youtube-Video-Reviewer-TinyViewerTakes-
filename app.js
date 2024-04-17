@@ -81,22 +81,21 @@ async function testRemoveChannel(channelId){
 //TEST: channels/updateChannel()
 async function testUpdateChannel(channelId, updateData) {
     try {
-      const channelsCollection = await channelsData.getAllChannel();
-      const result = await channelsCollection.updateChannel(
-        { _id: new ObjectId(channelId) },
-        { $set: updateData }
-      )
-
-      if(result.matchedCount === 0) {
-        throw 'No channel found with the ID.';
-      }
-
+      const result = await channelsData.updateChannel(
+        channelId,
+        updateData.channelTitle,
+        updateData.channelOwnerName,
+        updateData.channelDescription,
+        updateData.keywords,
+        updateData.categories
+      );
+      console.log("Update successfully! Result: ", result);
 
     } catch(error) {
       console.error("Error to update channel: ", error);
     }
-
 }
+
 
 // Call the test functions
 testUserRegistration();
@@ -104,11 +103,12 @@ testUserLogin();
 // testGetAllChannels();
 // testGetChannel('661f2b555062406bfeb5a860');
 // testRemoveChannel('661f2b555062406bfeb5a860');
-testUpdateChannel({
-  channelId: '661f2cad1b4b351f9e04fd5e',
-  channelTitle: '',
-  channelOwnerName: '',
-  channelDescription: 'Official channel for Paw Patrol. We only have some the episodes available.',
-  keywords: [],
-  categories: []
-});
+// const updateChannelID = '661f2cad1b4b351f9e04fd5e';
+// const updateData = {
+//   channelTitle: "Paw Patrol",
+//   channelOwnerName: "Paw Patrol Official",
+//   channelDescription: "Official channel for Paw Patrol. We only have some the episodes available.",
+//   keywords: ["animal", "animation", "kids", "trucks"],
+//   categories: ["animation for kids", "animal and trucks"]
+// }
+// testUpdateChannel(updateChannelID, updateData);
