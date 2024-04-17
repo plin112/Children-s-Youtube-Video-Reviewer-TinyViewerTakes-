@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "seed": "node ./task/seed.js",
+    "start": "npm run seed && node app.js"
   },
   "author": "Khalid Isahak: 20017262",
   "author2": "Sera Kim: 20016580",

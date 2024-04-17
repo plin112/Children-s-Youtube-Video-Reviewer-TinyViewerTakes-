@@ -2,6 +2,8 @@ import express from "express";
 const app = express();
 import configRoutes from "./routes/index.js";
 import * as usersData from "./data/users.js";
+import * as channelsData from "./data/channels.js";
+
 
 app.use(express.json());
 configRoutes(app);
@@ -48,6 +50,13 @@ async function testUserLogin() {
   }
 }
 
+//TEST: channels/getAllChannel
+async function getAllChannels() {
+  const channelsCollection = channelsData.getAllChannel();
+  console.log(channelsCollection);
+}
+
 // Call the test functions
 testUserRegistration();
 testUserLogin();
+getAllChannels();
