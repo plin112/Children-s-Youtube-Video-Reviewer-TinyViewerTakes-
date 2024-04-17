@@ -91,13 +91,15 @@ const removeChannel = async (channelId) => {
 //updating channel's keyword amd categories??
 //only for authorized channel user
 const updateChannel = async (
+    channelId,
     channelTitle,
     channelOwnerName,
     channelDescription,
     keywords,
     categories
 ) => {
-  if (!channelTitle ||
+  if (!channelId ||
+    !channelTitle ||
     !channelOwnerName||
     !channelDescription ||
     !keywords ||
@@ -105,6 +107,7 @@ const updateChannel = async (
   ) throw 'All fields need to be supplied';
 
   // validations
+  validation.validateId(channelId, 'channel-id');
   validation.validateString(channelTitle, 'channel-title');
   validation.validateString(channelOwnerName, 'channel-description');
   validation.validateString(channelDescription, 'channel-description');

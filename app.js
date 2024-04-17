@@ -51,12 +51,64 @@ async function testUserLogin() {
 }
 
 //TEST: channels/getAllChannel
-async function getAllChannels() {
-  const channelsCollection = channelsData.getAllChannel();
+async function testGetAllChannels() {
+  const channelsCollection = await channelsData.getAllChannel();
   console.log(channelsCollection);
+}
+
+//TEST: channels/getChannels()
+async function testGetChannel(channelId){
+  try {
+    const channel = await channelsData.getChannel(channelId);
+    console.log(channel);
+
+  } catch (error) {
+    console.error('Error to get channel: ', error);
+  }
+};
+
+//TEST: channels/removeChannel()
+async function testRemoveChannel(channelId){
+  try {
+    const deleteChannel = await channelsData.removeChannel(channelId);
+    console.log(deleteChannel);
+
+  } catch (error) {
+    console.error('Error to remove channel: ', error);
+  }
+}
+
+//TEST: channels/updateChannel()
+async function testUpdateChannel(channelId, updateData) {
+    try {
+      const channelsCollection = await channelsData.getAllChannel();
+      const result = await channelsCollection.updateChannel(
+        { _id: new ObjectId(channelId) },
+        { $set: updateData }
+      )
+
+      if(result.matchedCount === 0) {
+        throw 'No channel found with the ID.';
+      }
+
+
+    } catch(error) {
+      console.error("Error to update channel: ", error);
+    }
+
 }
 
 // Call the test functions
 testUserRegistration();
 testUserLogin();
-getAllChannels();
+// testGetAllChannels();
+// testGetChannel('661f2b555062406bfeb5a860');
+// testRemoveChannel('661f2b555062406bfeb5a860');
+testUpdateChannel({
+  channelId: '661f2cad1b4b351f9e04fd5e',
+  channelTitle: '',
+  channelOwnerName: '',
+  channelDescription: 'Official channel for Paw Patrol. We only have some the episodes available.',
+  keywords: [],
+  categories: []
+});
