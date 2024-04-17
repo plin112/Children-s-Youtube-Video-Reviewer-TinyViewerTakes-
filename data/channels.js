@@ -6,30 +6,31 @@ const getChannelCollection = async () => { return await channels(); }
 
 const createChannel = async (
   channelTitle,
+  channelOwnerName,
   channelDescription,
-  channelWebsite,
   keywords,
   categories
 ) => {
   if (!channelTitle ||
+    !channelOwnerName||
     !channelDescription ||
-    !channelWebsite ||
     !keywords ||
     !categories
   ) throw 'All fields need to be supplied';
 
   // validations
   validation.validateString(channelTitle, 'channel-title');
+  validation.validateString(channelOwnerName, 'channel-description');
   validation.validateString(channelDescription, 'channel-description');
-  validation.validateUrl(channelWebsite);
+   //validation.validateUrl(channelWebsite);
   validation.validateStringArray(keywords, 'keywords');
   validation.validateStringArray(categories, 'categories');
 
   // Declare new channel
   const newChannel = {
     channelTitle,
+    channelOwnerName,
     channelDescription,
-    channelWebsite,
     keywords,
     categories,
     reviews: [],
@@ -49,14 +50,15 @@ const createChannel = async (
   }
 };
 
-const getAll = async () => {
+const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection.find({}, {projection: { _id: 1, channelTitle: 1 }}).toArray();
     
   return channelList;
 };
 
-const get = async (channelId) => {
+//getChannel by ID
+const getChannel = async (channelId) => {
   //validation: channelId
   channelId = validation.validateId(channelId);
   
@@ -71,8 +73,8 @@ const get = async (channelId) => {
 };
 
 //REMOVE?
-//only for authorized channel user
-const remove = async (channelId) => {
+//only for channel owner is authorizec to remove channel
+const removeChannel = async (channelId) => {
   //validation: productId
   channelId = validation.validateId(channelId);
 
@@ -88,31 +90,35 @@ const remove = async (channelId) => {
 
 //updating channel's keyword amd categories??
 //only for authorized channel user
-const update = async (
+const updateChannel = async (
+  channelId,
   channelTitle,
+  channelOwnerName,
   channelDescription,
-  channelWebsite,
   keywords,
   categories
 ) => {
-  if (!channelTitle ||
+  if (!channelId ||
+    !channelTitle ||
+    !channelOwnerName||
     !channelDescription ||
-    !channelWebsite ||
     !keywords ||
     !categories
   ) throw 'All fields need to be supplied';
 
   // validations
+  validation.validateId(channelId, 'channel-id');
   validation.validateString(channelTitle, 'channel-title');
+  validation.validateString(channelOwnerName, 'channel-description');
   validation.validateString(channelDescription, 'channel-description');
-  validation.validateUrl(channelWebsite);
+   //validation.validateUrl(channelWebsite);
   validation.validateStringArray(keywords, 'keywords');
   validation.validateStringArray(categories, 'categories');
   
   const updatedChannel = {
     channelTitle,
+    channelOwnerName,
     channelDescription,
-    channelWebsite,
     keywords,
     categories
   };
@@ -132,4 +138,4 @@ const update = async (
   return updateResult;
 };
 
-export { createChannel, getAll, get, remove, update };
+export { createChannel, getAllChannel, getChannel, removeChannel, updateChannel };

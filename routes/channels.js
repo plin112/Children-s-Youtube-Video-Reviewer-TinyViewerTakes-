@@ -19,7 +19,7 @@ router
         validation.validateStringArray(keywords, 'Keywords');
         validation.validateStringArray(categories, 'Categories');
 
-        const newChannel = await channelData.create(
+        const newChannel = await channelData.createChannel(
             channelTitle,
             channelOwnerName,
             channelDescription,
