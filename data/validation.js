@@ -1,10 +1,10 @@
 //reference to lab 5 lecture code
-import {ObjectId} from 'mongodb';
+import { ObjectId } from "mongodb";
 
 const exportedMethods = {
   validateId(id, varName) {
     if (!id) throw `Error: You must provide a ${varName}`;
-    if (typeof id !== 'string') throw `Error:${varName} must be a string`;
+    if (typeof id !== "string") throw `Error:${varName} must be a string`;
     id = id.trim();
     if (id.length === 0)
       throw `Error: ${varName} cannot be an empty string or just spaces`;
@@ -14,7 +14,7 @@ const exportedMethods = {
 
   validateString(strVal, varName) {
     if (!strVal) throw `Error: You must supply a ${varName}!`;
-    if (typeof strVal !== 'string') throw `Error: ${varName} must be a string!`;
+    if (typeof strVal !== "string") throw `Error: ${varName} must be a string!`;
     strVal = strVal.trim();
     if (strVal.length === 0)
       throw `Error: ${varName} cannot be an empty string or string with just spaces`;
@@ -22,7 +22,6 @@ const exportedMethods = {
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
   },
-
 
   validateStringArray(arr, varName) {
     //We will allow an empty array for this,
@@ -48,15 +47,16 @@ const exportedMethods = {
   validateDateString(dateStr) {
     const pattern = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
     if (typeof dateStr !== "string" || !pattern.test(dateStr)) {
-      throw 'Date released must be a valid date in mm/dd/yyyy format';
+      throw "Date released must be a valid date in mm/dd/yyyy format";
     }
 
     const date = new Date(dateStr);
     const [, month, day, year] = dateStr.match(pattern);
-    const isValidDate = date.getFullYear() === Number(year) &&
+    const isValidDate =
+      date.getFullYear() === Number(year) &&
       // The month in date is 0 based
       date.getMonth() + 1 === Number(month) &&
-      date.getDate() === Number(day)
+      date.getDate() === Number(day);
 
     if (!isValidDate) {
       throw `Date ${dateStr} is not a valid date`;
@@ -74,6 +74,36 @@ const exportedMethods = {
     /*if (typeof input !== "string" || !pattern.test(input)) {
       throw 'Manufacturer website must start with http://www. and end in .com with at least 5 characters in-between';
     }*/
+  },
+
+  checkEmail(email) {
+    if (!email) throw "Error: You must provide an email address.";
+    email = email.trim().toLowerCase();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw "Error: Invalid email address format.";
+    }
+    return email; // Return the validated email
+  },
+
+  checkPassword(password) {
+    if (!password) throw "Error: You must provide a password.";
+    if (typeof password !== "string" || password.includes(" ")) {
+      throw "Error: Password must be a string without spaces.";
+    }
+    if (password.length < 8) {
+      throw "Error: Password must be at least 8 characters long.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      throw "Error: Password must contain at least one uppercase letter.";
+    }
+    if (!/\d/.test(password)) {
+      throw "Error: Password must contain at least one number.";
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      throw "Error: Password must contain at least one special character.";
+    }
+    return password; // Return the validated password
   },
 };
 
