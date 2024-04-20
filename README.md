@@ -1,2 +1,9 @@
 # Children-s-Youtube-Video-Reviewer: Tiny Viewer Takes
-# by vivek
+
+# Contributors
+
+Priscilla
+Sera
+John
+Khalid
+Vivek
