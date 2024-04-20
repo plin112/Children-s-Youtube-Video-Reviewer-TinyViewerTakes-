@@ -16,3 +16,5 @@ const getCollectionFn = (collection) => {
 export const channels = getCollectionFn('channels');
 export const reviews = getCollectionFn('reviews');
 export const users = getCollectionFn('users');
+export const comments = getCollectionFn('comments');
+
