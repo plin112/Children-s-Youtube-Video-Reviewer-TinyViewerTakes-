@@ -1,15 +1,16 @@
 //import mongo collections, bcrypt and implement the following data functions
 
 import bcrypt from "bcryptjs";
-// import validation from "../helpers.js";
+import * as validation from "./validation.js";
 import { users } from "../config/mongoCollections.js";
 
 let exportedMethods = {
   async registerUser(firstName, lastName, emailAddress, password) {
-    // (firstName = validation.checkName(firstName, "First Name")),
-    //   (lastName = validation.checkName(lastName, "Last Name")),
-    //   (emailAddress = validation.checkEmail(emailAddress)),
-    //   (password = validation.checkPassword(password));
+    //Validate input
+    validation.default.validateString(firstName, "first name");
+    validation.default.validateString(lastName, "last name");
+    validation.default.checkEmail(emailAddress);
+    validation.default.checkPassword(password);
 
     const usersCollection = await users();
     const count = await usersCollection.countDocuments();
@@ -27,19 +28,19 @@ let exportedMethods = {
       lastName: lastName.trim(),
       emailAddress: emailAddress.trim().toLowerCase(),
       hashedPassword: hashedPassword,
+      reviews: [],
     };
     let insertData = await usersCollection.insertOne(newUser);
     if (insertData.acknowledged === 0 || !insertData.insertedId === 0)
       throw "Could Not Add User!";
 
-    // console.log(newUser);
-
-    return { userInserted: true };
+    return newUser;
   },
 
   async loginUser(emailAddress, password) {
-    // validation.checkEmail(emailAddress);
-    // validation.checkPassword(password);
+    //Validate input
+    validation.default.checkEmail(emailAddress);
+    validation.default.checkPassword(password);
 
     const usersCollection = await users();
 
@@ -47,18 +48,19 @@ let exportedMethods = {
 
     const user = await usersCollection.findOne({ emailAddress: emailAddress });
     if (!user) {
-      throw "Error: Either the email address or password is invalid.";
+      throw "Error: Email is invalid.";
     }
 
     const passwordMatches = await bcrypt.compare(password, user.hashedPassword);
     if (!passwordMatches) {
-      throw "Error: Either the email address or password is invalid.";
+      throw "Error: Password is invalid.";
     }
 
     return {
       firstName: user.firstName,
       lastName: user.lastName,
       emailAddress: user.emailAddress,
+      reviews: [],
     };
   },
 };
