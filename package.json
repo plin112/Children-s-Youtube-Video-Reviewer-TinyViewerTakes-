@@ -8,7 +8,6 @@
     "seed": "node ./task/seed.js",
     "start": "node app.js",
     "dev": "nodemon app.js"
-
   },
   "author": "Khalid Isahak: 20017262",
   "author2": "Sera Kim: 20016580",

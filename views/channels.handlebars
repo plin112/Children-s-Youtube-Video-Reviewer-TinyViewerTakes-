@@ -1,0 +1,33 @@
+<title>{{title}}</title>
+<header>
+    <h1>{{title}}</h1>
+</header>
+
+<main>
+    <form id="searchForm">
+        <label for="search_term">Search Channels:</label>
+        <input type="text" id="search_term" name="search_term">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- List of channels -->
+    <ul id="channelList">
+        {{#each channels}}
+        <li>
+            <a href="{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
+        </li>
+        {{/each}}
+    </ul>
+    <!-- Details for a specific channel -->
+    {{!-- <div id="channelDetails" style="display: none;"></div>
+    
+    <!-- Link to go back to all channels -->
+    <a href="/" id="homeLink" style="display: none;">Back to All Channels</a> --}}
+</main>
+
+<footer>
+    <p>TinyViewerTakes</p>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/public/js/main.js"></script>
