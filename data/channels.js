@@ -53,7 +53,7 @@ const createChannel = async (
 const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection.find({}, {projection: { _id: 1, channelTitle: 1 }}).toArray();
-    
+  console.log(channelList); 
   return channelList;
 };
 

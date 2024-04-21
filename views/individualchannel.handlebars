@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{channel.channelTitle}} - Details</title>
+</head>
+<body>
+    <header>
+        <h1>{{channel.channelTitle}}</h1>
+    </header>
+
+    <main>
+        <div id="channelDetails">
+            <h2>Channel Overview</h2>
+            <p><strong>Description:</strong> {{channel.channelDescription}}</p>
+            <p><strong>Owner:</strong> {{channel.channelOwnerName}}</p>
+            <p><strong>Website:</strong> <a href="{{channel.channelWebsite}}" target="_blank">{{channel.channelWebsite}}</a></p>
+            <p><strong>Keywords:</strong> {{#each channel.keywords}}<span>{{this}}, </span>{{/each}}</p>
+            <p><strong>Categories:</strong> {{#each channel.categories}}<span>{{this}}, </span>{{/each}}</p>
+            <p><strong>Average Rating:</strong> {{channel.averageRating}}</p>
+            <h3>Reviews</h3>
+            {{#if channel.reviews.length}}
+                <ul>
+                {{#each channel.reviews}}
+                    <li>{{this.content}} - Rating: {{this.rating}}</li>
+                {{/each}}
+                </ul>
+            {{else}}
+                <p>No reviews yet.</p>
+            {{/if}}
+        </div>
+    </main>
+
+    <footer>
+        <p>TinyViewerTakes</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/public/js/main.js"></script>
+</body>
+</html>
