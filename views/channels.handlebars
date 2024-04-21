@@ -1,33 +1,53 @@
 <title>{{title}}</title>
 <header>
-    <h1>{{title}}</h1>
+  <h1>{{title}}</h1>
 </header>
 
 <main>
-    <form id="searchForm">
-        <label for="search_term">Search Channels:</label>
-        <input type="text" id="search_term" name="search_term">
-        <button type="submit">Search</button>
-    </form>
+  <h2>MAIN CHANNELS LIST PAGE</h2>
+  <p><a href="/login">Login Here</a></p>
+  <form id="searchForm">
+    <label for="search_term">Search Channels:</label>
+    <input type="text" id="search_term" name="search_term" />
+    <button type="submit">Search</button>
+  </form>
 
-    <!-- List of channels -->
-    <ul id="channelList">
-        {{#each channels}}
-        <li>
-            <a href="{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
-        </li>
-        {{/each}}
-    </ul>
-    <!-- Details for a specific channel -->
-    {{!-- <div id="channelDetails" style="display: none;"></div>
-    
-    <!-- Link to go back to all channels -->
-    <a href="/" id="homeLink" style="display: none;">Back to All Channels</a> --}}
+  <!-- List of channels -->
+  <ul id="channelList">
+    {{#each channels}}
+      <li>
+        <a href="{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
+      </li>
+    {{/each}}
+  </ul>
+</main>
+
+<main>
+  <!-- Add New Channel Form -->
+  <form method="POST" id="addChannelForm">
+    <p>Add new channel here:</p>
+    <label for="channelTitle">Channel Title:</label>
+    <input type="text" id="channelTitle" name="channelTitle" /><br />
+    <label for="channelOwnerName">Channel Owner Name:</label>
+    <input type="text" id="channelOwnerName" name="channelOwnerName" /><br />
+    <label for="channelDescription">Channel Description:</label>
+    <input type="text" id="channelDescription" name="channelDescription" /><br
+    />
+    <label for="channelWebsite">Channel Website:</label>
+    <input type="text" id="channelWebsite" name="channelWebsite" /><br />
+    <label for="keywords">Keywords (comma-separated):</label>
+    <input type="text" id="keywords" name="keywords" /><br />
+    <label for="categories">Categories (comma-separated):</label>
+    <input type="text" id="categories" name="categories" /><br />
+    <button type="submit">Add New Channel</button>
+  </form>
 </main>
 
 <footer>
-    <p>TinyViewerTakes</p>
+  <p>TinyViewerTakes</p>
 </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+></script>
 <script src="/public/js/main.js"></script>
