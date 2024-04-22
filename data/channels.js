@@ -60,7 +60,7 @@ const getAllChannel = async () => {
 //getChannel by ID
 const getChannel = async (channelId) => {
   //validation: channelId
-  channelId = validation.validateId(channelId);
+  // channelId = validation.validateId(channelId);
   
   //get product
   const channelCollection = await getChannelCollection();
