@@ -5,56 +5,58 @@ import * as usersData from "./data/users.js";
 import * as channelsData from "./data/channels.js";
 import * as reviewsData from "./data/reviews.js";
 import { dbConnection } from "./config/mongoConnection.js";
-import session from 'express-session';
-import exphbs from 'express-handlebars';
+import session from "express-session";
+import exphbs from "express-handlebars";
 
-const db = await dbConnection();
+// const db = await dbConnection();
 //await db.dropDatabase();
 app.use(express.json());
 
 const handlebarsInstance = exphbs.create({
-  defaultLayout: 'main',
+  defaultLayout: "main",
   helpers: {
     eq: function (v1, v2) {
-        return v1 === v2;
-      },
+      return v1 === v2;
+    },
     asJSON: (obj, spacing) => {
-      if (typeof spacing === 'number') {
+      if (typeof spacing === "number") {
         return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
       }
       return new Handlebars.SafeString(JSON.stringify(obj));
-    }
-  }
+    },
+  },
 });
 
-
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // Middleware for parsing request bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(
+  session({
+    name: "AuthState",
+    secret: "secret",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-app.use(session({
-  name: 'AuthState',
-  secret: 'secret', 
-  resave: false,
-  saveUninitialized: true
-}));
-
-
-app.engine('handlebars', handlebarsInstance.engine);
-app.set('view engine', 'handlebars');
-app.set('views', './views');
-
-
+app.engine("handlebars", handlebarsInstance.engine);
+app.set("view engine", "handlebars");
+app.set("views", "./views");
 
 app.use((req, res, next) => {
-  const isAuthenticated = req.session.user ? 'Authenticated User' : 'Non-Authenticated User';
-  console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (${isAuthenticated})`);
+  const isAuthenticated = req.session.user
+    ? "Authenticated User"
+    : "Non-Authenticated User";
+  console.log(
+    `[${new Date().toUTCString()}]: ${req.method} ${
+      req.originalUrl
+    } (${isAuthenticated})`
+  );
   next();
 });
-
 
 configRoutes(app);
 
@@ -62,7 +64,6 @@ app.listen(3000, () => {
   console.log("We've now got a server!");
   console.log("Your routes will be running on http://localhost:3000/channels");
 });
-       
 
 let newChannel;
 let newUser;
@@ -179,12 +180,12 @@ let newUser;
 //   try {
 //     // Provide test data for creating a new review
 //     // console.log("******test***:" + newChannel._id);
-    // const channelId = newChannel._id.toString(); // Replace with a valid channel ID
-    // const userId = newUser._id.toString(); // Replace with a valid user ID
-    // const title = "Great Channel!";
-    // const reviewerName = "John Doe";
-    // const reviewText = "I really enjoyed this channel. Great content!";
-    // const rating = 5;
+// const channelId = newChannel._id.toString(); // Replace with a valid channel ID
+// const userId = newUser._id.toString(); // Replace with a valid user ID
+// const title = "Great Channel!";
+// const reviewerName = "John Doe";
+// const reviewText = "I really enjoyed this channel. Great content!";
+// const rating = 5;
 
 //     // Create the new review
 //     const newReview = await reviewsData.createReview(
@@ -209,4 +210,3 @@ let newUser;
 //   await testCreateReview();
 // }
 // runTests();
-

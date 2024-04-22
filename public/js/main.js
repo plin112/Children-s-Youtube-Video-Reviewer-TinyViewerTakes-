@@ -160,6 +160,7 @@
     searchTermInput = $("#search_term"),
     channelList = $("#channelList");
   addChannelForm = $("#addChannelForm");
+  addReviewForm = $("#addReviewForm");
 
   function bindEventsToChannelItem() {
     // Use event delegation to handle clicks on dynamically created links
@@ -221,6 +222,7 @@
     });
   });
 
+  // Add channel form
   addChannelForm.submit(function (event) {
     event.preventDefault();
     let formData = {
@@ -248,6 +250,36 @@
       },
       error: function (error) {
         alert("Error adding new channel");
+      },
+    });
+  });
+
+  // Add review form
+  console.log(addReviewForm);
+  addReviewForm.submit(function (event) {
+    console.log("before formdata or url");
+    event.preventDefault();
+    let formData = {
+      reviewTitle: $("#reviewTitle").val(),
+      reviewDescription: $("#reviewDescription").val(),
+      reviewRating: $("#reviewRating").val(),
+    };
+
+    let testurl = `/channels/${channelId}/reviews`;
+    console.log(testurl);
+    $.ajax({
+      method: "POST",
+      url: `/channels/${channelId}/reviews`,
+      data: formData,
+
+      success: function (response) {
+        // Clear the form fields after successful addition
+        $("#reviewTitle").val("");
+        $("#reviewDescription").val("");
+        $("#reviewRating").val("");
+      },
+      error: function (error) {
+        alert("Error adding new review");
       },
     });
   });
