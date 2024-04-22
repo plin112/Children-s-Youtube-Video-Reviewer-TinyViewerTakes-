@@ -1,24 +1,15 @@
 import { ObjectId } from "mongodb";
 
-
 import { channels } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import * as helpers from "../helpers.js";
 
-const createReview = async (
-  channelId,
-  userId,
-  title,
-  reviewerName,
-  review,
-  rating
-) => {
+const createReview = async (channelId, userId, title, review, rating) => {
   //Validate input.
   helpers.validate([
     { value: channelId, type: "string", name: "channelId" },
     { value: userId, type: "string", name: "userID" },
     { value: title, type: "string", name: "title" },
-    { value: reviewerName, type: "string", name: "reviewerName" },
     { value: review, type: "string", name: "review" },
     {
       value: rating,
@@ -57,7 +48,6 @@ const createReview = async (
   const newReview = {
     _id: new ObjectId(),
     title: title.trim(),
-    reviewerName: reviewerName.trim(),
     review: review.trim(),
     rating,
     reviewDate: new Date().toLocaleDateString("en-US"),
@@ -171,7 +161,6 @@ const getReview = async (reviewId) => {
     _id: review._id,
     title: review.title,
     reviewDate: review.reviewDate,
-    reviewerName: review.reviewerName,
     review: review.review,
     rating: review.rating,
   };
@@ -268,4 +257,3 @@ const removeReview = async (reviewId) => {
 // };
 
 export { createReview, getAllReviews, getReview, removeReview };
-
