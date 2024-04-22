@@ -5,7 +5,9 @@
 
 <main>
   <h2>MAIN CHANNELS LIST PAGE</h2>
-  <p><a href="/login">Login Here</a></p>
+  {{#unless loggedIn}}
+    <p><a href="/login">Login Here</a></p>
+  {{/unless}}
   <form id="searchForm">
     <label for="search_term">Search Channels:</label>
     <input type="text" id="search_term" name="search_term" />
@@ -16,7 +18,8 @@
   <ul id="channelList">
     {{#each channels}}
       <li>
-        <a href="{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
+        <a href="/channels/{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
+
       </li>
     {{/each}}
   </ul>

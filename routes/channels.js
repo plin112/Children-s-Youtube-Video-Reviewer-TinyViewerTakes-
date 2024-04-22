@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // POST route to create a new channel
-router.post("/", async (req, res) => {
+router.post("/Channels", async (req, res) => {
   const {
     channelTitle,
     channelOwnerName,
@@ -42,18 +42,26 @@ router.post("/", async (req, res) => {
 });
 
 // GET route to list all channels
-router.get("/", async (req, res) => {
+router.get("/Channels", async (req, res) => {
   try {
     //        const channelsList = await channelData.getAllChannel();
     //        res.render('channels', { channelsList });
     const channelsList = await channelData.getAllChannel();
-    res.render("channels", { channels: channelsList });
+
+    let isLoggedIn = false;
+
+    if (req.session.user) {
+      isLoggedIn = true;
+    }
+  
+
+    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
 });
 
-router.get("/:channelId", async (req, res) => {
+router.get("/channels/:channelId", async (req, res) => {
   const { channelId } = req.params;
   try {
     const channel = await channelData.getChannel(channelId);
