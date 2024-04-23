@@ -15,6 +15,7 @@ router.post("/Channels", async (req, res) => {
     channelWebsite,
     keywords,
     categories,
+    startingAge
   } = req.body;
 
   try {
@@ -31,7 +32,8 @@ router.post("/Channels", async (req, res) => {
       channelDescription,
       channelWebsite,
       keywords,
-      categories
+      categories,
+      parseFloat(startingAge)
     );
     // res.status(201).json(newChannel);
     const channelsList = await channelData.getAllChannel();
