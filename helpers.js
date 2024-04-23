@@ -126,8 +126,11 @@ function calculateNewAverage(reviews, newRating) {
     newRating
   );
 
-  //Find the average using the sum of these.
-  return totalRating / (reviews.length + 1);
+   // Calculate the average using the sum of these.
+   const average = totalRating / (reviews.length + 1);
+
+  // Round to two decimal places and convert to a number because toFixed returns a string.
+  return parseFloat(average.toFixed(2));
 }
 
 export { validate, isValidDate, calculateNewAverage };

@@ -141,6 +141,19 @@
                 <div class="review-title">Title: {{this.title}}</div>
                 <div class="review-description">Review: {{this.review}}</div>
                 <div class="review-rating">Rating: {{this.rating}}</div>
+                <div class="review-comments">
+                  <h4>Comments:</h4>
+                  <ul>
+                    {{#each this.comments}}
+                      <li>{{this.commenterName}}: {{this.comment}}</li>
+                    {{/each}}
+                  </ul>
+                </div>
+                <!-- Comment submission form -->
+                <form action="/reviews/{{this._id}}/comments" method="POST">
+                  <input type="text" name="comment" placeholder="Enter your comment" required>
+                  <button type="submit">Add Comment</button>
+                </form>
               </li>
             {{/each}}
         {{else}}

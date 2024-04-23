@@ -297,5 +297,40 @@
     });
   });
 
+
+  // Handle comment form submission using AJAX
+  $(document).on('submit', '.comment-form', function(event) {
+    event.preventDefault();
+    const $form = $(this);
+    const data = $form.serialize();  // Use jQuery to serialize form data
+    $.ajax({
+      method: 'POST',
+      url: $form.attr('action'),  // Use form's action attribute
+      data: data,
+      success: function (response) {
+        if (response.success) {
+          const commentList = $form.prev('.review-comments').find('ul');
+          const newComment = $('<li>').text(`${response.commenterName}: ${response.comment}`);
+          commentList.append(newComment);
+          $form[0].reset(); // Reset the form fields
+          $form.hide(); // Optionally hide the form
+          $form.siblings('.btn-show-comment-form').show(); // Show the add comment button again
+        } else {
+          alert('Failed to add comment');
+        }
+      },
+      error: function () {
+        alert('Error submitting comment');
+      }
+    });
+  });
+
+  // Optionally handle showing/hiding the comment form
+  $(document).on('click', '.btn-show-comment-form', function() {
+    const $button = $(this);
+    $button.next('.comment-form').show();  // Show the form
+    $button.hide();  // Hide the add comment button
+  });
+
   loadChannels();
 })(window.jQuery);
