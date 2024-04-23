@@ -6,6 +6,15 @@ import path from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+router.get("/", async (req, res) => {
+  try {
+    res.redirect("/Channels");
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
+});
+
 // POST route to create a new channel
 router.post("/Channels", async (req, res) => {
   const {
@@ -15,7 +24,7 @@ router.post("/Channels", async (req, res) => {
     channelWebsite,
     keywords,
     categories,
-    startingAge
+    startingAge,
   } = req.body;
 
   if (!req.session || !req.session.user) {
@@ -59,7 +68,6 @@ router.get("/Channels", async (req, res) => {
     if (req.session.user) {
       isLoggedIn = true;
     }
-  
 
     res.render("channels", { loggedIn: isLoggedIn, channels: channelsList });
   } catch (error) {
