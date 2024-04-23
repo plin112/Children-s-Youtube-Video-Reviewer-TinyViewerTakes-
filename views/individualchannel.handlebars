@@ -118,6 +118,7 @@
           {{#each channel.categories}}{{this}}{{#unless @last}},
             {{/unless}}{{/each}}</p>
         <p>Average Rating: {{channel.averageRating}}</p>
+        <p>Parental Guidance Age: {{channel.startingAge}}</p>
         <main>
           <!-- Add New Review Form -->
           <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
