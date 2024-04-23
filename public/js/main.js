@@ -297,7 +297,6 @@
     });
   });
 
-
   // Handle comment form submission using AJAX
   $(document).on('submit', '.comment-form', function(event) {
     event.preventDefault();
@@ -331,6 +330,7 @@
     $button.next('.comment-form').show();  // Show the form
     $button.hide();  // Hide the add comment button
   });
+
 
   loadChannels();
 })(window.jQuery);
