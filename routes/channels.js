@@ -18,6 +18,10 @@ router.post("/Channels", async (req, res) => {
     startingAge
   } = req.body;
 
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
+
   try {
     // validation.validateString(channelTitle, 'Channel Title');
     // validation.validateString(channelOwnerName, 'Channel Owner Name');
