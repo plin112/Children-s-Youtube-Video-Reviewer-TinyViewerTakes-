@@ -18,20 +18,22 @@ export const createComment = async (
 
         const channelCollection = await channels();
         const userCollection = await users();
-        //const reviewCollection = await reviews();
-        const commentData = {
-            _id: new ObjectId(), // Generate new ObjectId for the comment
-            userId: userId,
-            text,
-            createdDate: new Date() // Store the date when the comment was created
-        };
-
         const objUserId = new ObjectId(userId);
         const user = await userCollection.findOne({ _id: objUserId });
 
         if (!user) {
             throw new Error(`No user found with id: ${userId}`);
         }
+        const commenterName = `${user.firstName} ${user.lastName}`;
+
+        //const reviewCollection = await reviews();
+        const commentData = {
+            _id: new ObjectId(), // Generate new ObjectId for the comment
+            userId,
+            commenterName,
+            text,
+            createdDate: new Date() // Store the date when the comment was created
+        };
 
         // Embed the comment directly into the review's comments array
         // const updateResult = await reviewCollection.updateOne(
@@ -39,10 +41,13 @@ export const createComment = async (
         //     { $push: { comments: commentData } }
         // );
         const updateResult = await channelCollection.updateOne(
-            { "_id": new ObjectId(channelId), 
-            "reviews._id": new ObjectId(reviewId) },
+            { 
+              "_id": new ObjectId(channelId), 
+              "reviews._id": new ObjectId(reviewId) 
+            },
             { $push: { "reviews.$.comments": commentData } }
         );
+
 
         if (updateResult.modifiedCount === 0) {
             throw new Error("Channel or review not found or comment not added");
@@ -56,11 +61,13 @@ export const createComment = async (
         }
 
         //Update the user with new review
-        // const updateUser = await userCollection.findOneAndUpdate(
-        //     { _id: new ObjectId(reviewerId) },
-        //     { $push: { "reviewComments": commentData } },
-        //     { returnDocument: "after" }
-        // );
+        const updateUser = await userCollection.findOneAndUpdate(
+            { _id: objUserId },
+            {
+            $push: { comments: commentData },
+            },
+            { returnDocument: "after" }
+        );
 
         return commentData; // Return the newly created comment
     } catch (error) {
