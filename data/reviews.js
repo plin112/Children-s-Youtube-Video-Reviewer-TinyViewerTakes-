@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-
 import { channels } from "../config/mongoCollections.js";
 import { users } from "../config/mongoCollections.js";
 import * as helpers from "../helpers.js";
@@ -11,12 +10,7 @@ const createReview = async (channelId, userId, title, review, rating) => {
     { value: userId, type: "string", name: "userID" },
     { value: title, type: "string", name: "title" },
     { value: review, type: "string", name: "review" },
-    {
-      value: rating,
-      type: "number",
-      name: "rating",
-      range: { min: 1, max: 5 },
-    },
+    { value: rating, type: "number", name: "rating", range: { min: 1, max: 5 }}
   ]);
 
   //Check if rating has more than one decimal place.
@@ -34,8 +28,14 @@ const createReview = async (channelId, userId, title, review, rating) => {
   //Obtain connection to channels collection.
   const channelCollection = await channels();
 
+  //Obtain connection to users collection.
+  const userCollection = await users();
+
   //Convert string channelId to ObjectId.
   const objChannelId = new ObjectId(channelId);
+
+   //Convert string userId to ObjectId.
+   const objUserId = new ObjectId(userId);
 
   //Find the channel to which the review will be added.
   const channel = await channelCollection.findOne({ _id: objChannelId });
@@ -44,12 +44,23 @@ const createReview = async (channelId, userId, title, review, rating) => {
     throw new Error(`Error: No channel found with the id: ${channelId}`);
   }
 
+  const user = await userCollection.findOne({ _id: objUserId });
+
+  if (!user) {
+    throw new Error(`No user found with id: ${userId}`);
+  }
+  const reviewerName = `${user.firstName} ${user.lastName}`;
+
+  // Debug
+  console.log(reviewerName);
+
   //Create new review object.
   const newReview = {
     _id: new ObjectId(),
     title: title.trim(),
     review: review.trim(),
     rating,
+    reviewerName,
     reviewDate: new Date().toLocaleDateString("en-US"),
   };
 
@@ -68,14 +79,6 @@ const createReview = async (channelId, userId, title, review, rating) => {
   if (!updateInfo.matchedCount || !updateInfo.modifiedCount) {
     throw new Error("Error: Failed to add review to the channel.");
   }
-
-  /********************** Add review to user **********************/
-
-  //Obtain connection to users collection.
-  const userCollection = await users();
-
-  //Convert string userId to ObjectId.
-  const objUserId = new ObjectId(userId);
 
   //Find the user to which the review will be added.
   const userToUpdate = await userCollection.findOne({ _id: objUserId });

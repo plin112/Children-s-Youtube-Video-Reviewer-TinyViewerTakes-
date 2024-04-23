@@ -97,12 +97,6 @@
   </body>
 </html> --}}
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>{{channel.channelTitle}} - Details</title>
-  </head>
-  <body>
     <header>
       <h1>{{channel.channelTitle}}</h1>
     </header>
@@ -132,41 +126,32 @@
             <label for="reviewTitle">Review Title:</label>
             <input type="text" id="reviewTitle" name="reviewTitle" /><br />
             <label for="reviewDescription">Review Description:</label>
-            <input
-              type="text"
-              id="reviewDescription"
-              name="reviewDescription"
-            /><br />
+            <input type="text" id="reviewDescription" name="reviewDescription"/><br />
             <label for="reviewRating">Rating:</label>
             <input type="text" id="reviewRating" name="reviewRating" /><br />
             <button type="submit">Add Review</button>
           </form>
         </main>
         <h3>Reviews</h3>
-        {{#if channel.reviews.length}}
-          <ul>
-              {{#each channel.reviews}}
-              <li>
-                - Title: {{this.title}}<br>
-                - Review: {{this.review}}<br>
-                {{this.content}} - Rating: {{this.rating}}<br>
+
+        <ul id="reviewsList"></ul>
+          {{#if channel.reviews.length}}
+            {{#each channel.reviews}}
+               <li>
+                <div class="reviewer-name">Reviewed by: {{this.reviewerName}}</div>
+                <div class="review-title">Title: {{this.title}}</div>
+                <div class="review-description">Review: {{this.review}}</div>
+                <div class="review-rating">Rating: {{this.rating}}</div>
+
               </li>
             {{/each}}
-          </ul>
         {{else}}
           <p>No reviews yet.</p>
         {{/if}}
+      </ul>
       </div>
       <a href="/channels">Go back to main page</a>
     </main>
 
-    <footer>
-      <p>TinyViewerTakes</p>
-    </footer>
 
-    <script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-    ></script>
-    <script src="/public/js/main.js"></script>
-  </body>
-</html>
+  
