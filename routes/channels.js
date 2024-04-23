@@ -15,7 +15,12 @@ router.post("/Channels", async (req, res) => {
     channelWebsite,
     keywords,
     categories,
+    startingAge
   } = req.body;
+
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ error: "User not logged in" });
+  }
 
   try {
     // validation.validateString(channelTitle, 'Channel Title');
@@ -31,7 +36,8 @@ router.post("/Channels", async (req, res) => {
       channelDescription,
       channelWebsite,
       keywords,
-      categories
+      categories,
+      parseFloat(startingAge)
     );
     // res.status(201).json(newChannel);
     const channelsList = await channelData.getAllChannel();

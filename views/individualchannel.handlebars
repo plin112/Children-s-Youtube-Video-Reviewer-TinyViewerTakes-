@@ -118,6 +118,7 @@
           {{#each channel.categories}}{{this}}{{#unless @last}},
             {{/unless}}{{/each}}</p>
         <p>Average Rating: {{channel.averageRating}}</p>
+        <p>Parental Guidance Age: {{channel.startingAge}}</p>
         <main>
           <!-- Add New Review Form -->
           <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
@@ -132,6 +133,7 @@
           </form>
         </main>
         <h3>Reviews</h3>
+
         <ul id="reviewsList"></ul>
           {{#if channel.reviews.length}}
             {{#each channel.reviews}}
@@ -140,6 +142,7 @@
                 <div class="review-title">Title: {{this.title}}</div>
                 <div class="review-description">Review: {{this.review}}</div>
                 <div class="review-rating">Rating: {{this.rating}}</div>
+
               </li>
             {{/each}}
         {{else}}

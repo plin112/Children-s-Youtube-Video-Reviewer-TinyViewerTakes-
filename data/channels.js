@@ -12,7 +12,8 @@ const createChannel = async (
   channelDescription,
   website,
   keywords,
-  categories
+  categories,
+  startingAge,
 ) => {
   if (
     !channelTitle ||
@@ -20,7 +21,8 @@ const createChannel = async (
     !channelDescription ||
     !website ||
     !keywords ||
-    !categories
+    !categories ||
+    !startingAge
   )
     throw "All fields need to be supplied";
 
@@ -31,6 +33,7 @@ const createChannel = async (
   validation.validateUrl(website);
   validation.validateStringArray(keywords, "keywords");
   validation.validateStringArray(categories, "categories");
+  validation.validateNumber(startingAge, "Starting Age");
 
   // Declare new channel
   const newChannel = {
@@ -40,6 +43,7 @@ const createChannel = async (
     website,
     keywords,
     categories,
+    startingAge,
     reviews: [],
     averageRating: 0,
   };
@@ -107,7 +111,8 @@ const updateChannel = async (
   channelDescription,
   website,
   keywords,
-  categories
+  categories,
+  startingAge
 ) => {
   if (
     !channelId ||
@@ -116,7 +121,8 @@ const updateChannel = async (
     !channelDescription ||
     !website ||
     !keywords ||
-    !categories
+    !categories ||
+    !startingAge
   )
     throw "All fields need to be supplied";
 
@@ -128,6 +134,7 @@ const updateChannel = async (
   validation.validateUrl(website);
   validation.validateStringArray(keywords, "keywords");
   validation.validateStringArray(categories, "categories");
+  validation.validateNumber(startingAge, "Starting Age")
 
   const updatedChannel = {
     channelTitle,
@@ -136,6 +143,7 @@ const updateChannel = async (
     website,
     keywords,
     categories,
+    startingAge
   };
 
   // update the product in the database
