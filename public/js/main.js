@@ -256,46 +256,46 @@
 
   // Add review form
 
-  // let addReviewForm = $("#addReviewForm");
+  let addReviewForm = $("#addReviewForm");
 
-  // addReviewForm.submit(function (event) {
-  //   console.log("before formdata or url");
-  //   event.preventDefault();
-  //   let formData = {
-  //     reviewTitle: $("#reviewTitle").val(),
-  //     reviewDescription: $("#reviewDescription").val(),
-  //     reviewRating: $("#reviewRating").val(),
-  //   };
+  addReviewForm.submit(function (event) {
+    console.log("before formdata or url");
+    event.preventDefault();
+    let formData = {
+      reviewTitle: $("#reviewTitle").val(),
+      reviewDescription: $("#reviewDescription").val(),
+      reviewRating: $("#reviewRating").val(),
+    };
 
-  //   let testurl = `/channels/${channelId}/reviews`;
-  //   console.log(testurl);
-  //   $.ajax({
-  //     method: "POST",
-  //     url: `/channels/${channelId}/reviews`,
-  //     // data: JSON.stringify(formData),
+    let testurl = `/channels/${channelId}/reviews`;
+    console.log(testurl);
+    $.ajax({
+      method: "POST",
+      url: `/channels/${channelId}/reviews`,
+      // data: JSON.stringify(formData),
 
-  //     success: function (response) {
+      success: function (response) {
 
-  //        // Append the new review to the reviews list
-  //       $('#reviewsList').append(
-  //         `<li>
-  //           <div class="reviewer-name">Reviewed by: ${response.reviewerName}</div>
-  //           <div class="review-title"><strong>Title: ${response.title}</div>
-  //           <div class="review-description">Description: ${response.description}</div>
-  //           <div class="review-rating">Rating: ${response.rating}</div>
-  //         </li>`
-  //       );
+         // Append the new review to the reviews list
+        $('#reviewsList').append(
+          `<li>
+            <div class="reviewer-name">Reviewed by: ${response.reviewerName}</div>
+            <div class="review-title"><strong>Title: ${response.title}</div>
+            <div class="review-description">Description: ${response.description}</div>
+            <div class="review-rating">Rating: ${response.rating}</div>
+          </li>`
+        );
 
-  //       // Clear the form fields after successful addition
-  //       $("#reviewTitle").val("");
-  //       $("#reviewDescription").val("");
-  //       $("#reviewRating").val("");
-  //     },
-  //     error: function (error) {
-  //       alert("Error adding new review");
-  //     },
-  //   });
-  // });
+        // Clear the form fields after successful addition
+        $("#reviewTitle").val("");
+        $("#reviewDescription").val("");
+        $("#reviewRating").val("");
+      },
+      error: function (error) {
+        alert("Error adding new review");
+      },
+    });
+  });
 
   loadChannels();
 })(window.jQuery);

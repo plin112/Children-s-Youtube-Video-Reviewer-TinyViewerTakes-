@@ -46,8 +46,6 @@ app.use(
   })
 );
 
-
-// app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 app.set("views", "./views");
