@@ -62,6 +62,7 @@ const createReview = async (channelId, userId, title, review, rating) => {
     rating,
     reviewerName,
     reviewDate: new Date().toLocaleDateString("en-US"),
+    comments: [] 
   };
 
   //Update the channel with new review and update the average rating.
