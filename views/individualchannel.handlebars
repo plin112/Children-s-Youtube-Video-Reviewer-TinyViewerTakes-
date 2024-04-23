@@ -133,7 +133,6 @@
           </form>
         </main>
         <h3>Reviews</h3>
-
         <ul id="reviewsList"></ul>
           {{#if channel.reviews.length}}
             {{#each channel.reviews}}
@@ -142,7 +141,6 @@
                 <div class="review-title">Title: {{this.title}}</div>
                 <div class="review-description">Review: {{this.review}}</div>
                 <div class="review-rating">Rating: {{this.rating}}</div>
-
               </li>
             {{/each}}
         {{else}}

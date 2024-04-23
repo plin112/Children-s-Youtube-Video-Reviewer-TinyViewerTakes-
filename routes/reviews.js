@@ -61,8 +61,9 @@ router
         parseFloat(reviewRating)
       );
 
+      const channel = await channelData.getChannel(channelId);
       if (newReview) {
-        res.render('individualchannel');
+        res.render('individualchannel', {channel: channel});
       } else {
         res.status(500).send("Failed to create review");
       }
