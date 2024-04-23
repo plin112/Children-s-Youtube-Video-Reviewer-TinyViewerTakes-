@@ -1,22 +1,23 @@
 // This data file should export all functions using the ES6 standard as shown in the lecture code
 // Handler
 
-import { comments,reviews } from "../config/mongoCollections.js";
+import { channels, comments,reviews } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 export const createComment = async (
-    
+    channelId,
     reviewId,
     userId,
     text
 ) => {
     try {
 
-        if (!ObjectId.isValid(reviewId)) {
-            throw new Error("Invalid review ID");
+        if (!ObjectId.isValid(channelId) || !ObjectId.isValid(reviewId)) {
+            throw new Error("Invalid channel or review ID");
         }
 
-        const reviewCollection = await reviews();
+        const channelCollection = await channels();
+        //const reviewCollection = await reviews();
         const commentData = {
             _id: new ObjectId(), // Generate new ObjectId for the comment
             userId,
@@ -25,13 +26,21 @@ export const createComment = async (
         };
 
         // Embed the comment directly into the review's comments array
-        const updateResult = await reviewCollection.updateOne(
-            { _id: new ObjectId(reviewId) },
-            { $push: { comments: commentData } }
+        // const updateResult = await reviewCollection.updateOne(
+        //     { _id: new ObjectId(reviewId) },
+        //     { $push: { comments: commentData } }
+        // );
+        const updateResult = await channelCollection.updateOne(
+            { 
+              "_id": new ObjectId(channelId), 
+              "reviews._id": new ObjectId(reviewId) 
+            },
+            { $push: { "reviews.$.comments": commentData } }
         );
 
+
         if (updateResult.modifiedCount === 0) {
-            throw new Error("Review not found or comment not added");
+            throw new Error("Channel or review not found or comment not added");
         }
 
         return commentData; // Return the newly created comment
@@ -69,14 +78,22 @@ export const getAllComments = async (reviewId) => {
             throw new Error('Invalid review ID');
         }
 
-        const reviewCollection = await reviews();
-        const review = await reviewCollection.findOne({ _id: new ObjectId(reviewId) }, { projection: { comments: 1, _id: 0 } });
+        const channelCollection = await channels();
+        const channel = await channelCollection.findOne(
+            {"reviews._id": new ObjectId(reviewId)}, 
+            {projection: {"reviews.$": 1}}
+        );
 
-        if (!review) {
+        // if (!review) {
+        //     throw new Error('Review not found');
+        // }
+        if (!channel || !channel.reviews || channel.reviews.length === 0) {
             throw new Error('Review not found');
         }
 
-        return review.comments || []; // Return comments array or empty array if no comments
+        return channel.reviews[0].comments || [];
+
+        //return review.comments || []; // Return comments array or empty array if no comments
     } catch (error) {
         throw new Error(`Failed to retrieve comments: ${error.message}`);
     }

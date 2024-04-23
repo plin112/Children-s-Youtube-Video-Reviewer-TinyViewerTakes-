@@ -6,6 +6,17 @@ they are not an admin user.
 
 --}}
 
-<h1>Error</h1>
-<p>{{errorMessage}}</p>
-<a href="/">Home</a>
+<header>
+        <h1>Error</h1>
+    </header>
+    <section>
+            <h2>Error Messages</h2>
+            <ul id="error-message" class="error-message">{{errorMessage}}</ul>
+        </section>
+        <div class = "directory">
+            <ul>
+                <li><a href="/channels">Back to Channel List</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/register">Register</a></li>
+            </ul>
+        </div>

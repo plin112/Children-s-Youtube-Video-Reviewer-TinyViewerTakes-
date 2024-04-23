@@ -132,8 +132,9 @@ router
   });
 
   // Route for adding a comment to a review
-router.post('/reviews/:reviewId/comments', async (req, res) => {
+router.post('/channels/:channelId/reviews/:reviewId/comments', async (req, res) => {
   try {
+    const channelId = req.params.channelId;
     const reviewId = req.params.reviewId;
     const userId = req.session.user._id; // Ensure your session handling is configured correctly
     const commentText = req.body.comment;
@@ -143,8 +144,8 @@ router.post('/reviews/:reviewId/comments', async (req, res) => {
     const commenterName = `${user.firstName} ${user.lastName}`;
 
     // Create the comment
-    await commentData.createComment(reviewId, commenterName, commentText);
-    res.redirect('/path-to-channel-page'); // Make sure this redirects to an appropriate page
+    await commentData.createComment(channelId, reviewId, commenterName, commentText);
+    res.redirect(`/channels/${channelId}`); // Make sure this redirects to an appropriate page
   } catch (error) {
     res.status(500).send("Failed to add comment: " + error.message);
   }
