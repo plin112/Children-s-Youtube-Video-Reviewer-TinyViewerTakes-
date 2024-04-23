@@ -57,6 +57,7 @@ let exportedMethods = {
     }
 
     return {
+      _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       emailAddress: user.emailAddress,

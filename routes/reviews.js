@@ -28,8 +28,26 @@ router
   .post(async (req, res) => {
     //new review under a specific channel
     try {
+      //console.log("Session Data:", req.session);
+
+      if (!req.session || !req.session.user) {
+        return res.status(401).json({ error: "User not logged in" });
+      }
+
+      //console.log(req.session.user);
+
       const userId = req.session.user._id;
-      const channelId = req.params.channelId;
+      if (!userId) {
+        return res.status(400).json({ error: "User ID is undefined" });
+      }
+    
+      const { channelId } = req.params;
+      if (!channelId) {
+        return res.status(400).json({ error: "Channel ID is undefined" });
+      }
+      
+      // const userId = req.session.users._id;
+      // const channelId = req.params.channelId;
       const { reviewTitle, reviewDescription, reviewRating } = req.body;
       //const userId = req.user.id;
       // just need to validate channelId, userId, reviewContent, and rating
@@ -40,7 +58,7 @@ router
         userId,
         reviewTitle,
         reviewDescription,
-        reviewRating
+        parseFloat(reviewRating)
       );
       res.status(201).json(newReview);
     } catch (error) {

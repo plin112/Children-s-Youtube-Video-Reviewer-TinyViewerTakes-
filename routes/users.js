@@ -74,12 +74,14 @@ router.post("/login", async (req, res) => {
     const user = await userData.loginUser(emailAddressInput, passwordInput);
 
     req.session.user = {
+      _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      emailAddress: user.emailAddress,
-      role: user.role, // If role is still needed for something else, otherwise remove this
+      emailAddress: user.emailAddress
     };
     res.redirect("/channels");
+
+
   } catch (e) {
     return res.status(400).render("login", {
       error: "Invalid email address or password.",

@@ -126,7 +126,7 @@
         <p>Average Rating: {{channel.averageRating}}</p>
         <main>
           <!-- Add New Review Form -->
-          <form method="POST" id="addReviewForm">
+          <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
             <p>Add review here:</p>
             <label for="reviewTitle">Review Title:</label>
             <input type="text" id="reviewTitle" name="reviewTitle" /><br />
