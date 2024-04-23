@@ -23,7 +23,8 @@ const main = async () => {
       "Official channel for Paw Patrol. We have all the episodes available. ",
       "youtube.com/pawpatrol",
       ["animal", "toy"],
-      ["animation for kids", "cute"]
+      ["animation for kids", "cute"],
+      2
     );
     console.log("Channel 1 added successfully");
     //console.log(pawPatrolChannel);
@@ -41,8 +42,6 @@ const main = async () => {
     console.error("Error creating channel 1: ", error);
   }
 
-  
-
   try {
     const peppaPigChannel = await createChannel(
       "Peppa Pig",
@@ -50,12 +49,44 @@ const main = async () => {
       "Official channel for Peppa Pig.",
       "youtube.com/peppapig",
       ["kids"],
-      ["kids"]
+      ["kids"],
+      1
     );
     console.log("Channel 2 added successfully");
   } catch (error) {
     console.error("Error creating channel 2: ", error);
   }
+
+  try {
+    const animalKingdomChannel = await createChannel(
+      "Animal Kingdom",
+      "Animal Kingdom Official",
+      "Official channel for Animal Kingdom.",
+      "youtube.com/animalkingdom",
+      ["animal"],
+      ["kids"],
+      2
+    );
+    console.log("Channel 3 added successfully");
+  } catch (error) {
+    console.error("Error creating channel 3: ", error);
+  }
+
+  try {
+    const babySharkChannel = await createChannel(
+      "Baby Shark",
+      "Baby Shark Official",
+      "Official channel for Baby Shark.",
+      "youtube.com/babyshark",
+      ["kids", "shark family"],
+      ["kids", "animal"],
+      1
+    );
+    console.log("Channel 4 added successfully");
+  } catch (error) {
+    console.error("Error creating channel 4: ", error);
+  }
+
 
   console.log("Done seeding database");
   await closeConnection();
