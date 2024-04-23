@@ -2,6 +2,7 @@ import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import { createChannel } from "../data/channels.js";
 import { createReview } from "../data/reviews.js";
 import exportedMethods from '../data/users.js';
+import {createComment, getAllComments, getComment} from '../data/comment.js'
 
 const main = async () => {
   const dababaseSeed = await dbConnection();
@@ -15,7 +16,8 @@ const main = async () => {
   } catch (error) {
     console.error("Error creating user 1: ", error);
   }
-  
+  let review1;
+
   try {
     const pawPatrolChannel = await createChannel(
       "Paw Patrol",
@@ -27,9 +29,8 @@ const main = async () => {
       2
     );
     console.log("Channel 1 added successfully");
-    //console.log(pawPatrolChannel);
 
-    const review1 = await createReview(
+    review1 = await createReview(
       pawPatrolChannel._id.toString(),
       user1._id.toString(),
       "Great Show",
@@ -38,8 +39,17 @@ const main = async () => {
     );
     console.log("Review 1 added successfully to Paw Patrol channel");
 
+    // Add a comment to the review
+    const comment1 = await createComment(
+      pawPatrolChannel._id.toString(),
+      review1._id.toString(),
+      user1._id.toString(),
+      "Absolutely love it!"
+    );
+    console.log("Comment 1 added successfully to Review 1");
+
   } catch (error) {
-    console.error("Error creating channel 1: ", error);
+    console.error("Error creating channel or review: ", error);
   }
 
   try {

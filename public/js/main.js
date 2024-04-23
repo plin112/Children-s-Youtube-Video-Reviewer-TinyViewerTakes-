@@ -301,6 +301,11 @@
   $(document).on('submit', '.comment-form', function(event) {
     event.preventDefault();
     const $form = $(this);
+    const commentText = $form.find('input[name="comment"]').val().trim(); // Assuming input name is 'comment'
+    if (commentText === "") {
+        alert("Please enter a comment before submitting.");
+        return; // Prevent form submission
+    }
     const data = $form.serialize();  // Use jQuery to serialize form data
     $.ajax({
       method: 'POST',
@@ -314,6 +319,7 @@
           $form[0].reset(); // Reset the form fields
           $form.hide(); // Optionally hide the form
           $form.siblings('.btn-show-comment-form').show(); // Show the add comment button again
+          showToast("Comment added successfully!");
         } else {
           alert('Failed to add comment');
         }
@@ -326,7 +332,7 @@
 
   // Optionally handle showing/hiding the comment form
   $(document).on('click', '.btn-show-comment-form', function() {
-    const $button = $(this);
+    const $button = $(this).closest('.comment-form');
     $button.next('.comment-form').show();  // Show the form
     $button.hide();  // Hide the add comment button
   });
