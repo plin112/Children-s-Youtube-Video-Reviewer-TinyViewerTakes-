@@ -144,9 +144,13 @@
                 <div class="review-comments">
                   <h4>Comments:</h4>
                   <ul>
-                    {{#each this.comments}}
-                      <li>{{this.commenterName}}: {{this.comment}}</li>
-                    {{/each}}
+                    {{#if this.comments}}
+                      {{#each this.comments}}
+                        <li>{{this.commenterName}}: {{this.text}}</li>
+                      {{/each}}
+                    {{else}}
+                      <p>No comments yet.</p>
+                    {{/if}}
                   </ul>
                 </div>
                 <!-- Comment submission form -->

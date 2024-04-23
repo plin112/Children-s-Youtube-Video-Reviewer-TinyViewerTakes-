@@ -1,7 +1,7 @@
 // This data file should export all functions using the ES6 standard as shown in the lecture code
 // Handler
 
-import { channels, comments,reviews } from "../config/mongoCollections.js";
+import { channels, users } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 export const createComment = async (
@@ -17,10 +17,20 @@ export const createComment = async (
         }
 
         const channelCollection = await channels();
+        const userCollection = await users();
+        const objUserId = new ObjectId(userId);
+        const user = await userCollection.findOne({ _id: objUserId });
+
+        if (!user) {
+            throw new Error(`No user found with id: ${userId}`);
+        }
+        const commenterName = `${user.firstName} ${user.lastName}`;
+
         //const reviewCollection = await reviews();
         const commentData = {
             _id: new ObjectId(), // Generate new ObjectId for the comment
             userId,
+            commenterName,
             text,
             createdDate: new Date() // Store the date when the comment was created
         };
@@ -42,6 +52,22 @@ export const createComment = async (
         if (updateResult.modifiedCount === 0) {
             throw new Error("Channel or review not found or comment not added");
         }
+
+        //Find the user to which the review will be added.
+        const userToUpdate = await userCollection.findOne({ _id: objUserId });
+
+        if (!userToUpdate) {
+            throw new Error(`Error: No user found with the id: ${userId}`);
+        }
+
+        //Update the user with new review
+        const updateUser = await userCollection.findOneAndUpdate(
+            { _id: objUserId },
+            {
+            $push: { comments: commentData },
+            },
+            { returnDocument: "after" }
+        );
 
         return commentData; // Return the newly created comment
     } catch (error) {
@@ -90,6 +116,7 @@ export const getAllComments = async (reviewId) => {
         if (!channel || !channel.reviews || channel.reviews.length === 0) {
             throw new Error('Review not found');
         }
+
 
         return channel.reviews[0].comments || [];
 
