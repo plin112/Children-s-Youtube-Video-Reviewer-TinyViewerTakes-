@@ -46,6 +46,56 @@
     <script src="/public/js/main.js"></script>
   </body>
 </html> --}}
+{{!-- 
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{channel.channelTitle}} - Details</title>
+  </head>
+  <body>
+    <header>
+      <h1>{{channel.channelTitle}}</h1>
+    </header>
+
+    <main>
+      <div id="channelDetails">
+        <h2>Channel Overview</h2>
+        <p>Description: {{channel.channelDescription}}</p>
+        <p>Owner: {{channel.channelOwnerName}}</p>
+        <p>Website:
+          <a
+            href="{{channel.website}}"
+            target="_blank"
+          >{{channel.website}}</a></p>
+        <p>Keywords:
+          {{#each channel.keywords}}<span>{{this}}, </span>{{/each}}</p>
+        <p>Categories:
+          {{#each channel.categories}}<span>{{this}}, </span>{{/each}}</p>
+        <p>Average Rating: {{channel.averageRating}}</p>
+        <h3>Reviews</h3>
+        {{#if channel.reviews.length}}
+          <ul>
+            {{#each channel.reviews}}
+              <li>{{this.content}} - Rating: {{this.rating}}</li>
+            {{/each}}
+          </ul>
+        {{else}}
+          <p>No reviews yet.</p>
+        {{/if}}
+      </div>
+      <a href="/channels">Go back to main page</a>
+    </main>
+
+    <footer>
+      <p>TinyViewerTakes</p>
+    </footer>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    ></script>
+    <script src="/public/js/main.js"></script>
+  </body>
+</html> --}}
 
 <html lang="en">
   <head>
@@ -64,14 +114,33 @@
         <p>Owner: {{channel.channelOwnerName}}</p>
         <p>Website:
           <a
-            href="{{channel.channelWebsite}}"
+            href="{{channel.website}}"
             target="_blank"
-          >{{channel.channelWebsite}}</a></p>
+          >{{channel.website}}</a></p>
         <p>Keywords:
-          {{#each channel.keywords}}<span>{{this}}, </span>{{/each}}</p>
+          {{#each channel.keywords}}{{this}}{{#unless @last}},
+            {{/unless}}{{/each}}</p>
         <p>Categories:
-          {{#each channel.categories}}<span>{{this}}, </span>{{/each}}</p>
+          {{#each channel.categories}}{{this}}{{#unless @last}},
+            {{/unless}}{{/each}}</p>
         <p>Average Rating: {{channel.averageRating}}</p>
+        <main>
+          <!-- Add New Review Form -->
+          <form method="POST" id="addReviewForm">
+            <p>Add review here:</p>
+            <label for="reviewTitle">Review Title:</label>
+            <input type="text" id="reviewTitle" name="reviewTitle" /><br />
+            <label for="reviewDescription">Review Description:</label>
+            <input
+              type="text"
+              id="reviewDescription"
+              name="reviewDescription"
+            /><br />
+            <label for="reviewRating">Rating:</label>
+            <input type="text" id="reviewRating" name="reviewRating" /><br />
+            <button type="submit">Add Review</button>
+          </form>
+        </main>
         <h3>Reviews</h3>
         {{#if channel.reviews.length}}
           <ul>

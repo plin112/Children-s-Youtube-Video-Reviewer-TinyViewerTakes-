@@ -18,7 +18,10 @@
   <ul id="channelList">
     {{#each channels}}
       <li>
-        <a href="/channels/{{this._id}}" data-id="{{this._id}}">{{this.channelTitle}}</a>
+        <a
+          href="/channels/{{this._id}}"
+          data-id="{{this._id}}"
+        >{{this.channelTitle}}</a>
 
       </li>
     {{/each}}
@@ -38,9 +41,9 @@
     />
     <label for="channelWebsite">Channel Website:</label>
     <input type="text" id="channelWebsite" name="channelWebsite" /><br />
-    <label for="keywords">Keywords (comma-separated):</label>
+    <label for="keywords">Keyword:</label>
     <input type="text" id="keywords" name="keywords" /><br />
-    <label for="categories">Categories (comma-separated):</label>
+    <label for="categories">Category:</label>
     <input type="text" id="categories" name="categories" /><br />
     <button type="submit">Add New Channel</button>
   </form>
