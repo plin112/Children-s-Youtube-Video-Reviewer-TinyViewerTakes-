@@ -48,7 +48,7 @@ router
       
       // const userId = req.session.users._id;
       // const channelId = req.params.channelId;
-      const { reviewTitle, reviewDescription, reviewRating } = req.body;
+      const { reviewTitle, reviewDescription, reviewRating, reviewerName } = req.body;
       //const userId = req.user.id;
       // just need to validate channelId, userId, reviewContent, and rating
       // need to add userId to the createReview i think
@@ -60,13 +60,21 @@ router
         reviewDescription,
         parseFloat(reviewRating)
       );
-      res.status(201).json(newReview);
+
+      const channel = await channelData.getChannel(channelId);
+      if (newReview) {
+        res.render('individualchannel', {channel: channel});
+      } else {
+        res.status(500).send("Failed to create review");
+      }
+
     } catch (error) {
       res.status(400).json({ error: error.toString() });
     }
   });
+
 router
-  //remove a review by its Id
+  // Get a review by its id.
   .route("/review/:reviewId")
   .get(async (req, res) => {
     try {
@@ -84,6 +92,8 @@ router
       return res.status(404).json({ error: e.toString() });
     }
   })
+
+  //remove a review by its Id
   .delete(async (req, res) => {
     //const userId = req.user.id;
     try {

@@ -255,7 +255,9 @@
   });
 
   // Add review form
-  console.log(addReviewForm);
+
+  let addReviewForm = $("#addReviewForm");
+
   addReviewForm.submit(function (event) {
     console.log("before formdata or url");
     event.preventDefault();
@@ -270,9 +272,20 @@
     $.ajax({
       method: "POST",
       url: `/channels/${channelId}/reviews`,
-      data: formData,
+      // data: JSON.stringify(formData),
 
       success: function (response) {
+
+         // Append the new review to the reviews list
+        $('#reviewsList').append(
+          `<li>
+            <div class="reviewer-name">Reviewed by: ${response.reviewerName}</div>
+            <div class="review-title"><strong>Title: ${response.title}</div>
+            <div class="review-description">Description: ${response.description}</div>
+            <div class="review-rating">Rating: ${response.rating}</div>
+          </li>`
+        );
+
         // Clear the form fields after successful addition
         $("#reviewTitle").val("");
         $("#reviewDescription").val("");
