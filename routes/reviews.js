@@ -31,7 +31,7 @@ router
       //console.log("Session Data:", req.session);
 
       if (!req.session || !req.session.user) {
-        return res.status(401).json({ error: "User not logged in" });
+        return res.redirect("/login");
       }
 
       //console.log(req.session.user);
@@ -40,15 +40,16 @@ router
       if (!userId) {
         return res.status(400).json({ error: "User ID is undefined" });
       }
-    
+
       const { channelId } = req.params;
       if (!channelId) {
         return res.status(400).json({ error: "Channel ID is undefined" });
       }
-      
+
       // const userId = req.session.users._id;
       // const channelId = req.params.channelId;
-      const { reviewTitle, reviewDescription, reviewRating, reviewerName } = req.body;
+      const { reviewTitle, reviewDescription, reviewRating, reviewerName } =
+        req.body;
       //const userId = req.user.id;
       // just need to validate channelId, userId, reviewContent, and rating
       // need to add userId to the createReview i think
@@ -63,11 +64,10 @@ router
 
       const channel = await channelData.getChannel(channelId);
       if (newReview) {
-        res.render('individualchannel', {channel: channel});
+        res.render("individualchannel", { channel: channel });
       } else {
         res.status(500).send("Failed to create review");
       }
-
     } catch (error) {
       res.status(400).json({ error: error.toString() });
     }
@@ -96,6 +96,9 @@ router
   //remove a review by its Id
   .delete(async (req, res) => {
     //const userId = req.user.id;
+    if (!req.session || !req.session.user) {
+      return res.redirect("/login");
+    }
     try {
       console.log(req.params);
       const revId = req.params.reviewId;
@@ -131,23 +134,29 @@ router
     }
   });
 
-  // Route for adding a comment to a review
-router.post('/channels/:channelId/reviews/:reviewId/comments', async (req, res) => {
-  try {
-    const channelId = req.params.channelId;
-    const reviewId = req.params.reviewId;
-    const userId = req.session.user._id; // Ensure your session handling is configured correctly
-    const commentText = req.body.comment;
-    
-    // Fetch user details to get the commenter's name
-    const user = await userData.getUserById(userId);
-    const commenterName = `${user.firstName} ${user.lastName}`;
+// Route for adding a comment to a review
+router.post(
+  "/channels/:channelId/reviews/:reviewId/comments",
+  async (req, res) => {
+    if (!req.session || !req.session.user) {
+      return res.redirect("/login");
+    }
+    try {
+      const channelId = req.params.channelId;
+      const reviewId = req.params.reviewId;
+      const userId = req.session.user._id; // Ensure your session handling is configured correctly
+      const commentText = req.body.comment;
 
-    // Create the comment
-    await commentData.createComment(channelId, reviewId, userId, commentText);
-    res.redirect(`/channels/${channelId}`); // Make sure this redirects to an appropriate page
-  } catch (error) {
-    res.status(500).send("Failed to add comment: " + error.message);
+      // Fetch user details to get the commenter's name
+      const user = await userData.getUserById(userId);
+      const commenterName = `${user.firstName} ${user.lastName}`;
+
+      // Create the comment
+      await commentData.createComment(channelId, reviewId, userId, commentText);
+      res.redirect(`/channels/${channelId}`); // Make sure this redirects to an appropriate page
+    } catch (error) {
+      res.status(500).send("Failed to add comment: " + error.message);
+    }
   }
-});
+);
 export default router;

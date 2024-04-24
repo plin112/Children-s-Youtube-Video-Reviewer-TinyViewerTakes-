@@ -6,7 +6,7 @@
 <main>
   <h2>MAIN CHANNELS LIST PAGE</h2>
   {{#unless loggedIn}}
-    <p><a href="/login">Login Here</a></p>
+    <p><a id="loginButton" href="/login">Login Here</a></p>
   {{/unless}}
   <form id="searchForm">
     <label for="search_term">Search Channels:</label>

@@ -28,16 +28,16 @@ router.post("/Channels", async (req, res) => {
   } = req.body;
 
   if (!req.session || !req.session.user) {
-    return res.status(401).json({ error: "User not logged in" });
+    return res.redirect("/login");
   }
 
   try {
-    // validation.validateString(channelTitle, 'Channel Title');
-    // validation.validateString(channelOwnerName, 'Channel Owner Name');
-    // validation.validateString(channelDescription, 'Channel Description');
-    // // validation.validateString(channelWebsite, 'Channel Website');
-    // validation.validateStringArray(keywords, 'Keywords');
-    // validation.validateStringArray(categories, 'Categories');
+    validation.validateString(channelTitle, "Channel Title");
+    validation.validateString(channelOwnerName, "Channel Owner Name");
+    validation.validateString(channelDescription, "Channel Description");
+    validation.validateString(channelWebsite, "Channel Website");
+    validation.validateStringArray(keywords, "Keywords");
+    validation.validateStringArray(categories, "Categories");
 
     const newChannel = await channelData.createChannel(
       channelTitle,
@@ -52,7 +52,13 @@ router.post("/Channels", async (req, res) => {
     const channelsList = await channelData.getAllChannel();
     res.render("channels", { channels: channelsList });
   } catch (error) {
-    res.status(400).json({ error: error.toString() });
+    // res.status(400).json({ error: error.toString() });
+    return res
+      .status(400)
+      .render("error", {
+        errorMessage:
+          "Supply all fields: All must be string values withouts paces except for Age Range should be integer",
+      });
   }
 });
 
