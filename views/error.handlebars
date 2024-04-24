@@ -1,22 +1,20 @@
-{{!--
+{{!
 
 You can use this if they try to access a route that they should not be able to. You will redirect them here. For
 example, if they go to /protected without being logged in, or they try to access /admin without beinging logged in or
 they are not an admin user.
 
---}}
+}}
 
 <header>
-        <h1>Error</h1>
-    </header>
-    <section>
-            <h2>Error Messages</h2>
-            <ul id="error-message" class="error-message">{{errorMessage}}</ul>
-        </section>
-        <div class = "directory">
-            <ul>
-                <li><a href="/channels">Back to Channel List</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-            </ul>
-        </div>
+  <h1>Error</h1>
+</header>
+<section>
+  <h2>Error Messages</h2>
+  <ul id="error-message" class="error-message">{{errorMessage}}</ul>
+</section>
+<div class="directory">
+  <ul>
+    <li><a href="/channels">Back to Channel List</a></li>
+  </ul>
+</div>
