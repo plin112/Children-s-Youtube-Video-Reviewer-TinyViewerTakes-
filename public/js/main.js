@@ -1,186 +1,286 @@
+// (function ($) {
+//   let searchForm = $("#searchForm"),
+//     searchTermInput = $("#search_term"),
+//     channelList = $("#channelList");
+//   addChannelForm = $("#addChannelForm");
+//   addReviewForm = $("#addReviewForm");
+
+//   function bindEventsToChannelItem() {
+//     // Use event delegation to handle clicks on dynamically created links
+//     channelList.on("click", "a", function (event) {
+//       event.preventDefault();
+//       let channelId = $(this).data("id"); // Retrieve the channel ID stored in data-id attribute
+//       // Redirect to the individual channel page using the channel ID
+//       window.location.href = `http://localhost:3000/channels/${channelId}`;
+//     });
+//   }
+
+//   function loadChannels() {
+//     $.ajax({
+//       method: "GET",
+//       url: "/channels",
+//       success: function (channels) {
+//         channelList.empty(); // Clear previous entries
+//         channels.forEach(function (channel) {
+//           // Create links with correct href attribute and data-id for each channel
+//           const link = $(
+//             '<a href="javascript:void(0);" data-id="' + channel._id + '">'
+//           ).text(channel.channelTitle);
+//           const listItem = $("<li>").append(link);
+//           channelList.append(listItem);
+//         });
+//         bindEventsToChannelItem(); // Bind click event handlers to the new links
+//       },
+//       error: function () {
+//         alert("Error fetching channels.");
+//       },
+//     });
+//   }
+
+  // searchForm.submit(function (event) {
+  //   event.preventDefault();
+  //   let searchQuery = $.trim(searchTermInput.val());
+  //   if (!searchQuery) {
+  //     alert("Please enter a valid search term.");
+  //     return;
+  //   }
+
+  //   $.ajax({
+  //     method: "GET",
+  //     url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
+  //     success: function (channels) {
+  //       channelList.empty(); // Clear list before adding search results
+  //       channels.forEach(function (channel) {
+  //         const link = $(
+  //           '<a href="javascript:void(0);" data-id="' + channel._id + '">'
+  //         ).text(channel.channelTitle);
+  //         const listItem = $("<li>").append(link);
+  //         channelList.append(listItem);
+  //       });
+  //       bindEventsToChannelItem(); // Rebind click events to new links
+  //     },
+  //     error: function () {
+  //       alert("Error searching channels.");
+  //     },
+  //   });
+  // });
+  
+
+//   (function ($) {
+//     let searchForm = $("#searchForm"),
+//         searchTermInput = $("#search_term"),
+//         channelList = $("#channelList"),
+//         addChannelForm = $("#addChannelForm"),
+//         addReviewForm = $("#addReviewForm");
+
+//     function bindEventsToChannelItem() {
+//         channelList.on("click", "a", function (event) {
+//             event.preventDefault();
+//             let channelId = $(this).data("id");
+//             window.location.href = `/channels/${channelId}`;
+//         });
+//     }
+
+//     function loadChannels() {
+//         $.ajax({
+//             method: "GET",
+//             url: "/channels",
+//             success: function (channels) {
+//                 channelList.empty();
+//                 channels.forEach(function (channel) {
+//                     const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+//                     const listItem = $("<li>").append(link);
+//                     channelList.append(listItem);
+//                 });
+//                 bindEventsToChannelItem();
+//             },
+//             error: function () {
+//                 alert("Error fetching channels.");
+//             },
+//         });
+//     }
+
+//     searchForm.submit(function (event) {
+//         event.preventDefault();
+//         let searchQuery = $.trim(searchTermInput.val());
+//         if (!searchQuery) {
+//             alert("Please enter a valid search term.");
+//             return;
+//         }
+
+//         $.ajax({
+//             method: "GET",
+//             url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
+//             success: function (channels) {
+//                 channelList.empty();
+//                 channels.forEach(function (channel) {
+//                     const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+//                     const listItem = $("<li>").append(link);
+//                     channelList.append(listItem);
+//                 });
+//                 bindEventsToChannelItem();
+//             },
+//             error: function () {
+//                 alert("Error searching channels.");
+//             },
+//         });
+//     });
+
+//     addChannelForm.submit(function (event) {
+//         event.preventDefault();
+//         let formData = {
+//             channelTitle: $("#channelTitle").val(),
+//             channelOwnerName: $("#channelOwnerName").val(),
+//             channelDescription: $("#channelDescription").val(),
+//             channelWebsite: $("#channelWebsite").val(),
+//             keywords: $("#keywords").val(),
+//             categories: $("#categories").val(),
+//         };
+
+//         $.ajax({
+//             method: "POST",
+//             url: "/channels",
+//             data: formData,
+//             success: function (response) {
+//                 loadChannels();  // Reload channels list after adding a new channel
+//                 $("#channelTitle").val("");
+//                 $("#channelOwnerName").val("");
+//                 $("#channelDescription").val("");
+//                 $("#channelWebsite").val("");
+//                 $("#keywords").val("");
+//                 $("#categories").val("");
+//             },
+//             error: function (error) {
+//                 alert("Error adding new channel");
+//             },
+//         });
+//     });
+
+//     addReviewForm.submit(function (event) {
+//         event.preventDefault();
+//         let formData = {
+//             reviewTitle: $("#reviewTitle").val(),
+//             reviewDescription: $("#reviewDescription").val(),
+//             reviewRating: $("#reviewRating").val(),
+//         };
+
+//         let channelId = $("#channelId").val();  // Assuming you have an input with id channelId or a similar method to retrieve it
+//         $.ajax({
+//             method: "POST",
+//             url: `/channels/${channelId}/reviews`,
+//             data: formData,
+//             success: function (response) {
+//                 $("#reviewsList").append(
+//                     `<li>
+//                         <div class="reviewer-name">Reviewed by: ${response.reviewerName}</div>
+//                         <div class="review-title"><strong>Title: ${response.title}</div>
+//                         <div class="review-description">Description: ${response.description}</div>
+//                         <div class="review-rating">Rating: ${response.rating}</div>
+//                     </li>`
+//                 );
+//                 $("#reviewTitle").val("");
+//                 $("#reviewDescription").val("");
+//                 $("#reviewRating").val("");
+//             },
+//             error: function (error) {
+//                 alert("Error adding new review");
+//             },
+//         });
+//     });
+
+//     loadChannels();
+// })(window.jQuery);
+
+
 (function ($) {
   let searchForm = $("#searchForm"),
-    searchTermInput = $("#search_term"),
-    channelList = $("#channelList");
-  addChannelForm = $("#addChannelForm");
-  addReviewForm = $("#addReviewForm");
+      searchTermInput = $("#search_term"),
+      channelList = $("#channelList"),
+      addChannelForm = $("#addChannelForm"),
+      addReviewForm = $("#addReviewForm");
 
   function bindEventsToChannelItem() {
-    // Use event delegation to handle clicks on dynamically created links
-    channelList.on("click", "a", function (event) {
-      event.preventDefault();
-      let channelId = $(this).data("id"); // Retrieve the channel ID stored in data-id attribute
-      // Redirect to the individual channel page using the channel ID
-      window.location.href = `http://localhost:3000/channels/${channelId}`;
-    });
+      channelList.on("click", "a", function (event) {
+          event.preventDefault();
+          let channelId = $(this).data("id"); // Retrieve the channel ID stored in data-id attribute
+          // Redirect to the individual channel page using the channel ID
+          window.location.href = `http://localhost:3000/channels/${channelId}`;
+      });
   }
 
   function loadChannels() {
-    $.ajax({
-      method: "GET",
-      url: "/channels",
-      success: function (channels) {
-        channelList.empty(); // Clear previous entries
-        channels.forEach(function (channel) {
-          // Create links with correct href attribute and data-id for each channel
-          const link = $(
-            '<a href="javascript:void(0);" data-id="' + channel._id + '">'
-          ).text(channel.channelTitle);
-          const listItem = $("<li>").append(link);
-          channelList.append(listItem);
-        });
-        bindEventsToChannelItem(); // Bind click event handlers to the new links
-      },
-      error: function () {
-        alert("Error fetching channels.");
-      },
-    });
+      $.ajax({
+          method: "GET",
+          url: "/channels",
+          success: function (channels) {
+              channelList.empty(); // Clear previous entries
+              channels.forEach(function (channel) {
+                  // Create links with correct href attribute and data-id for each channel
+                  const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+                  const listItem = $("<li>").append(link);
+                  channelList.append(listItem);
+              });
+              bindEventsToChannelItem(); // Bind click event handlers to the new links
+          },
+          error: function () {
+              alert("Error fetching channels.");
+          },
+      });
   }
 
   searchForm.submit(function (event) {
-    event.preventDefault();
-    let searchQuery = $.trim(searchTermInput.val());
-    if (!searchQuery) {
-      alert("Please enter a valid search term.");
-      return;
-    }
+      event.preventDefault();
+      let searchQuery = $.trim(searchTermInput.val());
+      if (!searchQuery) {
+          alert("Please enter a valid search term.");
+          return;
+      }
 
-    $.ajax({
-      method: "GET",
-      url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
-      success: function (channels) {
-        channelList.empty(); // Clear list before adding search results
-        channels.forEach(function (channel) {
-          const link = $(
-            '<a href="javascript:void(0);" data-id="' + channel._id + '">'
-          ).text(channel.channelTitle);
-          const listItem = $("<li>").append(link);
-          channelList.append(listItem);
-        });
-        bindEventsToChannelItem(); // Rebind click events to new links
-      },
-      error: function () {
-        alert("Error searching channels.");
-      },
-    });
+      $.ajax({
+          method: "GET",
+          url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
+          success: function (channels) {
+              channelList.empty(); // Clear list before adding search results
+              channels.forEach(function (channel) {
+                  const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+                  const listItem = $("<li>").append(link);
+                  channelList.append(listItem);
+              });
+              bindEventsToChannelItem(); // Rebind click events to new links
+          },
+          error: function () {
+              alert("Error searching channels.");
+          },
+      });
   });
 
-  // Add channel form
+  // Add channel form submission using the original functionality
   addChannelForm.submit(function (event) {
-    event.preventDefault();
-    // $("#loginButton").hide();
-    let formData = {
-      channelTitle: $("#channelTitle").val(),
-      channelOwnerName: $("#channelOwnerName").val(),
-      channelDescription: $("#channelDescription").val(),
-      channelWebsite: $("#channelWebsite").val(),
-      keywords: $("#keywords").val(),
-      categories: $("#categories").val(),
-    };
+      event.preventDefault();
+      let formData = {
+          channelTitle: $("#channelTitle").val(),
+          channelOwnerName: $("#channelOwnerName").val(),
+          channelDescription: $("#channelDescription").val(),
+          channelWebsite: $("#channelWebsite").val(),
+          keywords: $("#keywords").val(),
+          categories: $("#categories").val(),
+      };
 
-    $.ajax({
-      method: "POST",
-      url: "/channels",
-      data: formData,
-
-      success: function (response) {
-        // Clear the form fields after successful addition
-        $("#channelTitle").val("");
-        $("#channelOwnerName").val("");
-        $("#channelDescription").val("");
-        $("#channelWebsite").val("");
-        $("#keywords").val("");
-        $("#categories").val("");
-      },
-      error: function (error) {
-        alert("Error adding new channel");
-      },
-    });
+      $.ajax({
+          method: "POST",
+          url: "/channels",
+          data: formData,
+          success: function (response) {
+              // Optionally alert the user or handle UI updates
+              alert("Channel added successfully.");
+              loadChannels(); // Reload channels to show the new addition
+          },
+          error: function (error) {
+              alert("Error adding new channel");
+          },
+      });
   });
 
-  // Add review form
-
-  let addReviewForm = $("#addReviewForm");
-
-  addReviewForm.submit(function (event) {
-    console.log("before formdata or url");
-    event.preventDefault();
-    let formData = {
-      reviewTitle: $("#reviewTitle").val(),
-      reviewDescription: $("#reviewDescription").val(),
-      reviewRating: $("#reviewRating").val(),
-    };
-
-    let testurl = `/channels/${channelId}/reviews`;
-    console.log(testurl);
-    $.ajax({
-      method: "POST",
-      url: `/channels/${channelId}/reviews`,
-      // data: JSON.stringify(formData),
-
-      success: function (response) {
-        // Append the new review to the reviews list
-        $("#reviewsList").append(
-          `<li>
-            <div class="reviewer-name">Reviewed by: ${response.reviewerName}</div>
-            <div class="review-title"><strong>Title: ${response.title}</div>
-            <div class="review-description">Description: ${response.description}</div>
-            <div class="review-rating">Rating: ${response.rating}</div>
-          </li>`
-        );
-
-        // Clear the form fields after successful addition
-        $("#reviewTitle").val("");
-        $("#reviewDescription").val("");
-        $("#reviewRating").val("");
-      },
-      error: function (error) {
-        alert("Error adding new review");
-      },
-    });
-  });
-
-  // Handle comment form submission using AJAX
-  $(document).on("submit", ".comment-form", function (event) {
-    event.preventDefault();
-    const $form = $(this);
-    const commentText = $form.find('input[name="comment"]').val().trim(); // Assuming input name is 'comment'
-    if (commentText === "") {
-      alert("Please enter a comment before submitting.");
-      return; // Prevent form submission
-    }
-    const data = $form.serialize(); // Use jQuery to serialize form data
-    $.ajax({
-      method: "POST",
-      url: $form.attr("action"), // Use form's action attribute
-      data: data,
-      success: function (response) {
-        if (response.success) {
-          const commentList = $form.prev(".review-comments").find("ul");
-          const newComment = $("<li>").text(
-            `${response.commenterName}: ${response.comment}`
-          );
-          commentList.append(newComment);
-          $form[0].reset(); // Reset the form fields
-          $form.hide(); // Optionally hide the form
-          $form.siblings(".btn-show-comment-form").show(); // Show the add comment button again
-          showToast("Comment added successfully!");
-        } else {
-          alert("Failed to add comment");
-        }
-      },
-      error: function () {
-        alert("Error submitting comment");
-      },
-    });
-  });
-
-  // Optionally handle showing/hiding the comment form
-  $(document).on("click", ".btn-show-comment-form", function () {
-    const $button = $(this).closest(".comment-form");
-    $button.next(".comment-form").show(); // Show the form
-    $button.hide(); // Hide the add comment button
-  });
-
-  loadChannels();
+  loadChannels(); // Load channels on page load
 })(window.jQuery);
+
