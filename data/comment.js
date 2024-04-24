@@ -1,7 +1,7 @@
 // This data file should export all functions using the ES6 standard as shown in the lecture code
 // Handler
 
-import { channels, users } from "../config/mongoCollections.js";
+import { channels, users, comments } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
 
 export const createComment = async (
@@ -11,6 +11,7 @@ export const createComment = async (
     text
 ) => {
     try {
+        
 
         if (!ObjectId.isValid(channelId) || !ObjectId.isValid(reviewId)) {
             throw new Error("Invalid channel or review ID");
@@ -48,6 +49,7 @@ export const createComment = async (
             { $push: { "reviews.$.comments": commentData } }
         );
 
+        console.log("Inserting comment for channel:", channelId, " and review:", reviewId);
 
         if (updateResult.modifiedCount === 0) {
             throw new Error("Channel or review not found or comment not added");

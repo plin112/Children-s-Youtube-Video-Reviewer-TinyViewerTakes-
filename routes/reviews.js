@@ -144,7 +144,7 @@ router.post('/channels/:channelId/reviews/:reviewId/comments', async (req, res) 
     const commenterName = `${user.firstName} ${user.lastName}`;
 
     // Create the comment
-    await commentData.createComment(channelId, reviewId, commenterName, commentText);
+    await commentData.createComment(channelId, reviewId, userId, commentText);
     res.redirect(`/channels/${channelId}`); // Make sure this redirects to an appropriate page
   } catch (error) {
     res.status(500).send("Failed to add comment: " + error.message);
