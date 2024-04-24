@@ -5,6 +5,16 @@ import validation from "./validation.js";
 const getChannelCollection = async () => {
   return await channels();
 };
+const searchChannels = async (query) => {
+  const channelCollection = await getChannelCollection();
+  return await channelCollection.find({
+    $or: [
+      { channelTitle: { $regex: new RegExp(query, 'i') } },  // Case-insensitive regex search on channelTitle
+      { channelDescription: { $regex: new RegExp(query, 'i') } }  // Case-insensitive regex search on channelDescription
+    ]
+  }).toArray();
+};
+
 
 const createChannel = async (
   channelTitle,
@@ -167,4 +177,5 @@ export {
   getChannel,
   removeChannel,
   updateChannel,
+  searchChannels
 };
