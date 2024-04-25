@@ -14,6 +14,11 @@
     <button type="submit">Search</button>
   </form>
 
+  <!-- Displaying the message if any -->
+  {{#if message}}
+    <p style="color: red;">{{message}}</p>
+  {{/if}}
+
   <!-- List of channels -->
   <ul id="channelList">
     {{#each channels}}
@@ -41,10 +46,10 @@
     />
     <label for="channelWebsite">Channel Website:</label>
     <input type="text" id="channelWebsite" name="channelWebsite" /><br />
-    <label for="keywords">Keyword:</label>
-    <input type="text" id="keywords" name="keywords" /><br />
-    <label for="categories">Category:</label>
-    <input type="text" id="categories" name="categories" /><br />
+  <label for="keywords">Keywords:</label>
+  <input type="text" id="keywords" name="keywords"/><br />
+  <label for="categories">Categories:</label>
+  <input type="text" id="categories" name="categories" /><br />
     <label for="startingAge">Parental Guidance Age:</label>
     <input type="text" id="startingAge" name="startingAge" /><br />
     <button type="submit">Add New Channel</button>

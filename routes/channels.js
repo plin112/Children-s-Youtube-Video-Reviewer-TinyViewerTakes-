@@ -16,24 +16,34 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
-
-// Handle search and list all channels
 router.get("/Channels", async (req, res) => {
   try {
     let channelsList;
-    // validation.validateString(req.query.search_term, "search term");
-    if (req.query.search_term) {
-      channelsList = await channelData.searchChannels(req.query.search_term);
+    let message = ''; // Initialize message to an empty string
+    const search_term = req.query.search_term;
+
+    // Check if the search_term parameter is present in the query string
+    if ('search_term' in req.query) {
+      if (search_term && search_term.trim()) {
+        channelsList = await channelData.searchChannels(search_term.trim());
+        if (channelsList.length === 0) { // No results found for a valid search
+          message = 'No channels found for your search.';
+        }
+      } else {
+        // Message only when search term is present but empty
+        message = 'Please enter a search term.';
+      }
     } else {
+      // The page loads for the first time without any search attempt
       channelsList = await channelData.getAllChannel();
     }
-    let isLoggedIn = req.session.user ? true : false;
-    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList });
+
+    const isLoggedIn = req.session.user ? true : false;
+    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
 });
-
 // // Handle search and list all channels
 // router.get("/Channels/search", async (req, res) => {
 //   try {
@@ -68,17 +78,19 @@ router.post("/Channels", async (req, res) => {
     //validation.validateStringArray(keywords, "Keywords");
     //validation.validateStringArray(categories, "Categories");
     //validation.validateNumber(parseFloat(startingAge), "Starting Age");
+    const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+    const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
 
     const newChannel = await channelData.createChannel(
       channelTitle,
       channelOwnerName,
       channelDescription,
       channelWebsite,
-      keywords,
-      categories,
+      keywordsArray,
+      categoriesArray,
       parseFloat(startingAge)
     );
-
+    console.log("test")
     const channelsList = await channelData.getAllChannel();
     res.render("channels", { channels: channelsList });
   } catch (error) {
