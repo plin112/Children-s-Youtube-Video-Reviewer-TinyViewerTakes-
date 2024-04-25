@@ -21,6 +21,7 @@ $(document).ready(function() {
                 success: function() {
                     alert('Channel added successfully.');
                     // Optionally reload the list or clear the form
+                    window.location.href = '/channels';
                 },
                 error: function() {
                     alert('Error adding channel.');
@@ -32,15 +33,44 @@ $(document).ready(function() {
     });
 
     // Search form submission
-    $('#searchForm').submit(function(event) {
-        event.preventDefault();
-        const searchTerm = $('#searchTerm').val().trim();
-        if (searchTerm) {
-            window.location.href = `/channels/search?q=${encodeURIComponent(searchTerm)}`;
-        } else {
-            alert('Please enter a search term.');
-        }
-    });
+    $('#searchForm').submit(function (event) {
+      event.preventDefault();
+      let searchQuery = $.trim($('#searchTerm').val()); // Corrected to use the appropriate selector
+      if (!searchQuery || searchQuery.trim() === "") {
+          $.ajax({
+              method: "GET",
+              url: "/channels/search",
+              success: function () {
+                  // Success callback: reload the page
+                  window.location.reload();
+              },
+              error: function () {
+                  // Error callback: handle error, such as displaying an alert
+                  alert("Error navigating to search page.");
+              },
+          });
+          return;
+      }
+      
+      $.ajax({
+          method: "GET",
+          url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
+          success: function (channels) {
+              channelList.empty(); // Clear list before adding search results
+              channels.forEach(function (channel) {
+                  const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+                  const listItem = $("<li>").append(link);
+                  channelList.append(listItem);
+              });
+              
+              bindEventsToChannelItem(); // Rebind click events to new links
+          },
+          error: function () {
+              alert("Error searching channels.");
+          },
+      });
+  });
+  
 
     // Add review form submission
     $('#addReviewForm').submit(function(event) {
