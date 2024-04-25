@@ -49,15 +49,51 @@ router.get("/channels", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
-// // Handle search and list all channels
-// router.get("/Channels/search", async (req, res) => {
-//   try {
-//     let channelsList;
-//     validation.validateString(req.query.search_term, "search term");
-//   } catch (error) {
-//     res.status(500).render("error", { errorMessage: error.toString() });
-//   }
-// });
+// Handle search and list all channels
+router.get("/channels/search", async (req, res) => {
+  // try {
+  //   let channelsList;
+  //   const search_term = req.query.search_term;
+  //   validation.validateString(search_term, "search term");
+
+  //   // Check if the search_term parameter is present in the query string
+  //   if ('search_term' in req.query) {
+  //     if (search_term && search_term.trim()) {
+  //       channelsList = await channelData.searchChannels(search_term.trim());
+  //       if (channelsList.length === 0) { // No results found for a valid search
+  //         message = 'No channels found for your search.';
+  //       }
+  //     } else {
+  //       // Message only when search term is present but empty
+  //       message = 'Please enter a search term.';
+  //     }
+  //   } else {
+  //     // The page loads for the first time without any search attempt
+  //     channelsList = await channelData.getAllChannel();
+  //   }
+  // } catch (error) {
+  //   res.status(500).render("error", { errorMessage: error.toString() });
+  // }
+
+  try {
+    const search_term = req.query.search_term;
+    validation.validateString(search_term, "search term");
+
+    if (!search_term || !search_term.trim()) {
+        res.status(400).json({ message: "Please provide a valid search term." });
+        return;
+    }
+
+    let channelsList = await channelData.searchChannels(search_term.trim());
+    if (channelsList.length === 0) {
+        res.json({ message: 'No channels found for your search.', channels: [] });
+    } else {
+        res.json(channelsList); // assuming this returns an array of channels
+    }
+} catch (error) {
+    res.status(500).json({ errorMessage: "Internal Server Error" });
+}
+});
 
 // POST route to create a new channel
 router.post("/channels", async (req, res) => {
