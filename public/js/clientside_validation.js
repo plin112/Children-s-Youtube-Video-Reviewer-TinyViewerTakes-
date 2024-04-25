@@ -1,48 +1,12 @@
-<<<<<<< HEAD
 $(document).ready(function () {
-  // Add channel form submission
-  $("#addChannelForm").submit(function (event) {
-    event.preventDefault();
-    if (validateAddChannelForm()) {
-      const formData = {
-        channelTitle: $("#channelTitle").val(),
-        channelOwnerName: $("#channelOwnerName").val(),
-        channelDescription: $("#channelDescription").val(),
-        channelWebsite: $("#channelWebsite").val(),
-        keywords: $("#keywords")
-          .val()
-          .split(",")
-          .map((kw) => kw.trim()),
-        categories: $("#categories")
-          .val()
-          .split(",")
-          .map((cat) => cat.trim()),
-        startingAge: parseInt($("#startingAge").val(), 10),
-      };
-
-      $.ajax({
-        url: "/channels",
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(formData),
-        success: function () {
-          alert("Channel added successfully.");
-          // Optionally reload the list or clear the form
-          window.location.href = "/channels";
-        },
-        error: function () {
-          alert("Error adding channel.");
-        },
-=======
-$(document).ready(function() {
-    let searchForm = $("#searchForm"),
+  let searchForm = $("#searchForm"),
       searchTermInput = $("#search_term"),
       channelList = $("#channelList"),
       addChannelForm = $("#addChannelForm"),
       addReviewForm = $("#addReviewForm");
 
     // Add channel form submission
-    $('#addChannelForm').submit(function(event) {
+  $('#addChannelForm').submit(function(event) {
         event.preventDefault();
         if (validateAddChannelForm()) {
             const formData = {
@@ -72,10 +36,10 @@ $(document).ready(function() {
         } else {
             alert('Please fill all required fields correctly.');
         }
-    });
+  });
 
     // Search form submission
-    $('#searchForm').submit(function (event) {
+  $('#searchForm').submit(function (event) {
       event.preventDefault();
       let searchQuery = searchTermInput.val(); // Corrected to use the appropriate selector
       if (!searchQuery || searchQuery.trim() === "") {
@@ -114,53 +78,8 @@ $(document).ready(function() {
           error: function () {
               alert("Error searching channels.");
           },
->>>>>>> main
       });
-    } else {
-      alert("Please fill all required fields correctly.");
-    }
-  });
-
-  // Search form submission
-  $("#searchForm").submit(function (event) {
-    event.preventDefault();
-    let searchQuery = $.trim($("#searchTerm").val()); // Corrected to use the appropriate selector
-    if (!searchQuery || searchQuery.trim() === "") {
-      $.ajax({
-        method: "GET",
-        url: "/channels/search",
-        success: function () {
-          // Success callback: reload the page
-          window.location.reload();
-        },
-        error: function () {
-          // Error callback: handle error, such as displaying an alert
-          alert("Error navigating to search page.");
-        },
-      });
-      return;
-    }
-
-    $.ajax({
-      method: "GET",
-      url: `/channels/search?q=${encodeURIComponent(searchQuery)}`,
-      success: function (channels) {
-        channelList.empty(); // Clear list before adding search results
-        channels.forEach(function (channel) {
-          const link = $(
-            '<a href="javascript:void(0);" data-id="' + channel._id + '">'
-          ).text(channel.channelTitle);
-          const listItem = $("<li>").append(link);
-          channelList.append(listItem);
-        });
-
-        bindEventsToChannelItem(); // Rebind click events to new links
-      },
-      error: function () {
-        alert("Error searching channels.");
-      },
-    });
-  });
+  })
 
   // Add review form submission
   $("#addReviewForm").submit(function (event) {
@@ -185,7 +104,6 @@ $(document).ready(function() {
     } else {
       alert("Review cannot be empty.");
     }
-<<<<<<< HEAD
   });
 
   function validateAddChannelForm() {
@@ -198,9 +116,8 @@ $(document).ready(function() {
     // Extract and return the current channel ID based on your application logic or DOM structure
     return "channelId"; // Placeholder
   }
-=======
 
-    function bindEventsToChannelItem() {
+  function bindEventsToChannelItem() {
         channelList.on("click", "a", function (event) {
         event.preventDefault();
         let channelId = $(this).data("id"); // Retrieve the channel ID stored in data-id attribute
@@ -208,7 +125,6 @@ $(document).ready(function() {
         window.location.href = `http://localhost:3000/channels/${channelId}`;
         });
     }
->>>>>>> main
 });
 
 async function removeReview(id) {
