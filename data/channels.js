@@ -6,15 +6,24 @@ const getChannelCollection = async () => {
   return await channels();
 };
 const searchChannels = async (query) => {
-  const channelCollection = await getChannelCollection();
-  return await channelCollection.find({
-    $or: [
-      { channelTitle: { $regex: new RegExp(query, 'i') } },  // Case-insensitive regex search on channelTitle
-      { channelDescription: { $regex: new RegExp(query, 'i') } }  // Case-insensitive regex search on channelDescription
-    ]
-  }).toArray();
+  try {
+    if (!query || query.trim() === "") {
+      console.log("I can reach here");
+    }
+    validation.validateString(query, "search term");
+    const channelCollection = await getChannelCollection();
+    return await channelCollection
+      .find({
+        $or: [
+          { channelTitle: { $regex: new RegExp(query, "i") } }, // Case-insensitive regex search on channelTitle
+          { channelDescription: { $regex: new RegExp(query, "i") } }, // Case-insensitive regex search on channelDescription
+        ],
+      })
+      .toArray();
+  } catch (error) {
+    res.status(500).render("error", { errorMessage: error.toString() });
+  }
 };
-
 
 const createChannel = async (
   channelTitle,
@@ -23,7 +32,7 @@ const createChannel = async (
   website,
   keywords,
   categories,
-  startingAge,
+  startingAge
 ) => {
   if (
     !channelTitle ||
@@ -144,7 +153,7 @@ const updateChannel = async (
   validation.validateUrl(website);
   validation.validateStringArray(keywords, "keywords");
   validation.validateStringArray(categories, "categories");
-  validation.validateNumber(startingAge, "Starting Age")
+  validation.validateNumber(startingAge, "Starting Age");
 
   const updatedChannel = {
     channelTitle,
@@ -153,7 +162,7 @@ const updateChannel = async (
     website,
     keywords,
     categories,
-    startingAge
+    startingAge,
   };
 
   // update the product in the database
@@ -177,5 +186,5 @@ export {
   getChannel,
   removeChannel,
   updateChannel,
-  searchChannels
+  searchChannels,
 };
