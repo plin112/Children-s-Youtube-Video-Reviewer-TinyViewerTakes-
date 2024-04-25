@@ -27,7 +27,7 @@ const handlebarsInstance = exphbs.create({
   },
 });
 
-app.use(express.static("public"));
+app.use('/public', express.static('public'));
 
 // Middleware for parsing request bodies
 app.use(express.json());

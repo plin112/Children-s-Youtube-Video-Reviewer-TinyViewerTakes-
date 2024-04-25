@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
-router.get("/Channels", async (req, res) => {
+router.get("/channels", async (req, res) => {
   try {
     let channelsList;
     let message = ''; // Initialize message to an empty string
@@ -38,6 +38,11 @@ router.get("/Channels", async (req, res) => {
       channelsList = await channelData.getAllChannel();
     }
 
+    channelsList = channelsList.map(channel => ({
+      ...channel,
+      _id: channel._id.toString() 
+    }));
+
     const isLoggedIn = req.session.user ? true : false;
     res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message });
   } catch (error) {
@@ -55,7 +60,10 @@ router.get("/Channels", async (req, res) => {
 // });
 
 // POST route to create a new channel
-router.post("/Channels", async (req, res) => {
+router.post("/channels", async (req, res) => {
+  //TEST
+  console.log("POST /channels triggered");
+
   const {
     channelTitle,
     channelOwnerName,
@@ -75,25 +83,28 @@ router.post("/Channels", async (req, res) => {
     validation.validateString(channelOwnerName, "Channel Owner Name");
     validation.validateString(channelDescription, "Channel Description");
     validation.validateUrl(channelWebsite);
-    //validation.validateStringArray(keywords, "Keywords");
-    //validation.validateStringArray(categories, "Categories");
-    //validation.validateNumber(parseFloat(startingAge), "Starting Age");
-    const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
-    const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
+    validation.validateStringArray(keywords, "Keywords");
+    validation.validateStringArray(categories, "Categories");
+    validation.validateNumber(parseFloat(startingAge), "Starting Age");
+    //const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+    //const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
 
     const newChannel = await channelData.createChannel(
       channelTitle,
       channelOwnerName,
       channelDescription,
       channelWebsite,
-      keywordsArray,
-      categoriesArray,
+      keywords,
+      categories,
       parseFloat(startingAge)
     );
+
     console.log("test")
     const channelsList = await channelData.getAllChannel();
-    res.render("channels", { channels: channelsList });
+    res.render('channels', { channels: channelsList });
+    
   } catch (error) {
+    console.error("Error adding new channel:", error);
     return res.status(400).render("error", {
       errorMessage: "Supply all fields properly.",
     });
