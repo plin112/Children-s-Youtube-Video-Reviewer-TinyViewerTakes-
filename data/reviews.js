@@ -10,7 +10,12 @@ const createReview = async (channelId, userId, title, review, rating) => {
     { value: userId, type: "string", name: "userID" },
     { value: title, type: "string", name: "title" },
     { value: review, type: "string", name: "review" },
-    { value: rating, type: "number", name: "rating", range: { min: 1, max: 5 }}
+    {
+      value: rating,
+      type: "number",
+      name: "rating",
+      range: { min: 1, max: 5 },
+    },
   ]);
 
   //Check if rating has more than one decimal place.
@@ -34,8 +39,8 @@ const createReview = async (channelId, userId, title, review, rating) => {
   //Convert string channelId to ObjectId.
   const objChannelId = new ObjectId(channelId);
 
-   //Convert string userId to ObjectId.
-   const objUserId = new ObjectId(userId);
+  //Convert string userId to ObjectId.
+  const objUserId = new ObjectId(userId);
 
   //Find the channel to which the review will be added.
   const channel = await channelCollection.findOne({ _id: objChannelId });
@@ -62,7 +67,7 @@ const createReview = async (channelId, userId, title, review, rating) => {
     rating,
     reviewerName,
     reviewDate: new Date().toLocaleDateString("en-US"),
-    comments: [] 
+    comments: [],
   };
 
   //Update the channel with new review and update the average rating.
@@ -185,19 +190,19 @@ const removeReview = async (reviewId) => {
     { returnDocument: "after" }
   );
 
-  if (!result.value) throw new Error("Review not found");
+  if (!result) throw new Error("Review not found");
 
   let averageRating = 0;
-  if (result.value.reviews.length > 0) {
-    const totalRating = result.value.reviews.reduce(
+  if (result.reviews.length > 0) {
+    const totalRating = result.reviews.reduce(
       (acc, cur) => acc + cur.rating,
       0
     );
-    averageRating = totalRating / result.value.reviews.length;
+    averageRating = totalRating / result.reviews.length;
   }
 
   await channelsCollection.updateOne(
-    { _id: result.value._id },
+    { _id: result._id },
     { $set: { averageRating: averageRating } }
   );
 
@@ -209,9 +214,9 @@ const removeReview = async (reviewId) => {
     { returnDocument: "after" }
   );
 
-  if (!removeFromUser.value) throw new Error("Review not found");
+  if (!removeFromUser) throw new Error("Review not found");
 
-  return result.value;
+  return result;
 };
 
 // //Validate the input.

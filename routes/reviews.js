@@ -100,9 +100,7 @@ router
       return res.redirect("/login");
     }
     try {
-      console.log(req.params);
       const revId = req.params.reviewId;
-      console.log(revId);
       //need to ensure Id's match
       //const review = await reviewData.getReview(reviewId);
       /*if (review.userId !== userId) {
