@@ -3,6 +3,7 @@
 
 import { channels, users, comments } from "../config/mongoCollections.js";
 import { ObjectId } from "mongodb";
+import validation from "./validation.js";
 
 export const createComment = async (
     channelId,
@@ -13,9 +14,11 @@ export const createComment = async (
     try {
         
 
-        if (!ObjectId.isValid(channelId) || !ObjectId.isValid(reviewId)) {
-            throw new Error("Invalid channel or review ID");
+        if (!ObjectId.isValid(channelId) || !ObjectId.isValid(reviewId) || !ObjectId.isValid(userId)) {
+            throw new Error("Invalid channel, review, or user ID");
         }
+
+        validation.validateString(text, "comment");
 
         const channelCollection = await channels();
         const userCollection = await users();
