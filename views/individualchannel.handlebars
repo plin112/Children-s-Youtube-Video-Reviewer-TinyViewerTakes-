@@ -36,15 +36,15 @@
           </form>
         </main>
         <h3>Reviews</h3>
-        <ul id="reviewsList"></ul>
+        <ul id="reviewsList">
           {{#if channel.reviews.length}}
             {{#each channel.reviews}}
-               <li>
+               <li id="review-{{this._id}}">
                 <div class="reviewer-name">Reviewed by: {{this.reviewerName}}</div>
                 <div class="review-title">Title: {{this.title}}</div>
                 <div class="review-description">Review: {{this.review}}</div>
                 <div class="review-rating">Rating: {{this.rating}}</div>
-                <button class="remove-review" data-review-id="{{this._id}}">Remove Review</button>
+                <button onclick="removeReview('{{this._id}}')">Remove Review</button>
                 <div class="review-comments">
                   <h4>Comments:</h4>
                   <ul>
@@ -72,6 +72,7 @@
       </div>
       <a href="/channels">Go back to main page</a>
     </main>
+    <script src="/public/js/clientside_validation.js"></script>
 
 
   
