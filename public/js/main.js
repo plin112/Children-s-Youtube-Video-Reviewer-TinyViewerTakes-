@@ -1,3 +1,115 @@
+document.addEventListener('DOMContentLoaded', () => {
+    let registerationForm = document.getElementById('registration-form'); 
+    let loginForm = document.getElementById('login-form');
+  
+    function displayErrorMsg(errors) {
+        const errorMsg = document.getElementById('error-message');
+        errorMsg.innerHTML = "";
+  
+        errors.forEach(error => {
+            const list = document.createElement('li');
+            list.textContent = error;
+            errorMsg.appendChild(list);
+        })
+    }
+    
+    if (registerationForm) {
+        registerationForm.addEventListener('submit', (event) =>{
+            event.preventDefault();
+  
+            let firstName = document.getElementById('firstNameInput').value;
+            let lastName = document.getElementById('lastNameInput').value;
+            let emailAddress = document.getElementById('emailAddressInput').value;
+            let password = document.getElementById('passwordInput').value;
+            let confirmPassword = document.getElementById('confirmPasswordInput').value;
+  
+            //error handling
+            let errorMsg = [];
+  
+            if (!firstName ||
+                !lastName ||
+                !emailAddress ||
+                !password ||
+                !confirmPassword
+            ) {
+                errorMsg.push("All fields need to be supplied");
+            } 
+  
+            // validations for input
+            firstName = firstName.trim();
+            lastName = lastName.trim();
+            emailAddress = emailAddress.trim();
+            password = password.trim();
+            confirmPassword = confirmPassword.trim();
+  
+            if (typeof firstName !== 'string' || typeof lastName !== 'string') {
+                errorMsg.push('Name need to be in string')
+            }
+  
+            if (password !== confirmPassword) {
+                errorMsg.push('Password does not match');
+            }
+  
+            const pattern = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+            emailAddress = emailAddress.toLowerCase();
+            if (typeof emailAddress !== "string" || !pattern.test(emailAddress)) {
+                errorMsg.push('Email address is invalid.');
+            }
+  
+            if (errorMsg.length > 0) {
+                displayErrorMsg(errorMsg);
+            }
+            else {
+                registerationForm.submit();
+            }
+    })}
+  
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) =>{
+            event.preventDefault();
+  
+            let emailAddress = document.getElementById('emailAddressInput').value;
+            let password = document.getElementById('passwordInput').value;
+  
+            //error handling
+            let errorMsg = [];
+  
+            if (!emailAddress || !password) {
+                errorMsg.push("All fields need to be supplied");
+            } 
+  
+            // validations for input
+            //email validation
+            if (typeof emailAddress !== 'string') {
+                errorMsg.push("Email address need to be in string.");
+            }
+            emailAddress = emailAddress.trim();
+            if(emailAddress.length === 0){
+                errorMsg.push("Email address cannot be empty string or string with just spaces.")
+            }
+            const pattern = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
+            emailAddress = emailAddress.toLowerCase();
+            if (!pattern.test(emailAddress)) {
+                errorMsg.push('Email address is invalid.');
+            }
+  
+            //password validation
+            if (typeof password !== 'string') {
+                errorMsg.push("Email address need to be in string.");
+            }
+            password = password.trim();
+            if(password.length === 0){
+                errorMsg.push("Email address cannot be empty string or string with just spaces.")
+            }
+  
+            if (errorMsg.length > 0) {
+                displayErrorMsg(errorMsg);
+            }
+            else {
+                loginForm.submit();
+            }
+    })}
+  })
 // (function ($) {
 //     let searchForm = $("#searchForm"),
 //       searchTermInput = $("#search_term"),

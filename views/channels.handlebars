@@ -26,6 +26,12 @@
     <button type="submit">Search</button>
   </form>
 
+  <form id="searchKeywordForm">
+    <label for="search_keyword">Search Channels (By Keyword):</label>
+    <input type="text" id="search_keyword" name="search_keyword" />
+    <button type="submit">Search</button>
+  </form>
+
   <!-- Displaying the message if any -->
   {{#if message}}
     <p style="color: red;">{{message}}</p>

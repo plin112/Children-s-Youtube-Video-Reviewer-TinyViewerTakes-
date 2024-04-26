@@ -7,6 +7,12 @@ import { ObjectId } from 'mongodb';
 
 let exportedMethods = {
   async registerUser(firstName, lastName, emailAddress, password) {
+    if (!firstName ||
+      !lastName ||
+      !emailAddress ||
+      !password
+    ) {return res.status(400).render('error', {error: "All fields need to be supplied"});}
+
     //Validate input
     validation.default.validateString(firstName, "first name");
     validation.default.validateString(lastName, "last name");
@@ -17,7 +23,7 @@ let exportedMethods = {
     const count = await usersCollection.countDocuments();
     if (count !== 0) {
       const findEmail = await usersCollection.findOne({
-        emailAddress: emailAddress,
+        emailAddress: emailAddress.toLowerCase(),
       });
       if (findEmail !== null) throw "Error! Email Address already exists!";
     }
