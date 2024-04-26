@@ -83,7 +83,7 @@ const createChannel = async (
 const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection
-    .find({}, { projection: { _id: 1, channelTitle: 1 } })
+    .find({}, { projection: { _id: 1, channelTitle: 1, averageRating: 1, startingAge: 1 } })
     .toArray();
   console.log(channelList);
   return channelList;
@@ -97,7 +97,7 @@ const getChannel = async (channelId) => {
   //get product
   const channelCollection = await getChannelCollection();
   const channel = await channelCollection.findOne({
-    _id: new ObjectId(channelId),
+    _id: new ObjectId(channelId)
   });
   if (!channel) throw "No product with that id";
 
