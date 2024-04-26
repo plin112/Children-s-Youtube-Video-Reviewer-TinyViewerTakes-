@@ -1,6 +1,7 @@
 $(document).ready(function () {
   let searchForm = $("#searchForm"),
       searchTermInput = $("#search_term"),
+      searchKeywordInput = $("#search_keyword"),
       channelList = $("#channelList"),
       addChannelForm = $("#addChannelForm"),
       addReviewForm = $("#addReviewForm");
@@ -79,6 +80,37 @@ $(document).ready(function () {
               alert("Error searching channels.");
           },
       });
+  })
+
+  //search by keyword
+  $('#searchKeywordForm').submit(function (event) {
+    event.preventDefault();
+    let searchQuery = searchKeywordInput.val(); // Corrected to use the appropriate selector
+    if (!searchQuery || searchQuery.trim() === "") {
+      alert("Please enter a keyword to search.");
+    }
+
+    $.ajax({
+      method: 'GET',
+      url: `/channels/searchKeyword?search_keywords=${encodeURIComponent(searchQuery)}`,
+      dataType: 'json',
+      success: function (data) {
+        channelList.empty(); 
+        if (data && data.length > 0) {
+          data.forEach(function (channel) {
+          const link = $('<a href="javascript:void(0);" data-id="' + channel._id + '">').text(channel.channelTitle);
+          const listItem = $("<li>").append(link);
+          channelList.append(listItem);
+          });
+          bindEventsToChannelItem(); // Rebind click events to new links
+        } else {
+            channelList.append($('<li>').text('No channels found.'));
+        }
+      },
+      error: function () {
+        alert("Error searching channels by keyword.");
+      },
+    });
   })
 
   // Add review form submission

@@ -39,9 +39,8 @@ router.get("/channels", async (req, res) => {
       channelsList = await channelData.getAllChannel();
     }
 
-    // Debug
+    // Debug for sorting
     console.log("Before sorting:", JSON.stringify(channelsList, null, 2));
-
 
     // Sorting based on query parameter
     if (sort) {
@@ -59,8 +58,6 @@ router.get("/channels", async (req, res) => {
 
     }
 
-
-
     channelsList = channelsList.map(channel => ({
       ...channel,
       _id: channel._id.toString() 
@@ -74,30 +71,6 @@ router.get("/channels", async (req, res) => {
 });
 // Handle search and list all channels
 router.get("/channels/search", async (req, res) => {
-  // try {
-  //   let channelsList;
-  //   const search_term = req.query.search_term;
-  //   validation.validateString(search_term, "search term");
-
-  //   // Check if the search_term parameter is present in the query string
-  //   if ('search_term' in req.query) {
-  //     if (search_term && search_term.trim()) {
-  //       channelsList = await channelData.searchChannels(search_term.trim());
-  //       if (channelsList.length === 0) { // No results found for a valid search
-  //         message = 'No channels found for your search.';
-  //       }
-  //     } else {
-  //       // Message only when search term is present but empty
-  //       message = 'Please enter a search term.';
-  //     }
-  //   } else {
-  //     // The page loads for the first time without any search attempt
-  //     channelsList = await channelData.getAllChannel();
-  //   }
-  // } catch (error) {
-  //   res.status(500).render("error", { errorMessage: error.toString() });
-  // }
-
   try {
     const search_term = req.query.search_term;
     validation.validateString(search_term, "search term");
@@ -118,10 +91,36 @@ router.get("/channels/search", async (req, res) => {
 }
 });
 
+router.get("/channels/searchKeyword", async (req, res) => {
+  try {
+      const search_keyword = req.query.search_keywords;
+      //TEST
+      //console.log("Search keyword received: ", search_keyword);
+
+      if (!search_keyword || !search_keyword.trim()) {
+          res.status(400).render('error', { errorMessage: "Please provide a valid search keyword." });
+          return;
+      }
+
+      let channelsList = await channelData.searchKeywords(search_keyword.trim());
+      //TEST
+      // console.log("Channels found:", channelsList);
+      // console.log("Number of channels found: ", channelsList.length);
+
+      if (channelsList.length === 0) {
+          res.json({ message: 'No channels found matching your keywords.', channels: [] });
+      } 
+      else {
+        res.json(channelsList);
+      }
+  } catch (error) {
+    console.error("Error in searchKeyword route:", error);
+    res.status(500).json({ errorMessage: "Internal Server Error" });
+  }
+});
+
 // POST route to create a new channel
 router.post("/channels", async (req, res) => {
-  //TEST
-  console.log("POST /channels triggered");
 
   const {
     channelTitle,
@@ -134,8 +133,13 @@ router.post("/channels", async (req, res) => {
   } = req.body;
 
   if (!req.session || !req.session.user) {
-    return res.redirect("/login");
-  }
+    if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+        res.status(401).json({redirect: '/login'}); // Send a 401 status with redirect info
+    } else {
+        res.redirect('/login');
+    }
+    return;
+}
 
   try {
     validation.validateString(channelTitle, "Channel Title");

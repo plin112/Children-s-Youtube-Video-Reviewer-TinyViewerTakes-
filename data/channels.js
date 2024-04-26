@@ -25,6 +25,23 @@ const searchChannels = async (query) => {
   }
 };
 
+const searchKeywords = async (word) => {
+  try {
+    if (!word || word.trim() === "") {
+      console.log("Search input cannot be empty");
+      return [];
+    }
+    validation.validateString(word, "search keywords");
+    const channelCollection = await getChannelCollection();
+    return await channelCollection.find(
+      {keywords: { $in: [new RegExp(word, 'i')] }})
+      .toArray();
+  } catch (error) {
+    rconsole.error("Error in searchKeywords:", error);
+    throw new Error("Database operation failed");
+  }
+}
+
 const createChannel = async (
   channelTitle,
   channelOwnerName,
@@ -83,7 +100,7 @@ const createChannel = async (
 const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection
-    .find({}, { projection: { _id: 1, channelTitle: 1, averageRating: 1, startingAge: 1 } })
+    .find({}, { projection: { _id: 1, channelTitle: 1, averageRating: 1, startingAge: 1, keywords: 1, categories: 1 } })
     .toArray();
   console.log(channelList);
   return channelList;
@@ -187,4 +204,5 @@ export {
   removeChannel,
   updateChannel,
   searchChannels,
+  searchKeywords
 };
