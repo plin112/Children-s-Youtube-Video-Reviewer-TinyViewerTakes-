@@ -176,7 +176,8 @@ async function removeReview(id) {
     url: `/review/${id}`,
     method: "DELETE",
     success: function () {
-      $(`#review-${id}`).remove();
+      alert("Review removed successfully! Moving to main page.");
+      window.location.href = `http://localhost:3000/channels/`;
     },
     error: function () {
       alert("Error removing review.");
