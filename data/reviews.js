@@ -10,12 +10,7 @@ const createReview = async (channelId, userId, title, review, rating) => {
     { value: userId, type: "string", name: "userID" },
     { value: title, type: "string", name: "title" },
     { value: review, type: "string", name: "review" },
-    {
-      value: rating,
-      type: "number",
-      name: "rating",
-      range: { min: 1, max: 5 },
-    },
+    { value: rating, type: "number", name: "rating", range: { min: 1, max: 5 }, },
   ]);
 
   //Check if rating has more than one decimal place.
@@ -24,8 +19,8 @@ const createReview = async (channelId, userId, title, review, rating) => {
   }
 
   //Check if channelId is a valid ObjectId
-  if (!ObjectId.isValid(channelId)) {
-    throw new Error("Error: Channel ID provided is not a valid Object ID.");
+  if (!ObjectId.isValid(channelId) || !ObjectId.isValid(userId)) {
+    throw new Error("Channel ID or User ID provided is not a valid Object ID.");
   }
 
   /********************** Add review to channel **********************/
@@ -42,6 +37,9 @@ const createReview = async (channelId, userId, title, review, rating) => {
   //Convert string userId to ObjectId.
   const objUserId = new ObjectId(userId);
 
+  // Debug
+  console.log("Converted IDs:", { objChannelId, objUserId });
+
   //Find the channel to which the review will be added.
   const channel = await channelCollection.findOne({ _id: objChannelId });
 
@@ -49,19 +47,40 @@ const createReview = async (channelId, userId, title, review, rating) => {
     throw new Error(`Error: No channel found with the id: ${channelId}`);
   }
 
+  // Debug
+  console.log("Channel exists:", channel.channelTitle);
+
   const user = await userCollection.findOne({ _id: objUserId });
 
   if (!user) {
     throw new Error(`No user found with id: ${userId}`);
   }
   const reviewerName = `${user.firstName} ${user.lastName}`;
+  console.log("User found:", reviewerName);
+
+  // Check if user has already reviewed this channel
+  // const existingReview = await channelCollection.findOne({
+  //   _id: new ObjectId(channelId),
+  //   "reviews.userId": new ObjectId(userId)
+  // });
+
+  // Check if this user has already reviewed this channel
+  const existingReview = await channelCollection.findOne({
+    _id: objChannelId,
+    'reviews.userId': objUserId
+  });
 
   // Debug
-  console.log(reviewerName);
+  console.log("Existing review check:", existingReview);
+
+  if (existingReview) {
+    throw new Error("User has already reviewed this channel");
+  }
 
   //Create new review object.
   const newReview = {
     _id: new ObjectId(),
+    userId: objUserId,
     title: title.trim(),
     review: review.trim(),
     rating,
