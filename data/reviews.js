@@ -194,14 +194,25 @@ const getReview = async (reviewId) => {
   };
 };
 
-const removeReview = async (reviewId) => {
+const removeReview = async (reviewId, userId) => {
   if (!reviewId) throw new Error("Review ID must be provided");
   if (typeof reviewId !== "string" || reviewId.trim().length === 0)
     throw new Error("Review ID must be a non-empty string");
+  if (typeof userId !== "string" || userId.trim().length === 0)
+  throw new Error("User ID must be a non-empty string");
   if (!ObjectId.isValid(reviewId))
     throw new Error("Review ID is not a valid ObjectId");
 
   const channelsCollection = await channels();
+
+   // Find the review and check if the logged-in user is the reviewer
+   const channelContainingReview = await channelsCollection.findOne({
+    "reviews": { $elemMatch: { "_id": new ObjectId(reviewId), "userId": new ObjectId(userId) } }
+  });
+
+  if (!channelContainingReview) {
+    throw new Error("Review not found or user is not authorized to delete this review");
+  }
 
   const result = await channelsCollection.findOneAndUpdate(
     { "reviews._id": new ObjectId(reviewId) },

@@ -100,6 +100,8 @@ router
       return res.redirect("/login");
     }
     try {
+
+      const userId = req.session.user._id;
       const revId = req.params.reviewId;
       //need to ensure Id's match
       //const review = await reviewData.getReview(reviewId);
@@ -107,7 +109,7 @@ router
                 return res.status(403).json({ error: "You're not authorized to delete this review" });
             }*/
 
-      const updatedChannel = await reviewData.removeReview(revId);
+      const updatedChannel = await reviewData.removeReview(revId, userId);
       return res.json(updatedChannel);
     } catch (error) {
       res.status(400).json({ error: error.toString() });
