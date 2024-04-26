@@ -183,6 +183,12 @@ router.get("/channels/:channelId", async (req, res) => {
       res.status(404).json({ error: "Channel not found" });
       return;
     }
+
+    // Ensuring the website URL includes a protocol
+    if (channel.website && !channel.website.startsWith('http://') && !channel.website.startsWith('https://')) {
+      channel.website = 'http://' + channel.website;
+    }
+
     res.render("individualchannel", {
       title: channel.channelTitle,
       channel: channel,
