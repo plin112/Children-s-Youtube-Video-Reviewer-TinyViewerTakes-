@@ -71,6 +71,23 @@ const createChannel = async (
   validation.validateStringArray(categories, "categories");
   validation.validateNumber(startingAge, "Starting Age");
 
+  // Obtain connection to channel collection.
+  const channelCollection = await getChannelCollection();
+
+  // Check if a channel with the same title or website already exists
+  const existingChannel = await channelCollection.findOne({
+    $or: [{ channelTitle: channelTitle }, { website: website }]
+  });
+
+  if (existingChannel) {
+    if (existingChannel.channelTitle === channelTitle) {
+      throw new Error("A channel with the same title already exists.");
+    }
+    if (existingChannel.website === website) {
+      throw new Error("A channel with the same website already exists.");
+    }
+  }
+
   // Declare new channel
   const newChannel = {
     channelTitle,
@@ -84,8 +101,6 @@ const createChannel = async (
     averageRating: 0,
   };
 
-  // Insert the new channel into the database
-  const channelCollection = await getChannelCollection();
   try {
     const insertResult = await channelCollection.insertOne(newChannel);
     return {
