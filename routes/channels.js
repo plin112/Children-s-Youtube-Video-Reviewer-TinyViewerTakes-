@@ -21,6 +21,7 @@ router.get("/channels", async (req, res) => {
     let channelsList;
     let message = ''; // Initialize message to an empty string
     const search_term = req.query.search_term;
+    const sort = req.query.sort;
 
     // Check if the search_term parameter is present in the query string
     if ('search_term' in req.query) {
@@ -38,13 +39,35 @@ router.get("/channels", async (req, res) => {
       channelsList = await channelData.getAllChannel();
     }
 
+    // Debug
+    console.log("Before sorting:", JSON.stringify(channelsList, null, 2));
+
+
+    // Sorting based on query parameter
+    if (sort) {
+      switch(sort) {
+        case 'rating':
+          channelsList.sort((a, b) => parseFloat(b.averageRating) - parseFloat(a.averageRating));
+          break;
+        case 'age':
+          channelsList.sort((a, b) => parseFloat(b.startingAge) - parseFloat(a.startingAge));
+          break;
+      }
+
+      // Debug
+      console.log("After sorting:", JSON.stringify(channelsList, null, 2));
+
+    }
+
+
+
     channelsList = channelsList.map(channel => ({
       ...channel,
       _id: channel._id.toString() 
     }));
 
     const isLoggedIn = req.session.user ? true : false;
-    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message });
+    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message, sort: sort });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }

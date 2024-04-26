@@ -4,10 +4,22 @@
 </header>
 
 <main>
-  <h2>MAIN CHANNELS LIST PAGE</h2>
-  {{#unless loggedIn}}
+  <h1>MAIN CHANNELS LIST PAGE</h1>
+  {{#if loggedIn}}
+    <p><a href="/logout">Logout</a></p>
+  {{else}}
     <p><a id="loginButton" href="/login">Login Here</a></p>
-  {{/unless}}
+  {{/if}}
+  {{!-- {{#unless loggedIn}}
+    <p><a id="loginButton" href="/login">Login Here</a></p>
+  {{/unless}} --}}
+
+  <!-- Sorting Links -->
+  <div>
+    <a href="?sort=rating">Sort by Rating</a> |
+    <a href="?sort=age">Sort by Age</a>
+  </div>
+
   <form id="searchForm">
     <label for="search_term">Search Channels:</label>
     <input type="text" id="search_term" name="search_term" />
@@ -27,6 +39,8 @@
           href="/channels/{{this._id}}"
           data-id="{{this._id}}"
         >{{this.channelTitle}}</a>
+        - Rating: {{this.averageRating}}
+        - Parential Guidance Age: {{this.startingAge}}
 
       </li>
     {{/each}}
@@ -55,7 +69,7 @@
   </form>
 </main>
 
-<a href="/channels">Go back to main page</a>
+{{!-- <a href="/channels">Go back to main page</a> --}}
 
 <footer>
   <p>TinyViewerTakes</p>
