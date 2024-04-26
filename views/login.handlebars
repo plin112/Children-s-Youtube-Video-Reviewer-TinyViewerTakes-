@@ -1,9 +1,102 @@
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+<style>
+/* Overall Login Container */
+#loginMainDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Fills viewport height */
+  background-color: #cccccc; /* Light gray background */
+}
+
+/* Error Message Styling */
+#loginMainDiv > div:first-child + { /* Targets the error message div */
+  color: red;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+ #loginMainDiv h1 {
+padding-bottom: 11rem;
+ } 
+/* Login Form Container */
+#loginDiv {
+  background-color: #fff; /* White background for the form */
+  border: 1px solid #ddd; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 30px;
+  margin-top: -8rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 500px; /* Adjust width as needed */
+  height: 60vh
+
+}
+
+/* Form Styling */
+#login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between form elements */
+}
+
+/* Label Styling */
+label {
+  font-weight: bold;
+  color: #333; /* Dark gray text for labels */
+}
+
+/* Input Fields */
+input[type="email"], input[type="password"] {
+  padding: 10px;
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 3px;
+  font-size: 16px;
+}
+
+/* Login Button */
+button[type="submit"] {
+  background-color: #ff0000; /* Red button color (YouTube) */
+  color: #fff; /* White text color */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Login Button Hover Effect */
+button[type="submit"]:hover {
+  background-color: #e00000; /* Darker red on hover */
+  
+}
+p{
+  margin-top: 1rem;
+}
+/* Registration Link */
+p a {
+  color: #333; /* Dark gray text for link */
+  font-weight: bold;
+  text-decoration: none; /* Remove underline */
+}
+
+/* Registration Link Hover Effect */
+p a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+</style>
+
+<div id="loginMainDiv">
 <h1>Login</h1>
+ 
 {{#if error}}
   <div style="color: red;">{{error}}</div>
 {{/if}}
+ 
+<div id="loginDiv">
+  
 <form id="login-form" action="/login" method="POST">
-  <div>
     <label for="emailAddressInput">Email Address:</label>
     <input
       type="email"
@@ -11,12 +104,11 @@
       name="emailAddressInput"
       required
     />
-  </div>
-  <div>
     <label for="passwordInput">Password:</label>
     <input type="password" id="passwordInput" name="passwordInput" required />
-  </div>
   <button type="submit">Login</button>
 </form>
 <p>Don't have an account?
   <a href="/register">Click here to register!</a></p>
+  </div>
+  </div>

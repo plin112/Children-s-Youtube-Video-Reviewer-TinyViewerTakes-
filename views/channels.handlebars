@@ -1,24 +1,41 @@
-<title>{{title}}</title>
+
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+
+{{!-- <title>{{title}}</title>
 <header>
   <h1>{{title}}</h1>
-</header>
+</header> --}}
 
 <main>
-  <h2>MAIN CHANNELS LIST PAGE</h2>
-  {{#unless loggedIn}}
-    <p><a id="loginButton" href="/login">Login Here</a></p>
-  {{/unless}}
+  <div id="mainDiv">
+    
+   <div class="centered">
+    <h2>MAIN CHANNELS LIST PAGE</h2>
+  </div>
+  <div class="right-aligned">
+    {{#unless loggedIn}}
+      <a id="loginButton" href="/login">Login Here</a>
+    {{/unless}}
+  </div >
+  <div id="chnlSearchDiv">
   <form id="searchForm">
-    <label for="search_term">Search Channels:</label>
+    <label id="srchHeadng" for="search_term">Search Channels</label>
     <input type="text" id="search_term" name="search_term" />
-    <button type="submit">Search</button>
+    <button id="chnlSbmtBtn" type="submit">Search</button>
   </form>
-
+</div>
   <!-- List of channels -->
+ 
+</main>
+
+<main>
+  <div id="chnlListForm">
+   <div id="channelListDiv">
+    <h2>All Channels</h2>
   <ul id="channelList">
     {{#each channels}}
       <li>
-        <a
+        <a id="chnlTitle"
           href="/channels/{{this._id}}"
           data-id="{{this._id}}"
         >{{this.channelTitle}}</a>
@@ -26,12 +43,12 @@
       </li>
     {{/each}}
   </ul>
-</main>
-
-<main>
+  </div>
+  <div id="addchnlformDiv">
   <!-- Add New Channel Form -->
+
   <form method="POST" id="addChannelForm">
-    <p>Add new channel here:</p>
+    <h2 id="formHeader">Add New Channel Here</h2>
     <label for="channelTitle">Channel Title:</label>
     <input type="text" id="channelTitle" name="channelTitle" /><br />
     <label for="channelOwnerName">Channel Owner Name:</label>
@@ -47,8 +64,10 @@
     <input type="text" id="categories" name="categories" /><br />
     <label for="startingAge">Parental Guidance Age:</label>
     <input type="text" id="startingAge" name="startingAge" /><br />
-    <button type="submit">Add New Channel</button>
+    <button id="chnlsubmitBtn" type="submit">Add New Channel</button>
   </form>
+  </div>
+  </div>
 </main>
 
 <footer>

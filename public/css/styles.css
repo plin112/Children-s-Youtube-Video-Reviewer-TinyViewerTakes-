@@ -1,0 +1,255 @@
+/* External CSS file: styles.css */
+
+/* Reset default margin and padding */
+
+/* styles for landing page  */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* Header styles */
+  header {
+    background-color: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  header h1 {
+    font-size: 24px;
+    color: #333;
+    margin-left: 3px;
+  }
+  h1 {
+
+    position: sticky;
+  }
+  #mainDiv {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+  }
+  #chnlSbmtBtn{
+    display: flex;
+    align-items: center;
+    margin-left: 40%;
+  }
+  #srchHeadng{
+    font-size: 22px;
+    font-weight: 200;
+    margin-left: 29%;
+   
+  }
+  #topDiv{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  /* Main styles */
+  main {
+    margin: 20px;
+  }
+  
+  h2 {
+    font-size: 29px;
+    margin-bottom: 10px;
+    
+  }
+  
+  p {
+    margin-bottom: 10px;
+    
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #333;
+  }
+  #channelList {
+    color: black;
+    text-decoration: none; /* Remove underline */
+    
+  }
+  
+  /* Hover state: Grey color */
+  #channelList a:hover {
+    color: grey;
+  }
+  
+  #chnlListForm{
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+  }
+  #channelListDiv {
+    width: 40%; /* Set the width to 50% */
+    border: 1px solid #ddd;
+
+max-height: 532px; /* Set a fixed height for the container */
+  overflow-y: auto;
+  position: relative; 
+  
+  }
+  #channelListDiv h2 {
+    position: sticky; /* Make the h1 sticky */
+    top: 0; /* Stick to the top of the container */
+    background-color: #f0f0f0; /* Add a background color for better visibility */
+    padding: 10px; /* Add some padding for spacing */
+    z-index: 1; /* Ensure the h1 is above other elements */
+    text-align: center;
+  }
+  /* Add New Channel Form styles */
+  form#addChannelForm {
+    background-color: #ffffff;
+    /* padding: 0px 20px; */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: auto;
+  }
+  #chnlsubmitBtn{
+    margin-left: 11rem;
+    margin-bottom: 12px;
+  }
+  form#addChannelForm label {
+    padding:  20px;
+  }
+
+
+ #formHeader {
+  
+  text-align: center;
+  background-color: #f0f0f0; /* Add a background color for better visibility */
+  padding: 10px;
+  
+  top: 0;
+ }
+  input[type="text"] {
+    width: 95%;
+    padding: 8px;
+    margin-left: 8px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+  }
+  #search_term{
+    margin-top: 5px;
+  }
+
+
+  #chnlTitle{
+  color: black;
+    text-decoration: none;
+    display: inline-block;
+  padding: 8px 16px;
+  margin: 5px;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  
+
+  }
+ 
+
+  #channelList a:hover {
+    background-color: #333;
+    color: white; 
+    /* Darker shade of black on hover */
+  }
+  #channelList a {
+    width: 100%; /* Remove default list styles */
+    
+  }
+  #channelList li {
+    flex: 1; 
+    padding: 5px;
+    box-sizing: border-box;
+   
+  }
+  
+  /* Adjust width for smaller screens */
+  @media (max-width: 768px) {
+    #channelList li {
+      flex-basis: 33.33%; /* Set basis to 33.33% for 3 items per line on smaller screens */
+      min-width: 0; /* Minimum width for smaller screens */
+      
+    }
+  }
+
+  #addchnlformDiv{
+position: relative;
+    width: 40%;
+  }
+  button[type="submit"] {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #cc0000;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  /* Login button styles */
+  #loginButton {
+    background-color: #ff0000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-left: 200px;
+  }
+  .centered {
+    flex-grow: 1;
+    
+  }
+  #chnlSearchDiv{
+  margin-top: 30px;
+
+  }
+  .right-aligned {
+    margin-top: -35px;
+    margin-left: auto;
+  }
+  a#loginButton:hover {
+    background-color: #cc0000;
+  }
+  
+
+  /* styles for invidual channel page  */
+
+  /* styles.css */
+
+/* Reset default margin and padding */
