@@ -153,19 +153,23 @@ $(document).ready(function () {
         error: function (xhr) {
           console.log("Error received:", xhr.responseText);
           let errorMessage = xhr.responseText || "An unknown error occurred.";
-          
+
           if (xhr.status === 401) {
             errorMessage = "You are not login/unauthorized";
             alert(errorMessage);
             window.location.href = "/login";  // Redirect to the login page
           }
-          if (xhr.status === 400) {
+          else if (xhr.status === 400) {
+            window.location.href = `/channels/${channelId}`;
             errorMessage = xhr.responseText;
             alert(errorMessage);
-            window.location.href = `/channels/${channelId}`;
-            
+            $('#addReviewError').text(errorMessage).show();
           }
-          $('#addReviewError').text(errorMessage).show();
+          else {
+            window.location.href = `/channels/${channelId}`;
+            alert(errorMessage);
+            $('#addReviewError').text(errorMessage).show();
+          }
           
         }
       });

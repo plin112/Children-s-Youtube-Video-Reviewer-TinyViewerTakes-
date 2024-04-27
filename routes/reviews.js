@@ -27,6 +27,9 @@ router
   })
   .post(async (req, res) => {
     //new review under a specific channel
+    const userId = req.session.user._id;
+    const { channelId } = req.params;
+
     try {
       //console.log("Session Data:", req.session);
 
@@ -36,12 +39,12 @@ router
 
       //console.log(req.session.user);
 
-      const userId = req.session.user._id;
+      //const userId = req.session.user._id;
       if (!userId) {
         return res.status(400).send("User ID is undefined" );
       }
 
-      const { channelId } = req.params;
+      //const { channelId } = req.params;
       if (!channelId) {
         return res.status(400).send("Channel ID is undefined");
       }
@@ -63,16 +66,21 @@ router
       );
 
       const channel = await channelData.getChannel(channelId);
-      if (newReview) {
-        res.redirect(`/channels/${channelId}`);
-        //res.render("individualchannel", { channel: channel });
-      } else {
-        res.status(500).send("Failed to create review");
+      // if (newReview) {
+      //   res.redirect(`/channels/${channelId}`);
+      //   //res.render("individualchannel", { channel: channel });
+      // } else {
+      //   res.status(500).send("Failed to create review");
+      // }
+      if (!newReview) {
+        throw new Error("Failed to create review");
       }
+
+      res.redirect(`/channels/${channelId}`);
+
     } catch (error) {
         console.error("Error adding review:", error);
         res.status(400).send(error);
-        //res.status(400).send(error);
     }
   });
 
