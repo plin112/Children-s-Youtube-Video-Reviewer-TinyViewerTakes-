@@ -5,7 +5,7 @@ function validate(params) {
     //Validate the type for input parameters that are expected to be boolean.
     if (type === "boolean") {
       if (typeof value !== "boolean") {
-        throw new Error(`Error: ${name} must be a boolean`);
+        throw new Error(`${name} must be a boolean`);
       }
     }
 
@@ -18,30 +18,28 @@ function validate(params) {
       ((type !== "string" && value !== "") ||
         (type !== "number" && value !== 0))
     ) {
-      throw new Error(`Error: ${name} cannot be falsy.`);
+      throw new Error(`${name} cannot be falsy.`);
     }
 
     if (type === "string") {
       //Validate the type for input parameters that are expected to be numbers.
       if (typeof value !== "string") {
-        throw new Error(`Error: ${name} must be a string.`);
+        throw new Error(`${name} must be a string.`);
       }
       //Check if the string is empty or made up of just spaces.
       if (value.trim().length === 0) {
-        throw new Error(
-          `Error: ${name} cannot be an empty string or just spaces.`
-        );
+        throw new Error(`${name} cannot be an empty string or just spaces.`);
       }
     }
     //Validate the type for input parameters that are expected to be numbers.
     else if (type === "number") {
       if (typeof value !== "number" || isNaN(value)) {
-        throw new Error(`Error: ${name} must be a number.`);
+        throw new Error(`${name} must be a number.`);
       }
       //Validate the range.
       if (range && (value < range.min || value > range.max)) {
         throw new Error(
-          `Error: ${name} must be within the range ${range.min} to ${range.max}`
+          `${name} must be within the range ${range.min} to ${range.max}`
         );
       }
     }
@@ -49,10 +47,10 @@ function validate(params) {
     //Validate the type for input parameters that are expected to be an array.
     else if (type === "array") {
       if (!Array.isArray(value)) {
-        throw new Error(`Error: ${name} must be an array.`);
+        throw new Error(`${name} must be an array.`);
       }
       if (value.length === 0) {
-        throw new Error(`Error: ${name} cannot be an empty array`);
+        throw new Error(`${name} cannot be an empty array`);
       }
       if (
         !value.some(
@@ -60,15 +58,13 @@ function validate(params) {
         )
       ) {
         throw new Error(
-          `Error: ${name} must contain atleast one element that is a string and this element cannot be empty or made up of just spaces.`
+          `${name} must contain atleast one element that is a string and this element cannot be empty or made up of just spaces.`
         );
       }
       if (arrayType) {
         value.forEach((item) => {
           if (typeof item !== arrayType) {
-            throw new Error(
-              `Error: Each element in ${name} cannot be a ${arrayType}`
-            );
+            throw new Error(`Each element in ${name} cannot be a ${arrayType}`);
           }
         });
       }
@@ -76,16 +72,16 @@ function validate(params) {
     //Validate the type for input parameters that are expected to be an object.
     else if (type === "object") {
       if (typeof value !== "object" || Array.isArray(value)) {
-        throw new Error(`Error: ${name} must be an object.`);
+        throw new Error(`${name} must be an object.`);
       }
       if (Object.keys(value).length === 0) {
-        throw new Error(`Error: ${name} cannot be an empty object.`);
+        throw new Error(`${name} cannot be an empty object.`);
       }
     }
     //Validate type for any other expected type.
     else {
       if (typeof value !== type) {
-        throw new Error(`Error: ${name} must be a ${type}.`);
+        throw new Error(`${name} must be a ${type}.`);
       }
     }
   });
@@ -126,8 +122,8 @@ function calculateNewAverage(reviews, newRating) {
     newRating
   );
 
-   // Calculate the average using the sum of these.
-   const average = totalRating / (reviews.length + 1);
+  // Calculate the average using the sum of these.
+  const average = totalRating / (reviews.length + 1);
 
   // Round to two decimal places and convert to a number because toFixed returns a string.
   return parseFloat(average.toFixed(2));

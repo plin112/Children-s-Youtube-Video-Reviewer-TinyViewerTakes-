@@ -7,7 +7,7 @@ const exportedMethods = {
     if (typeof id !== "string") throw `Error:${varName} must be a string`;
     id = id.trim();
     if (id.length === 0)
-      throw `Error: ${varName} cannot be an empty string or just spaces`;
+      throw `${varName} cannot be an empty string or just spaces`;
     // if (!ObjectId.isValid(id)) throw `Error: ${varName} invalid object ID`;
     return id;
   },
@@ -19,7 +19,7 @@ const exportedMethods = {
     if (typeof strVal !== "string") throw `Error: ${varName} must be a string!`;
     strVal = strVal.trim();
     if (strVal.length === 0)
-      throw `Error: ${varName} cannot be an empty string or string with just spaces`;
+      throw `${varName} cannot be an empty string or string with just spaces`;
     if (!isNaN(strVal))
       throw `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`;
     return strVal;
@@ -74,7 +74,7 @@ const exportedMethods = {
   validateUrl(input) {
     const pattern = /^http:\/\/(www\.)?.+\.com(\/.+)?$/;
     if (typeof input !== "string" || !pattern.test(input)) {
-      throw 'Error: website must start with http://www. and contains .com';
+      throw "Error: website must start with http://www. and contains .com";
     }
   },
 
