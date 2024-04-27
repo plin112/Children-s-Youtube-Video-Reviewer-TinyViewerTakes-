@@ -33,14 +33,14 @@ const searchKeywords = async (word) => {
     }
     validation.validateString(word, "search keywords");
     const channelCollection = await getChannelCollection();
-    return await channelCollection.find(
-      {keywords: { $in: [new RegExp(word, 'i')] }})
+    return await channelCollection
+      .find({ keywords: { $in: [new RegExp(word, "i")] } })
       .toArray();
   } catch (error) {
     rconsole.error("Error in searchKeywords:", error);
     throw new Error("Database operation failed");
   }
-}
+};
 
 const createChannel = async (
   channelTitle,
@@ -76,15 +76,15 @@ const createChannel = async (
 
   // Check if a channel with the same title or website already exists
   const existingChannel = await channelCollection.findOne({
-    $or: [{ channelTitle: channelTitle }, { website: website }]
+    $or: [{ channelTitle: channelTitle }, { website: website }],
   });
 
   if (existingChannel) {
     if (existingChannel.channelTitle === channelTitle) {
-      throw new Error("A channel with the same title already exists.");
+      throw "A channel with the same title already exists.";
     }
     if (existingChannel.website === website) {
-      throw new Error("A channel with the same website already exists.");
+      throw "A channel with the same website already exists.";
     }
   }
 
@@ -115,7 +115,19 @@ const createChannel = async (
 const getAllChannel = async () => {
   const channelCollection = await getChannelCollection();
   const channelList = await channelCollection
-    .find({}, { projection: { _id: 1, channelTitle: 1, averageRating: 1, startingAge: 1, keywords: 1, categories: 1 } })
+    .find(
+      {},
+      {
+        projection: {
+          _id: 1,
+          channelTitle: 1,
+          averageRating: 1,
+          startingAge: 1,
+          keywords: 1,
+          categories: 1,
+        },
+      }
+    )
     .toArray();
   console.log(channelList);
   return channelList;
@@ -129,7 +141,7 @@ const getChannel = async (channelId) => {
   //get product
   const channelCollection = await getChannelCollection();
   const channel = await channelCollection.findOne({
-    _id: new ObjectId(channelId)
+    _id: new ObjectId(channelId),
   });
   if (!channel) throw "No product with that id";
 
@@ -219,5 +231,5 @@ export {
   removeChannel,
   updateChannel,
   searchChannels,
-  searchKeywords
+  searchKeywords,
 };

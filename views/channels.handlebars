@@ -16,7 +16,8 @@
 
   <!-- Sorting Links -->
   <div>
-    <a href="?sort=rating">Sort by Rating</a> |
+    <a href="?sort=rating">Sort by Rating</a>
+    |
     <a href="?sort=age">Sort by Age</a>
   </div>
 
@@ -45,8 +46,10 @@
           href="/channels/{{this._id}}"
           data-id="{{this._id}}"
         >{{this.channelTitle}}</a>
-        - Rating: {{this.averageRating}}
-        - Parential Guidance Age: {{this.startingAge}}
+        - Rating:
+        {{this.averageRating}}
+        - Parential Guidance Age:
+        {{this.startingAge}}
 
       </li>
     {{/each}}
@@ -63,12 +66,13 @@
     <label for="channelOwnerName">Channel Owner Name:</label>
     <input type="text" id="channelOwnerName" name="channelOwnerName" /><br />
     <label for="channelDescription">Channel Description:</label>
-    <input type="text" id="channelDescription" name="channelDescription" /><br/>
+    <input type="text" id="channelDescription" name="channelDescription" /><br
+    />
     <label for="channelWebsite">Channel Website:</label>
     <input type="text" id="channelWebsite" name="channelWebsite" /><br />
-    <label for="keywords">Keywords:</label>
-    <input type="text" id="keywords" name="keywords"/><br />
-    <label for="categories">Categories:</label>
+    <label for="keywords">Keywords(Optional):</label>
+    <input type="text" id="keywords" name="keywords" /><br />
+    <label for="categories">Categories(Optional):</label>
     <input type="text" id="categories" name="categories" /><br />
     <label for="startingAge">Parental Guidance Age:</label>
     <input type="text" id="startingAge" name="startingAge" /><br />
