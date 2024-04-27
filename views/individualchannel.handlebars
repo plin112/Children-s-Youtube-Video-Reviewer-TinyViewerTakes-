@@ -24,7 +24,8 @@
         <p>Parental Guidance Age: {{channel.startingAge}}</p>
         <main>
           <!-- Add New Review Form -->
-          <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
+          {{!-- <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews"> --}}
+          <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}">  
             <p>Add review here:</p>
             <div style="color: red;" id="addReviewError">{{error}}</div>
             <label for="reviewTitle">Review Title:</label>
