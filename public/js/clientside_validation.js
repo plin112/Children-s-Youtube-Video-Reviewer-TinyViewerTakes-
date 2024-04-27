@@ -134,47 +134,6 @@ $(document).ready(function () {
     });
   });
 
-  // // Add review form submission
-  // $("#addReviewForm").submit(function (event) {
-  //   event.preventDefault();
-  //   const reviewText = $("#reviewText").val().trim();
-  //   if (reviewText) {
-  //     // Assume channel ID is available or extracted from the DOM
-  //     const channelId = getCurrentChannelId();
-  //     $.ajax({
-  //       url: `/channels/${channelId}/reviews`,
-  //       method: "POST",
-  //       contentType: "application/json",
-  //       data: JSON.stringify({ reviewText }),
-  //       success: function () {
-  //         alert("Review submitted successfully.");
-  //         window.location.href = `/channels/${channelId}`;
-  //       },
-  //       error: function (xhr) {
-  //         console.log("Error received:", xhr.responseText);
-  //         let errorMessage = xhr.responseText || "An unknown error occurred.";
-
-  //         if (xhr.status === 401) {
-  //           errorMessage = "You are not login/unauthorized";
-  //           alert(errorMessage);
-  //           window.location.href = "/login"; // Redirect to the login page
-  //         } else if (xhr.status === 400) {
-  //           window.location.href = `/channels/${channelId}`;
-  //           errorMessage = xhr.responseText;
-  //           alert(errorMessage);
-  //           $("#addReviewError").text(errorMessage).show();
-  //         } else {
-  //           window.location.href = `/channels/${channelId}`;
-  //           alert(errorMessage);
-  //           $("#addReviewError").text(errorMessage).show();
-  //         }
-  //       },
-  //     });
-  //   } else {
-  //     alert("Review cannot be empty.");
-  //   }
-  // });
-
   function validateAddChannelForm() {
     // Implement validation logic; return true if valid, false otherwise
     // Check if inputs are not empty and match any specific patterns (like URL)
@@ -234,33 +193,6 @@ function displayErrorMsg(errors) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Channels.handlebars validations
-  // const form = document.getElementById('addChannelForm');
-  // form.addEventListener('submit', function(event) {
-  //   event.preventDefault(); // Prevent form submission to handle validation
-
-  //   // Validate each field
-  //   const channelTitle = document.getElementById('channelTitle').value;
-  //   const channelOwnerName = document.getElementById('channelOwnerName').value;
-  //   // Add more fields as needed
-
-  //   let errorMessages = [];
-  //   if (!channelTitle.trim()) {
-  //     errorMessages.push("Channel title is required.");
-  //   }
-  //   if (!channelOwnerName.trim()) {
-  //     errorMessages.push("Channel owner name is required.");
-  //   }
-  //   // Add more validation checks as needed
-
-  //   if (errorMessages.length > 0) {
-  //     // Display errors or handle them
-  //     alert(errorMessages.join("\n"));
-  //   } else {
-  //     form.submit(); // Submit the form if no errors
-  //   }
-  // });
-
   // individualchannel.handlebars validations
   const addReviewForm = document.getElementById("addReviewForm");
   console.log("is this printing:" + addReviewForm);
@@ -276,13 +208,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let errorMessages = [];
       if (!reviewTitle.trim()) {
-        errorMessages.push("Review title is required.");
+        errorMessages.push("title cannot be an empty string or just spaces.");
       }
       if (!reviewDescription.trim()) {
-        errorMessages.push("Review description is required.");
+        errorMessages.push("review cannot be an empty string or just spaces.");
       }
       if (!reviewRating || reviewRating < 1 || reviewRating > 5) {
-        errorMessages.push("Rating must be between 1 and 5.");
+        errorMessages.push("rating cannot be falsy.");
       }
 
       if (errorMessages.length > 0) {
