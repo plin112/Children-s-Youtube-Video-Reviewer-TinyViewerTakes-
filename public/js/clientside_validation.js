@@ -161,6 +161,7 @@ async function removeReview(id) {
     method: "DELETE",
     success: function () {
       alert("Review removed successfully!");
+      alert("Review removed successfully!");
       window.location.reload();
     },
     error: function (xhr) {
@@ -196,11 +197,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // individualchannel.handlebars validations
   const addReviewForm = document.getElementById("addReviewForm");
   console.log("is this printing:" + addReviewForm);
+  const addReviewForm = document.getElementById("addReviewForm");
+  console.log("is this printing:" + addReviewForm);
 
   if (addReviewForm) {
     addReviewForm.addEventListener("submit", function (event) {
+    addReviewForm.addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent the form from submitting until validation is complete
 
+      const reviewTitle = document.getElementById("reviewTitle").value;
+      const reviewDescription =
+        document.getElementById("reviewDescription").value;
+      const reviewRating = document.getElementById("reviewRating").value;
       const reviewTitle = document.getElementById("reviewTitle").value;
       const reviewDescription =
         document.getElementById("reviewDescription").value;
@@ -220,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (errorMessages.length > 0) {
         alert(errorMessages.join("\n"));
       } else {
+        addReviewForm.submit();
         addReviewForm.submit();
       }
     });
