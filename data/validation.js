@@ -42,7 +42,7 @@ const exportedMethods = {
 
   validateNumber(input, varName) {
     if (typeof input !== "number" || input <= 0 || !Number.isFinite(input)) {
-      throw `${varName} must be a number greater than 0 and less than infinity`;
+      throw `Error: ${varName} must be a number greater than 0 and less than infinity`;
     }
   },
 
@@ -72,9 +72,9 @@ const exportedMethods = {
   },
 
   validateUrl(input) {
-    const pattern = /^http:\/\/www\..{5,}\.com$/;
+    const pattern = /^http:\/\/(www\.)?.+\.com(\/.+)?$/;
     if (typeof input !== "string" || !pattern.test(input)) {
-      throw 'Manufacturer website must start with http://www. and end in .com with at least 5 characters in-between';
+      throw 'Error: website must start with http://www. and contains .com';
     }
   },
 

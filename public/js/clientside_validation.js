@@ -6,7 +6,6 @@ $(document).ready(function () {
     addChannelForm = $("#addChannelForm"),
     addReviewForm = $("#addReviewForm");
 
-  // Add channel form submission
   $("#addChannelForm").submit(function (event) {
     event.preventDefault();
     if (validateAddChannelForm()) {
@@ -36,12 +35,22 @@ $(document).ready(function () {
           // Optionally reload the list or clear the form
           window.location.href = "/channels";
         },
-        error: function () {
-          alert("Error adding channel.");
-        },
+        error: function (xhr) {
+          console.log("Error received:", xhr.responseText);
+          let errorMessage = "An unknown error occurred.";
+
+          if (xhr.status === 401) {
+            errorMessage = "You are not login/unauthorized"
+            window.location.href = "/login";  // Redirect to the login page
+          }
+          if (xhr.responseText) {
+            errorMessage = xhr.responseText;
+          }
+          $('#errorDisplay').text(errorMessage).show();
+        }
       });
     } else {
-      alert("Please fill all required fields correctly.");
+      $('#errorDisplay').text("Please fill all required fields correctly.");
     }
   });
 
@@ -139,12 +148,30 @@ $(document).ready(function () {
         data: JSON.stringify({ reviewText }),
         success: function () {
           alert("Review submitted successfully.");
-          // Optionally reload reviews
-          //window.location.href = `/channels/${channelId}/reviews`;
+          window.location.href = `/channels/${channelId}`;
         },
-        error: function () {
-          alert("Error submitting review.");
-        },
+        error: function (xhr) {
+          console.log("Error received:", xhr.responseText);
+          let errorMessage = xhr.responseText || "An unknown error occurred.";
+
+          if (xhr.status === 401) {
+            errorMessage = "You are not login/unauthorized";
+            alert(errorMessage);
+            window.location.href = "/login";  // Redirect to the login page
+          }
+          else if (xhr.status === 400) {
+            window.location.href = `/channels/${channelId}`;
+            errorMessage = xhr.responseText;
+            alert(errorMessage);
+            $('#addReviewError').text(errorMessage).show();
+          }
+          else {
+            window.location.href = `/channels/${channelId}`;
+            alert(errorMessage);
+            $('#addReviewError').text(errorMessage).show();
+          }
+          
+        }
       });
     } else {
       alert("Review cannot be empty.");
@@ -178,29 +205,41 @@ async function removeReview(id) {
     method: "DELETE",
     success: function () {
       alert("Review removed successfully! Moving to main page.");
-      window.location.href = `http://localhost:3000/channels/`;
+      window.location.href = `/channels`;
     },
-    error: function () {
-      alert("Error removing review.");
-    },
+    error: function (xhr) {
+          console.log("Error received:", xhr.responseText);
+          let errorMessage = "An unknown error occurred.";
+          
+          if (xhr.status === 401) {
+            errorMessage = "You are not login/unauthorized";
+            alert(errorMessage);
+            window.location.href = "/login";  // Redirect to the login page
+          }
+          if (xhr.status === 400) {
+            errorMessage = xhr.responseText;
+            alert(errorMessage);
+          }
+          $('#reviewError').text(errorMessage).show();
+        }
   });
   return;
 }
+
+function displayErrorMsg(errors) {
+  const errorMsg = document.getElementById('errorMessages');
+  
+  errors.forEach(error => {
+    const errorElement = document.createElement("p");
+    errorElement.textContent = error;
+    errorContainer.appendChild(errorElement);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   let registerationForm = document.getElementById('registration-form'); 
   let loginForm = document.getElementById('login-form');
 
-  function displayErrorMsg(errors) {
-      const errorMsg = document.getElementById('error-message');
-      errorMsg.innerHTML = "";
-
-      errors.forEach(error => {
-          const list = document.createElement('li');
-          list.textContent = error;
-          errorMsg.appendChild(list);
-      })
-  }
-  
   if (registerationForm) {
       registerationForm.addEventListener('submit', (event) =>{
           event.preventDefault();
