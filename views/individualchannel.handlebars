@@ -26,6 +26,7 @@
           <!-- Add New Review Form -->
           <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
             <p>Add review here:</p>
+            <div style="color: red;" id="addReviewError">{{error}}</div>
             <label for="reviewTitle">Review Title:</label>
             <input type="text" id="reviewTitle" name="reviewTitle" /><br />
             <label for="reviewDescription">Review Description:</label>
@@ -37,6 +38,7 @@
         </main>
         <h3>Reviews</h3>
         <ul id="reviewsList">
+          <div style="color: red;" id="reviewError">{{error}}</div>
           {{#if channel.reviews.length}}
             {{#each channel.reviews}}
                <li id="review-{{this._id}}">

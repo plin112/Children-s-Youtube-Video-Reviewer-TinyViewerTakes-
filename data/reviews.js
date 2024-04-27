@@ -74,7 +74,7 @@ const createReview = async (channelId, userId, title, review, rating) => {
   console.log("Existing review check:", existingReview);
 
   if (existingReview) {
-    throw new Error("User has already reviewed this channel");
+    throw "User has already reviewed this channel";
   }
 
   //Create new review object.
@@ -211,7 +211,7 @@ const removeReview = async (reviewId, userId) => {
   });
 
   if (!channelContainingReview) {
-    throw new Error("Review not found or user is not authorized to delete this review");
+    throw "User is not authorized to delete this review";
   }
 
   const result = await channelsCollection.findOneAndUpdate(

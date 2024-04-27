@@ -69,7 +69,7 @@ const createChannel = async (
   validation.validateUrl(website);
   validation.validateStringArray(keywords, "keywords");
   validation.validateStringArray(categories, "categories");
-  validation.validateNumber(startingAge, "Starting Age");
+  validation.validateNumber(startingAge, "Parental Guidance Age");
 
   // Obtain connection to channel collection.
   const channelCollection = await getChannelCollection();

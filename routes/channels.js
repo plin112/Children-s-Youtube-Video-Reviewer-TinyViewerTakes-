@@ -121,56 +121,50 @@ router.get("/channels/searchKeyword", async (req, res) => {
 
 // POST route to create a new channel
 router.post("/channels", async (req, res) => {
-
-  const {
-    channelTitle,
-    channelOwnerName,
-    channelDescription,
-    channelWebsite,
-    keywords,
-    categories,
-    startingAge,
-  } = req.body;
-
-  if (!req.session || !req.session.user) {
-    if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
-        res.status(401).json({redirect: '/login'}); // Send a 401 status with redirect info
-    } else {
-        res.redirect('/login');
-    }
-    return;
-}
-
-  try {
-    validation.validateString(channelTitle, "Channel Title");
-    validation.validateString(channelOwnerName, "Channel Owner Name");
-    validation.validateString(channelDescription, "Channel Description");
-    validation.validateUrl(channelWebsite);
-    validation.validateStringArray(keywords, "Keywords");
-    validation.validateStringArray(categories, "Categories");
-    validation.validateNumber(parseFloat(startingAge), "Starting Age");
-    //const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
-    //const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
-
-    const newChannel = await channelData.createChannel(  
+  if (req.session.user){
+    const {
       channelTitle,
       channelOwnerName,
       channelDescription,
       channelWebsite,
       keywords,
       categories,
-      parseFloat(startingAge)
-    );
-
-    console.log("test")
-    const channelsList = await channelData.getAllChannel();
-    res.render('channels', { channels: channelsList });
-    
-  } catch (error) {
-    console.error("Error adding new channel:", error);
-    return res.status(400).render("error", {
-      errorMessage: "Supply all fields properly.",
-    });
+      startingAge,
+    } = req.body;
+  
+    try {
+      validation.validateString(channelTitle, "Channel Title");
+      validation.validateString(channelOwnerName, "Channel Owner Name");
+      validation.validateString(channelDescription, "Channel Description");
+      validation.validateUrl(channelWebsite);
+      validation.validateStringArray(keywords, "Keywords");
+      validation.validateStringArray(categories, "Categories");
+      validation.validateNumber(parseFloat(startingAge), "Starting Age");
+      //const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
+      //const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
+  
+      const newChannel = await channelData.createChannel(  
+        channelTitle,
+        channelOwnerName,
+        channelDescription,
+        channelWebsite,
+        keywords,
+        categories,
+        parseFloat(startingAge)
+      );
+  
+      //console.log("test")
+      const channelsList = await channelData.getAllChannel();
+      res.render('channels', { channels: channelsList });
+      
+    } catch (error) {
+        console.error("Error adding new channel:", error);
+        res.status(400).send(error);
+    }
+  } else {
+      return res.status(401).json({
+        error: "You are not log in."
+      });
   }
 });
 

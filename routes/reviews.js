@@ -31,19 +31,19 @@ router
       //console.log("Session Data:", req.session);
 
       if (!req.session || !req.session.user) {
-        return res.redirect("/login");
+        return res.status(401).render('login');
       }
 
       //console.log(req.session.user);
 
       const userId = req.session.user._id;
       if (!userId) {
-        return res.status(400).json({ error: "User ID is undefined" });
+        return res.status(400).send("User ID is undefined" );
       }
 
       const { channelId } = req.params;
       if (!channelId) {
-        return res.status(400).json({ error: "Channel ID is undefined" });
+        return res.status(400).send("Channel ID is undefined");
       }
 
       // const userId = req.session.users._id;
@@ -64,12 +64,15 @@ router
 
       const channel = await channelData.getChannel(channelId);
       if (newReview) {
-        res.render("individualchannel", { channel: channel });
+        res.redirect(`/channels/${channelId}`);
+        //res.render("individualchannel", { channel: channel });
       } else {
         res.status(500).send("Failed to create review");
       }
     } catch (error) {
-      res.status(400).json({ error: error.toString() });
+        console.error("Error adding review:", error);
+        res.status(400).send(error);
+        //res.status(400).send(error);
     }
   });
 
@@ -85,6 +88,7 @@ router
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
+
     try {
       const review = await reviewData.getReview(req.params.reviewId);
       return res.json(review);
@@ -92,15 +96,14 @@ router
       return res.status(404).json({ error: e.toString() });
     }
   })
-
   //remove a review by its Id
   .delete(async (req, res) => {
     //const userId = req.user.id;
     if (!req.session || !req.session.user) {
-      return res.redirect("/login");
+      //return res.status(401).send("You are not log in.");
+      return res.status(401).render('login');
     }
     try {
-
       const userId = req.session.user._id;
       const revId = req.params.reviewId;
       //need to ensure Id's match
@@ -112,7 +115,8 @@ router
       const updatedChannel = await reviewData.removeReview(revId, userId);
       return res.json(updatedChannel);
     } catch (error) {
-      res.status(400).json({ error: error.toString() });
+      console.error("Error removing review:", error);
+      res.status(400).send(error);
     }
   });
 
