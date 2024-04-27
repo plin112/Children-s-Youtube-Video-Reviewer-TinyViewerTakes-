@@ -73,9 +73,9 @@ const exportedMethods = {
 
   validateUrl(input) {
     const pattern = /^http:\/\/www\..{5,}\.com$/;
-    /*if (typeof input !== "string" || !pattern.test(input)) {
+    if (typeof input !== "string" || !pattern.test(input)) {
       throw 'Manufacturer website must start with http://www. and end in .com with at least 5 characters in-between';
-    }*/
+    }
   },
 
   checkEmail(email) {
