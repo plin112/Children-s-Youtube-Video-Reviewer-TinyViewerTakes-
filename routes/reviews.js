@@ -27,24 +27,24 @@ router
   })
   .post(async (req, res) => {
     //new review under a specific channel
-    const userId = req.session.user._id;
-    const { channelId } = req.params;
+    // const userId = req.session.user._id;
+    // const { channelId } = req.params;
 
     try {
       //console.log("Session Data:", req.session);
 
       if (!req.session || !req.session.user) {
-        return res.status(401).render('login');
+        return res.status(401).render("login");
       }
 
       //console.log(req.session.user);
 
-      //const userId = req.session.user._id;
+      const userId = req.session.user._id;
       if (!userId) {
-        return res.status(400).send("User ID is undefined" );
+        return res.status(400).send("User ID is undefined");
       }
 
-      //const { channelId } = req.params;
+      const { channelId } = req.params;
       if (!channelId) {
         return res.status(400).send("Channel ID is undefined");
       }
@@ -77,10 +77,11 @@ router
       }
 
       res.redirect(`/channels/${channelId}`);
-
     } catch (error) {
-        console.error("Error adding review:", error);
-        res.status(400).send(error);
+      // console.error("Error adding review:", error);
+      res.render("error", {
+        errorMessage: error,
+      });
     }
   });
 
@@ -109,7 +110,7 @@ router
     //const userId = req.user.id;
     if (!req.session || !req.session.user) {
       //return res.status(401).send("You are not log in.");
-      return res.status(401).render('login');
+      return res.status(401).render("login");
     }
     try {
       const userId = req.session.user._id;
