@@ -41,9 +41,11 @@ const exportedMethods = {
   },
 
   validateNumber(input, varName) {
-    if (typeof input !== "number" || input <= 0 || !Number.isFinite(input)) {
-      throw `Error: ${varName} must be a number greater than 0 and less than infinity`;
+    input = parseFloat(input)
+    if (typeof input !== "float" || input <= 0 || !Number.isFinite(input)) {
+      throw `Error: Must be a whole number greater than 0 and less than infinity`;
     }
+    return parseFloat(input)
   },
 
   validateDateString(dateStr) {

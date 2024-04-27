@@ -11,7 +11,8 @@ const router = Router();
 //need authentication stuff??
 router
   // Get all reviews  for a specific channel
-  .route("/channels/:channelId/reviews")
+  //.route("/channels/:channelId/reviews")
+  .route("/channels/:channelId")
   .get(async (req, res) => {
     try {
       const channelId = validation.validateId(
@@ -27,27 +28,30 @@ router
   })
   .post(async (req, res) => {
     //new review under a specific channel
-    const userId = req.session.user._id;
-    const { channelId } = req.params;
+    
 
     try {
+     
       //console.log("Session Data:", req.session);
 
       if (!req.session || !req.session.user) {
-        return res.status(401).render('login');
+        //return res.status(401).render('login');
+        return res.redirect(`/login`);
+
       }
 
       //console.log(req.session.user);
 
-      //const userId = req.session.user._id;
+      const userId = req.session.user._id;
       if (!userId) {
         return res.status(400).send("User ID is undefined" );
       }
 
-      //const { channelId } = req.params;
+      const { channelId } = req.params;
       if (!channelId) {
         return res.status(400).send("Channel ID is undefined");
       }
+
 
       // const userId = req.session.users._id;
       // const channelId = req.params.channelId;
@@ -60,9 +64,9 @@ router
       const newReview = await reviewData.createReview(
         channelId,
         userId,
-        reviewTitle,
-        reviewDescription,
-        parseFloat(reviewRating)
+        validation.validateString(reviewTitle, "Review Title"),
+        validation.validateString(reviewDescription, "Review Description"),
+        validation.validateNumber(reviewRating)
       );
 
       const channel = await channelData.getChannel(channelId);
@@ -76,11 +80,11 @@ router
         throw new Error("Failed to create review");
       }
 
-      res.redirect(`/channels/${channelId}`);
+      //res.redirect(`/channels/${channelId}`);
 
     } catch (error) {
         console.error("Error adding review:", error);
-        res.status(400).send(error);
+        res.status(400).json(error);
     }
   });
 

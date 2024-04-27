@@ -138,44 +138,51 @@ $(document).ready(function () {
   $("#addReviewForm").submit(function (event) {
     event.preventDefault();
     const reviewText = $("#reviewText").val().trim();
-    if (reviewText) {
-      // Assume channel ID is available or extracted from the DOM
-      const channelId = getCurrentChannelId();
-      $.ajax({
-        url: `/channels/${channelId}/reviews`,
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({ reviewText }),
-        success: function () {
-          alert("Review submitted successfully.");
-          window.location.href = `/channels/${channelId}`;
-        },
-        error: function (xhr) {
-          console.log("Error received:", xhr.responseText);
-          let errorMessage = xhr.responseText || "An unknown error occurred.";
 
-          if (xhr.status === 401) {
-            errorMessage = "You are not login/unauthorized";
-            alert(errorMessage);
-            window.location.href = "/login";  // Redirect to the login page
-          }
-          else if (xhr.status === 400) {
-            window.location.href = `/channels/${channelId}`;
-            errorMessage = xhr.responseText;
-            alert(errorMessage);
-            $('#addReviewError').text(errorMessage).show();
-          }
-          else {
-            window.location.href = `/channels/${channelId}`;
-            alert(errorMessage);
-            $('#addReviewError').text(errorMessage).show();
-          }
-          
-        }
-      });
-    } else {
-      alert("Review cannot be empty.");
+    if (!reviewText){
+      displayError('Input cannot be empty or just spaces!');
     }
+    //if (reviewText) {
+      // Assume channel ID is available or extracted from the DOM
+      //const channelId = getCurrentChannelId();
+    //   $.ajax({
+    //     url: `/channels/${channelId}`,
+    //     method: "POST",
+    //     contentType: "application/json",
+    //     data: JSON.stringify({ reviewText }),
+    //     success: function () {
+    //       alert("Review submitted successfully.");
+    //       window.location.href = `/channels/${channelId}`;
+    //     },
+    //     error: function (xhr) {
+    //       //console.log("Error received:", xhr.responseText);
+    //       console.log("Error received:");
+    //       /*let errorMessage = xhr.responseText || "An unknown error occurred.";
+
+    //       if (xhr.status === 401) {
+    //         errorMessage = "You are not login/unauthorized";
+    //         alert(errorMessage);
+    //         window.location.href = "/login";  // Redirect to the login page
+    //       }
+    //       else if (xhr.status === 400) {
+    //         window.location.href = `/channels/${channelId}`;
+    //         errorMessage = xhr.responseText;
+    //         alert(errorMessage);
+    //         $('#addReviewError').text(errorMessage).show();
+    //       } 
+    //       else {
+    //         window.location.href = `/channels/${channelId}`;
+    //         alert(errorMessage);
+    //         $('#addReviewError').text(errorMessage).show();
+    //       }*/
+          
+    //     }
+    //   });
+    // } else {
+    //   alert("Review cannot be empty.");
+    // }
+
+
   });
 
   function validateAddChannelForm() {
@@ -204,8 +211,12 @@ async function removeReview(id) {
     url: `/review/${id}`,
     method: "DELETE",
     success: function () {
-      alert("Review removed successfully! Moving to main page.");
-      window.location.href = `/channels`;
+      /*alert("Review removed successfully! Moving to main page.");
+      window.location.href = `/channels`;*/
+      alert("Review removed successfully!");
+      //const currentChannelId = getCurrentChannelId();  // Get the current channel ID
+      //window.location.href = `/channels/${currentChannelId}`; 
+      window.location.reload();
     },
     error: function (xhr) {
           console.log("Error received:", xhr.responseText);
