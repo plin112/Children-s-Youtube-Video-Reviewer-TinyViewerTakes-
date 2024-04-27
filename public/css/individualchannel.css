@@ -1,0 +1,264 @@
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+  }
+  #invidualchnlInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+  }
+
+  #addReviewForm {
+    background-color: #ffffff;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 120%;
+    margin-left: -40%;
+
+  }
+h3{font-size: 25px;
+  text-align: center ;
+    background-color: #f0f0f0;
+    padding: 4px;
+    height: 60px;
+    border-radius: 15px;
+    line-height: 60px;
+}
+  input {
+    width: 100%;
+    padding: 8px 2px;
+    margin-left: 0px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+  }
+#gobackBtn {
+   background-color: #ff0000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#gobackBtn :hover {
+background-color: #cc0000;
+}
+#gobackBtn a{
+
+  color: white;
+}
+
+  button[type="submit"] {
+    background-color: #ff0000;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #cc0000;
+  }
+
+
+  #rwsubmitBtn {
+
+    margin-left: 150px;
+  }
+
+  #addReviewForm label {
+    padding-bottom: 5px;
+  }
+
+  #invidualchnlInfo p {
+    font-family: sans-serif;
+    font-weight: bold;
+  }
+
+  #invidualchnlInfo span {
+    font-family: sans-serif;
+    font-weight: normal;
+  }
+
+  h3 {
+    
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 12px;
+    margin: 10px;
+    border-radius: 15px;
+  }
+
+  #channelDiv {
+    margin-top: 1px;
+    width: 50%;
+    background-color: #ffffff;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    height: 46vh;
+  }
+
+  #reviewDiv {
+    background-color: #ffffff;
+    padding: 20px 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+margin-top: 15px;
+  }
+#singleReviewDiv p {
+
+ font-family: sans-serif;
+    font-weight: bold;
+}
+#singleReviewDiv span {
+
+ font-family: sans-serif;
+    font-weight: normal;
+}
+
+  body,
+  h2,
+  h3,
+  p,
+  ul,
+  li {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+
+  }
+
+  /* Apply YouTube theme colors */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    /* Light gray background */
+    color: #333;
+    /* Dark gray text color */
+  }
+
+  header {
+    background-color: white;
+    /* YouTube red for header background */
+    color: black;
+    /* White text color */
+    position: relative;
+    text-align: center;
+    margin: -16px;
+
+  }
+
+  header h1 {
+
+    background-color: #f0f0f0;
+    /* Background color */
+    padding: 12px;
+    /* Add padding */
+    margin: 0;
+    border-radius: 100px;
+    position: relative;
+
+  }
+
+#singleReviewDiv {
+    background-color: #ffffff;
+padding: 15px 15px;
+   border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+  main {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 0px 0px;
+  }
+
+  #channelDetails {
+    background-color: #fff;
+    /* White background */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Shadow effect */
+    padding: 20px;
+  }
+
+  #channelDetails h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  #channelDetails p {
+    margin-bottom: 10px;
+  }
+
+  #channelDetails a {
+    color: #007bff;
+    /* YouTube blue for links */
+  }
+
+  #channelDetails a:hover {
+    text-decoration: underline;
+    /* Underline links on hover */
+  }
+
+  #reviewsList {
+    list-style: none;
+    padding: 0;
+    
+
+  }
+
+  .review-item {
+    border-bottom: 1px solid #ccc;
+    /* Gray border between reviews */
+    padding: 10px 0;
+  }
+ 
+  .review-item:last-child {
+    border-bottom: none;
+    /* Remove border from last review */
+  }
+
+  .review-title {
+    margin-bottom: 5px;
+  }
+
+  .review-description {
+    margin-bottom: 5px;
+  }
+
+  .review-rating {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .review-comments {
+    margin-top: 10px;
+  }
+  .review-comments li{
+    font-family: sans-serif;
+    font-weight: bold;
+  }
+#comment{
+    font-family: sans-serif;
+    font-weight: bold;
+
+}
+  .comment-item {
+    margin-bottom: 5px;
+  }
