@@ -23,7 +23,7 @@ const main = async () => {
       "Paw Patrol",
       "Paw Patrol Official",
       "Official channel for Paw Patrol. We have all the episodes available. ",
-      "youtube.com/pawpatrol",
+      "http://youtube.com/pawpatrol",
       ["animal", "toy"],
       ["animation for kids", "cute"],
       2
@@ -57,7 +57,7 @@ const main = async () => {
       "Peppa Pig",
       "Peppa Pig Official",
       "Official channel for Peppa Pig.",
-      "youtube.com/peppapig",
+      "http://youtube.com/peppapig",
       ["kids"],
       ["kids"],
       1
@@ -72,7 +72,7 @@ const main = async () => {
       "Animal Kingdom",
       "Animal Kingdom Official",
       "Official channel for Animal Kingdom.",
-      "youtube.com/animalkingdom",
+      "http://youtube.com/animalkingdom",
       ["animal"],
       ["kids"],
       2
@@ -87,7 +87,7 @@ const main = async () => {
       "Baby Shark",
       "Baby Shark Official",
       "Official channel for Baby Shark.",
-      "youtube.com/babyshark",
+      "http://youtube.com/babyshark",
       ["kids", "shark family"],
       ["kids", "animal"],
       1

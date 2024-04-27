@@ -40,7 +40,7 @@ router.get("/channels", async (req, res) => {
     }
 
     // Debug for sorting
-    console.log("Before sorting:", JSON.stringify(channelsList, null, 2));
+    //console.log("Before sorting:", JSON.stringify(channelsList, null, 2));
 
     // Sorting based on query parameter
     if (sort) {
@@ -152,7 +152,7 @@ router.post("/channels", async (req, res) => {
     //const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
     //const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
 
-    const newChannel = await channelData.createChannel(
+    const newChannel = await channelData.createChannel(  
       channelTitle,
       channelOwnerName,
       channelDescription,
