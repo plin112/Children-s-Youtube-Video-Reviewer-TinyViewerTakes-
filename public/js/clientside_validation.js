@@ -234,6 +234,64 @@ function displayErrorMsg(errors) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  
+  // Channels.handlebars validations
+  // const form = document.getElementById('addChannelForm');
+  // form.addEventListener('submit', function(event) {
+  //   event.preventDefault(); // Prevent form submission to handle validation
+
+  //   // Validate each field
+  //   const channelTitle = document.getElementById('channelTitle').value;
+  //   const channelOwnerName = document.getElementById('channelOwnerName').value;
+  //   // Add more fields as needed
+
+  //   let errorMessages = [];
+  //   if (!channelTitle.trim()) {
+  //     errorMessages.push("Channel title is required.");
+  //   }
+  //   if (!channelOwnerName.trim()) {
+  //     errorMessages.push("Channel owner name is required.");
+  //   }
+  //   // Add more validation checks as needed
+
+  //   if (errorMessages.length > 0) {
+  //     // Display errors or handle them
+  //     alert(errorMessages.join("\n"));
+  //   } else {
+  //     form.submit(); // Submit the form if no errors
+  //   }
+  // });
+
+  // individualchannel.handlebars validations
+  const addReviewForm = document.getElementById('addReviewForm');
+
+  if (addReviewForm) {
+    addReviewForm.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting until validation is complete
+
+      const reviewTitle = document.getElementById('reviewTitle').value;
+      const reviewDescription = document.getElementById('reviewDescription').value;
+      const reviewRating = document.getElementById('reviewRating').value;
+
+      let errorMessages = [];
+      if (!reviewTitle.trim()) {
+        errorMessages.push("Review title is required.");
+      }
+      if (!reviewDescription.trim()) {
+        errorMessages.push("Review description is required.");
+      }
+      if (!reviewRating || reviewRating < 1 || reviewRating > 5) {
+        errorMessages.push("Rating must be between 1 and 5.");
+      }
+
+      if (errorMessages.length > 0) {
+        alert(errorMessages.join("\n"));
+      } else {
+        addReviewForm.submit(); // Submit the form if no errors
+      }
+    });
+  }
+
   let registerationForm = document.getElementById("registration-form");
   let loginForm = document.getElementById("login-form");
 
@@ -343,3 +401,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
