@@ -1,0 +1,128 @@
+html {
+    font-size: 10pt; /* Reduced from 12pt */
+    font-family: sans-serif;
+}
+
+body {
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+}
+
+.editor:focus {
+    outline: none;
+    border: none;
+    background: #fefefe;
+}
+
+.editor p {
+    transition: font-size 0.5s ease-in-out; /* Made the transition faster */
+}
+
+.editor p:hover {
+    font-size: 1.1rem; /* Less increase on hover */
+}
+
+.editor p:first-child::first-line {
+    font-size: 1.3rem; /* Smaller than before */
+    font-variant: small-caps;
+}
+
+.editor p:first-child::first-letter {
+    font-size: 1.5rem; /* Smaller than before */
+    font-family: cursive;
+}
+
+blockquote::before {
+    display: inline-block;
+    margin-left: -20px;
+    content: '"';
+    font-size: 24pt; /* Smaller quote marks */
+    font-family: serif;
+}
+
+blockquote {
+    margin-left: 20px; /* Added some margin */
+}
+
+blockquote:hover {
+    animation: shake 1s infinite; /* Shorter and less intense animation */
+}
+
+blockquote::after {
+    content: '"';
+    font-size: 24pt; /* Smaller quote marks */
+    font-family: serif;
+}
+
+.strong {
+    font-weight: 700;
+}
+
+.emphasized {
+    font-style: italic;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+@keyframes shake {
+    from {
+        transform: translate(0, 0);
+    }
+    20% {
+        transform: translate(-10px, 0);
+    }
+    40%, 60% {
+        transform: translate(0, 0);
+    }
+    80% {
+        transform: translate(10px, 0);
+    }
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes boogie {
+    from, to {
+        transform: rotate(0deg);
+    }
+    25%, 75% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(-10deg);
+    }
+}
+
+@media (min-width: 500px) {
+    main {
+        max-width: 80%;
+        margin: auto;
+    }
+}
+
+@media (min-width: 800px) {
+    html {
+        font-size: 12pt;
+    }
+    main {
+        max-width: 640px;
+    }
+}
+
+@media (min-width: 900px) {
+    html {
+        font-size: 16pt; /* Much smaller than original 62pt */
+    }
+    main {
+        max-width: 640px;
+    }
+    p {
+        color: blue;
+    }
+}
