@@ -20,22 +20,42 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  let { firstNameInput, lastNameInput, emailAddressInput, passwordInput } =
+  let { firstNameInput, lastNameInput, emailAddressInput, passwordInput, confirmPasswordInput } =
     req.body;
 
   try {
-    firstNameInput = validation.validateString(firstNameInput, "First Name");
-    lastNameInput = validation.validateString(lastNameInput, "Last Name");
-    emailAddressInput = validation.validateString(emailAddressInput);
-    passwordInput = validation.validateString(passwordInput);
+    if (!firstNameInput || !lastNameInput || !emailAddressInput || !passwordInput || !confirmPasswordInput
+    ) {
+      return res.status(400).send("All fields need to be supplied");
+    }
 
-    const result = await userData.registerUser(
-      firstNameInput,
-      lastNameInput,
-      emailAddressInput,
-      passwordInput
+    validation.validateString(firstNameInput, 'First-name');
+    if (firstNameInput.length > 25 || firstNameInput.length < 2) {
+      return res.status(400).send("First name need to have at least 2 characters long and no more than 25 characters.");
+    }
+    validation.validateString(lastNameInput, 'Last-name');
+    if (lastNameInput.length > 25 || lastNameInput.length < 2) {
+      return res.status(400).send("Last name need to have at least 2 characters long and no more than 25 characters.");
+    }
+    validation.checkEmail(emailAddressInput, 'Email-Address');
+    
+    // check if password and confirm password match
+    validation.checkPassword(passwordInput, 'Password');
+    validation.checkPassword(confirmPasswordInput, 'Confirmed-Password');
+    if (passwordInput !== confirmPasswordInput) {
+      return res.status(400).send("Password does not match.");
+    }
+
+    // const saltRounds = 16;
+    // const hashedPassword = await bcrypt.hash(registeration.passwordInput, saltRounds);
+    const newUser = await registerUser(
+      firstNameInput, lastNameInput, emailAddressInput, passwordInput
     );
 
+    console.log('User registered: ', newUser);
+    //res.json(newUser);
+    // redirect to login if registeration is success
+    res.redirect('/login');
     return res.redirect("/login");
   } catch (e) {
     return res.status(400).render("register", {

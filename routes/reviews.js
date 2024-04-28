@@ -43,6 +43,10 @@ router
       const { reviewTitle, reviewDescription, reviewRating, reviewerName } =
         req.body;
 
+      validation.validateString(reviewTitle, "Review title");
+      validation.validateString(reviewDescription, "Review Description");
+      validation.validateNumber(parseFloat(reviewRating), "Rating");
+
       const newReview = await reviewData.createReview(
         channelId,
         userId,
