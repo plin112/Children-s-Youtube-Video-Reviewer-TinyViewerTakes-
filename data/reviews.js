@@ -37,18 +37,12 @@ const createReview = async (channelId, userId, title, review, rating) => {
   //Convert string userId to ObjectId.
   const objUserId = new ObjectId(userId);
 
-  // Debug
-  console.log("Converted IDs:", { objChannelId, objUserId });
-
   //Find the channel to which the review will be added.
   const channel = await channelCollection.findOne({ _id: objChannelId });
 
   if (!channel) {
     throw new Error(`Error: No channel found with the id: ${channelId}`);
   }
-
-  // Debug
-  console.log("Channel exists:", channel.channelTitle);
 
   const user = await userCollection.findOne({ _id: objUserId });
 
@@ -58,20 +52,10 @@ const createReview = async (channelId, userId, title, review, rating) => {
   const reviewerName = `${user.firstName} ${user.lastName}`;
   console.log("User found:", reviewerName);
 
-  // Check if user has already reviewed this channel
-  // const existingReview = await channelCollection.findOne({
-  //   _id: new ObjectId(channelId),
-  //   "reviews.userId": new ObjectId(userId)
-  // });
-
-  // Check if this user has already reviewed this channel
   const existingReview = await channelCollection.findOne({
     _id: objChannelId,
     'reviews.userId': objUserId
   });
-
-  // Debug
-  console.log("Existing review check:", existingReview);
 
   if (existingReview) {
     throw "User has already reviewed this channel";

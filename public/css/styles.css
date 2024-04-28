@@ -1,128 +1,135 @@
-html {
-    font-size: 10pt; /* Reduced from 12pt */
-    font-family: sans-serif;
-}
-
+/* General body styling */
 body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     color: #333;
-}
-
-h1 {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Main container styling */
+  .container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+  }
+  
+  /* Header styling */
+  header {
+    background: #333;
+    color: #fff;
+    padding: 20px;
     text-align: center;
-}
-
-.editor:focus {
-    outline: none;
-    border: none;
-    background: #fefefe;
-}
-
-.editor p {
-    transition: font-size 0.5s ease-in-out; /* Made the transition faster */
-}
-
-.editor p:hover {
-    font-size: 1.1rem; /* Less increase on hover */
-}
-
-.editor p:first-child::first-line {
-    font-size: 1.3rem; /* Smaller than before */
-    font-variant: small-caps;
-}
-
-.editor p:first-child::first-letter {
-    font-size: 1.5rem; /* Smaller than before */
-    font-family: cursive;
-}
-
-blockquote::before {
-    display: inline-block;
-    margin-left: -20px;
-    content: '"';
-    font-size: 24pt; /* Smaller quote marks */
-    font-family: serif;
-}
-
-blockquote {
-    margin-left: 20px; /* Added some margin */
-}
-
-blockquote:hover {
-    animation: shake 1s infinite; /* Shorter and less intense animation */
-}
-
-blockquote::after {
-    content: '"';
-    font-size: 24pt; /* Smaller quote marks */
-    font-family: serif;
-}
-
-.strong {
-    font-weight: 700;
-}
-
-.emphasized {
-    font-style: italic;
-}
-
-.underlined {
+  }
+  
+  /* Links styling */
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
     text-decoration: underline;
-}
-
-@keyframes shake {
-    from {
-        transform: translate(0, 0);
-    }
-    20% {
-        transform: translate(-10px, 0);
-    }
-    40%, 60% {
-        transform: translate(0, 0);
-    }
-    80% {
-        transform: translate(10px, 0);
-    }
-    to {
-        transform: translate(0, 0);
-    }
-}
-
-@keyframes boogie {
-    from, to {
-        transform: rotate(0deg);
-    }
-    25%, 75% {
-        transform: rotate(10deg);
-    }
-    50% {
-        transform: rotate(-10deg);
-    }
-}
-
-@media (min-width: 500px) {
-    main {
-        max-width: 80%;
-        margin: auto;
-    }
-}
-
-@media (min-width: 800px) {
-    html {
-        font-size: 12pt;
-    }
-    main {
-        max-width: 640px;
-    }
-}
-
-@media (min-width: 900px) {
-    html {
-        font-size: 16pt; /* Much smaller than original 62pt */
-    }
-    main {
-        max-width: 640px;
-    }
-    p {
-        color: blue;
-    }
-}
+  }
+  
+  /* Forms styling */
+  form {
+    background: #fff;
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  input[type="submit"],
+  button {
+    background: #5cb85c;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 25px;
+  }
+  
+  input[type="submit"]:hover,
+  button:hover {
+    background: #4cae4c;
+  }
+  
+  /* Error display styling */
+  #errorDisplay, #addReviewError, #reviewError {
+    color: red;
+    margin: 10px 0;
+  }
+  
+  /* List styling */
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Footer styling */
+  footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 0.1px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  /* Specific styling for error.handlebars */
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+  
+  /* Directory links styling */
+  .directory ul {
+    padding: 0;
+  }
+  
+  .directory li {
+    display: inline;
+    margin-right: 10px;
+  }
+  
+  /* Channel details styling */
+  #channelDetails h2 {
+    color: #333;
+  }
+  
+  #channelDetails p {
+    margin: 5px 0;
+  }
+  
+  /* Review section styling */
+  .reviewsList li {
+    background-color: #e9e9e9;
+    margin-bottom: 10px;
+  }
+  
+  .reviewer-name,
+  .review-title,
+  .review-description,
+  .review-rating {
+    font-size: 14px;
+  }
+  
+  .review-comments h4 {
+    margin-top: 10px;
+  }
+  

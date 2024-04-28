@@ -1,5 +1,3 @@
-//import mongo collections, bcrypt and implement the following data functions
-
 import bcrypt from "bcryptjs";
 import * as validation from "./validation.js";
 import { users } from "../config/mongoCollections.js";
@@ -75,14 +73,14 @@ let exportedMethods = {
   async getUserById(id) {
     if (!id) throw "You must provide an ID to search for a user";
 
-    const objId = new ObjectId(id);  // Ensure id is a valid ObjectId
+    const objId = new ObjectId(id);
     const usersCollection = await users();
     const user = await usersCollection.findOne({ _id: objId });
 
     if (!user) throw `User not found with ID: ${id}`;
 
     return {
-        _id: user._id.toString(),  // Convert ObjectId to string if necessary
+        _id: user._id.toString(),
         firstName: user.firstName,
         lastName: user.lastName,
         emailAddress: user.emailAddress
