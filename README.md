@@ -18,9 +18,7 @@ This application provides a platform for users to review and comment on various 
 
 ### Setting Up Locally
 
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/plin112/Tiny-Viewer-Takes/]
+1. Clone the repository
 2. Install dependencies: npm install
 3. Setup your MongoDB connection
 4. Seed database: npm run seed
