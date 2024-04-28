@@ -2,7 +2,7 @@
       <h1>{{channel.channelTitle}}</h1>
     </header>
 
-    <main>
+    <div>
       <div id="channelDetails">
         <h2>Channel Overview</h2>
         <p>Description: {{channel.channelDescription}}</p>
@@ -22,23 +22,23 @@
         <p>Category: {{channel.categories}}</p> --}}
         <p>Average Rating: {{channel.averageRating}}</p>
         <p>Parental Guidance Age: {{channel.startingAge}}</p>
-        <main>
+        <div>
           <!-- Add New Review Form -->
           <form method="POST" id="addReviewForm" action="/channels/{{channel._id}}/reviews">
             <p>Add review here:</p>
             <div style="color: red;" id="addReviewError">{{error}}</div>
             <label for="reviewTitle">Review Title:</label>
-            <input type="text" id="reviewTitle" name="reviewTitle" required/><br />
+            <input type="text" id="reviewTitle" name="reviewTitle" required><br>
             <label for="reviewDescription">Review Description:</label>
-            <input type="text" id="reviewDescription" name="reviewDescription"required/><br />
+            <input type="text" id="reviewDescription" name="reviewDescription" required><br>
             <label for="reviewRating">Rating:</label>
-            <input type="text" id="reviewRating" name="reviewRating" required/><br />
+            <input type="text" id="reviewRating" name="reviewRating" required><br>
             <button type="submit">Add Review</button>
           </form>
-        </main>
+        </div>
         <h3>Reviews</h3>
         <ul id="reviewsList">
-          <div style="color: red;" id="reviewError">{{error}}</div>
+          <li style="color: red;" id="reviewError">{{error}}</li>
           {{#if channel.reviews.length}}
             {{#each channel.reviews}}
                <li id="review-{{this._id}}">
@@ -73,7 +73,7 @@
       </ul>
       </div>
       <a href="/channels">Go back to main page</a>
-    </main>
+    </div>
     <script src="/public/js/clientside_validation.js"></script>
 
 
