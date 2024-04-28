@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { reviewData, channelData, userData, commentData } from '../data/index.js';
 import validation from '../data/validation.js';
+import xss from "xss";
+
  const router = Router();
 
 
@@ -17,9 +19,13 @@ router
 
 
 
-            const { reviewId, userId,text } = req.body;
+            let { reviewId, userId,text } = req.body;
 
-            const newComment = await commentData.createComment(reviewId, userId,text);
+            text = xss(text);
+            reviewId = xss(reviewId);
+            userId = xss(userId);
+
+            const newComment = await commentData.createComment(reviewId, userId, text);
             res.status(201).json(newComment);
         } catch (error) {
             res.status(400).json({ error: error.toString() });
@@ -29,7 +35,9 @@ router
     .route('/:reviewId')
     .get(async (req, res) => {
         try {
-            const reviewId = req.params.reviewId;
+            let reviewId = req.params.reviewId;
+
+            reviewId = xss(reviewId);
 
             const getAllComments = await commentData.getAllComments(reviewId)
             res.status(201).json(getAllComments);
@@ -42,11 +50,14 @@ router
     .get(async (req, res) => {
         try {
 
+            let commentId = req.params.commentId;
+
+            commentId = xss(commentId);
+
             if (!ObjectId.isValid(commentId)) {
                 throw new Error("Invalid comment ID");
             }
 
-            const commentId = req.params.commentId;
             const getComment = await commentData.getComment(commentId);
             res.status(201).json(getComment);
         } catch (error) {
