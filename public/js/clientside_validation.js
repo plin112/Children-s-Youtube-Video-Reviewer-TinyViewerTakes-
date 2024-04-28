@@ -191,6 +191,15 @@ async function removeReview(id) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  function displayErrorMsg(errors) {
+    const errorMsg = document.getElementById("error-message");
+    errorMsg.innerHTML = "";
+    errors.forEach((error) => {
+      const list = document.createElement("li");
+      list.textContent = error;
+      errorMsg.appendChild(list);
+    });
+  }
   let registerationForm = document.getElementById("registration-form");
   let loginForm = document.getElementById("login-form");
   if (registerationForm) {
@@ -273,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
       password = password.trim();
       if (password.length === 0) {
         errorMsg.push(
-          "Email address cannot be empty string or string with just spaces."
+          "Password cannot be empty string or string with just spaces."
         );
       }
       if (errorMsg.length > 0) {
@@ -283,4 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  displayErrorMsg;
 });

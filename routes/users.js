@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { userData } from "../data/index.js";
 import validation from "../data/validation.js";
+import xss from "xss";
 
 const router = Router();
 
@@ -27,6 +28,12 @@ router.post("/register", async (req, res) => {
     passwordInput,
     confirmPasswordInput,
   } = req.body;
+
+  firstNameInput = xss(firstNameInput);
+  lastNameInput = xss(lastNameInput);
+  emailAddressInput = xss(emailAddressInput);
+  passwordInput = xss(passwordInput);
+  confirmPasswordInput = xss(confirmPasswordInput);
 
   if (passwordInput !== confirmPasswordInput) {
     return res.status(400).render("register", {
@@ -69,6 +76,9 @@ router.get("/login", (req, res) => {
 
 router.post("/login", async (req, res) => {
   let { emailAddressInput, passwordInput } = req.body;
+
+  emailAddressInput = xss(emailAddressInput);
+  passwordInput = xss(passwordInput);
 
   try {
     validation.checkEmail(emailAddressInput);

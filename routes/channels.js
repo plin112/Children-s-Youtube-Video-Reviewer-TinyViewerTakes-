@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { channelData } from "../data/index.js";
 import validation from "../data/validation.js";
+import xss from "xss";
 
 const router = Router();
 
-// Redirect to the canonical channels route
+// Redirect to the channels route
 router.get("/", async (req, res) => {
   try {
     res.redirect("/Channels");
@@ -12,12 +13,13 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
+
 router.get("/channels", async (req, res) => {
   try {
     let channelsList;
     let message = ''; // Initialize message to an empty string
-    const search_term = req.query.search_term;
-    const sort = req.query.sort;
+    let search_term = xss(req.query.search_term);
+    let sort = xss(req.query.sort);
 
     // Check if the search_term parameter is present in the query string
     if ('search_term' in req.query) {
@@ -58,10 +60,11 @@ router.get("/channels", async (req, res) => {
     res.status(500).json({ error: error.toString() });
   }
 });
+
 // Handle search and list all channels
 router.get("/channels/search", async (req, res) => {
   try {
-    const search_term = req.query.search_term;
+    let search_term = xss(req.query.search_term);
     validation.validateString(search_term, "search term");
 
     if (!search_term || !search_term.trim()) {
@@ -82,7 +85,7 @@ router.get("/channels/search", async (req, res) => {
 
 router.get("/channels/searchKeyword", async (req, res) => {
   try {
-      const search_keyword = req.query.search_keywords;
+      let search_keyword = xss(req.query.search_keywords);
 
       if (!search_keyword || !search_keyword.trim()) {
           res.status(400).render('error', { errorMessage: "Please provide a valid search keyword." });
@@ -106,7 +109,7 @@ router.get("/channels/searchKeyword", async (req, res) => {
 // POST route to create a new channel
 router.post("/channels", async (req, res) => {
   if (req.session.user){
-    const {
+    let {
       channelTitle,
       channelOwnerName,
       channelDescription,
@@ -115,6 +118,14 @@ router.post("/channels", async (req, res) => {
       categories,
       startingAge,
     } = req.body;
+
+    channelTitle = xss(channelTitle);
+    channelOwnerName = xss(channelOwnerName);
+    channelDescription = xss(channelDescription);
+    channelWebsite = xss(channelWebsite);
+    keywords = keywords.map(keyword => xss(keyword));
+    categories = categories.map(category => xss(category));
+    startingAge = xss(startingAge);
   
     try {
       validation.validateString(channelTitle, "Channel Title");
@@ -151,7 +162,7 @@ router.post("/channels", async (req, res) => {
 
 // GET route to get a specific channel by ID
 router.get("/channels/:channelId", async (req, res) => {
-  const { channelId } = req.params;
+  let { channelId } = req.params;
   try {
     const channel = await channelData.getChannel(channelId);
     if (!channel) {

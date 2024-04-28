@@ -1,11 +1,8 @@
 import { Router } from "express";
-import {
-  reviewData,
-  channelData,
-  userData,
-  commentData,
-} from "../data/index.js";
+import { reviewData, channelData, userData, commentData } from "../data/index.js";
 import validation from "../data/validation.js";
+import xss from "xss";
+
 const router = Router();
 
 router
@@ -13,10 +10,8 @@ router
   .route("/channels/:channelId/reviews")
   .get(async (req, res) => {
     try {
-      const channelId = validation.validateId(
-        req.params.channelId,
-        "Channel ID URL Param"
-      );
+      let channelId = xss(req.params.channelId);
+      channelId = validation.validateId(channelId, "Channel ID URL Param");
       const reviews = await reviewData.getAllReviews(channelId);
       res.json(reviews);
     } catch (error) {
@@ -25,7 +20,6 @@ router
   })
   .post(async (req, res) => {
     try {
-
       if (!req.session || !req.session.user) {
         return res.status(401).render("login");
       }
@@ -35,20 +29,23 @@ router
         return res.status(400).send("User ID is undefined");
       }
 
-      const { channelId } = req.params;
+      let { channelId } = req.params;
       if (!channelId) {
         return res.status(400).send("Channel ID is undefined");
       }
 
-      const { reviewTitle, reviewDescription, reviewRating, reviewerName } =
-        req.body;
+      let { reviewTitle, reviewDescription, reviewRating, reviewerName } = req.body;
+
+      reviewTitle = xss(reviewTitle);
+      reviewDescription = xss(reviewDescription);
+      reviewRating = parseFloat(xss(reviewRating));
 
       const newReview = await reviewData.createReview(
         channelId,
         userId,
         reviewTitle,
         reviewDescription,
-        parseFloat(reviewRating)
+        reviewRating
       );
 
       const channel = await channelData.getChannel(channelId);
@@ -69,16 +66,14 @@ router
   .route("/review/:reviewId")
   .get(async (req, res) => {
     try {
-      req.params.reviewId = validation.validateId(
-        req.params.reviewId,
-        "Review ID URL Param"
-      );
+      let reviewId = xss(req.params.reviewId);
+      reviewId = validation.validateId(reviewId, "Review ID URL Param");
     } catch (e) {
       return res.status(400).json({ error: e.toString() });
     }
 
     try {
-      const review = await reviewData.getReview(req.params.reviewId);
+      const review = await reviewData.getReview(reviewId);
       return res.json(review);
     } catch (e) {
       return res.status(404).json({ error: e.toString() });
@@ -91,7 +86,7 @@ router
     }
     try {
       const userId = req.session.user._id;
-      const revId = req.params.reviewId;
+      let revId = xss(req.params.reviewId);
 
       const updatedChannel = await reviewData.removeReview(revId, userId);
       return res.json(updatedChannel);
@@ -106,12 +101,13 @@ router
   .route("/comment")
   .post(async (req, res) => {
     try {
-      const { reviewId, userId, text } = req.body;
-      const newComment = await commentData.createComment(
-        reviewId,
-        userId,
-        text
-      );
+      let { reviewId, userId, text } = req.body;
+
+      reviewId = xss(reviewId);
+      userId = xss(userId);
+      text = xss(text);
+
+      const newComment = await commentData.createComment(reviewId, userId, text);
       res.status(201).json(newComment);
     } catch (error) {
       res.status(400).json({ error: error.toString() });
@@ -119,17 +115,16 @@ router
   });
 
 // Route for adding a comment to a review
-router.post(
-  "/channels/:channelId/reviews/:reviewId/comments",
+router.post("/channels/:channelId/reviews/:reviewId/comments",
   async (req, res) => {
     if (!req.session || !req.session.user) {
       return res.redirect("/login");
     }
     try {
-      const channelId = req.params.channelId;
-      const reviewId = req.params.reviewId;
+      let channelId = xss(req.params.channelId);
+      let reviewId = xss(req.params.reviewId);
       const userId = req.session.user._id;
-      const commentText = req.body.comment;
+      let commentText = xss(req.body.comment);
 
       // Fetch user details to get the commenter's name
       const user = await userData.getUserById(userId);
