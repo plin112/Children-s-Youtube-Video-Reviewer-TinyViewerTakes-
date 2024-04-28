@@ -162,7 +162,7 @@ router.post("/channels", async (req, res) => {
 
 // GET route to get a specific channel by ID
 router.get("/channels/:channelId", async (req, res) => {
-  let { channelId } = xss(req.params);
+  let { channelId } = req.params;
   try {
     const channel = await channelData.getChannel(channelId);
     if (!channel) {

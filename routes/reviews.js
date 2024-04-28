@@ -30,7 +30,6 @@ router
       }
 
       let { channelId } = req.params;
-      channelId = xss(channelId);
       if (!channelId) {
         return res.status(400).send("Channel ID is undefined");
       }

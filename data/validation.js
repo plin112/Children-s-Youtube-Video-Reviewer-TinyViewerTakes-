@@ -80,29 +80,29 @@ const exportedMethods = {
     email = email.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      res.render("error");
+      throw "Email must be of format xyz@xyz.xyz";
     }
-    return email; // Return the validated email
+    return email;
   },
 
   checkPassword(password) {
     if (!password) throw "Error: You must provide a password.";
     if (typeof password !== "string" || password.includes(" ")) {
-      throw "Error: Password must be a string without spaces.";
+      throw "Password must be a string without spaces.";
     }
     if (password.length < 8) {
-      throw "Error: Password must be at least 8 characters long.";
+      throw "Password must be at least 8 characters long.";
     }
     if (!/[A-Z]/.test(password)) {
-      throw "Error: Password must contain at least one uppercase letter.";
+      throw "Password must contain at least one uppercase letter.";
     }
     if (!/\d/.test(password)) {
-      throw "Error: Password must contain at least one number.";
+      throw "Password must contain at least one number.";
     }
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      throw "Error: Password must contain at least one special character.";
+      throw "Password must contain at least one special character.";
     }
-    return password; // Return the validated password
+    return password;
   },
 };
 

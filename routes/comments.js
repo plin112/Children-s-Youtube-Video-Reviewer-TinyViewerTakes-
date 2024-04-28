@@ -22,8 +22,6 @@ router
             let { reviewId, userId,text } = req.body;
 
             text = xss(text);
-            reviewId = xss(reviewId);
-            userId = xss(userId);
 
             const newComment = await commentData.createComment(reviewId, userId, text);
             res.status(201).json(newComment);
@@ -37,8 +35,6 @@ router
         try {
             let reviewId = req.params.reviewId;
 
-            reviewId = xss(reviewId);
-
             const getAllComments = await commentData.getAllComments(reviewId)
             res.status(201).json(getAllComments);
         } catch (error) {
@@ -51,8 +47,6 @@ router
         try {
 
             let commentId = req.params.commentId;
-
-            commentId = xss(commentId);
 
             if (!ObjectId.isValid(commentId)) {
                 throw new Error("Invalid comment ID");
