@@ -1,21 +1,41 @@
 import bcrypt from "bcryptjs";
 import * as validation from "./validation.js";
 import { users } from "../config/mongoCollections.js";
-import { ObjectId } from 'mongodb';
+import { ObjectId } from "mongodb";
 
 let exportedMethods = {
-  async registerUser(firstName, lastName, emailAddress, password) {
-    if (!firstName ||
+  async registerUser(
+    firstName,
+    lastName,
+    emailAddress,
+    password,
+    confirmPasswordInput
+  ) {
+    if (
+      !firstName ||
       !lastName ||
       !emailAddress ||
-      !password
-    ) {return res.status(400).render('error', {error: "All fields need to be supplied"});}
+      !password ||
+      !confirmPasswordInput
+    ) {
+      return res
+        .status(400)
+        .render("error", { error: "All fields need to be supplied" });
+    }
 
     //Validate input
     validation.default.validateString(firstName, "first name");
     validation.default.validateString(lastName, "last name");
     validation.default.checkEmail(emailAddress);
     validation.default.checkPassword(password);
+    validation.default.checkPassword(confirmPasswordInput);
+
+    if (password !== confirmPasswordInput) {
+      return res.status(400).render("register", {
+        error: "Password does not match",
+        title: "Register",
+      });
+    }
 
     const usersCollection = await users();
     const count = await usersCollection.countDocuments();
@@ -80,14 +100,12 @@ let exportedMethods = {
     if (!user) throw `User not found with ID: ${id}`;
 
     return {
-        _id: user._id.toString(),
-        firstName: user.firstName,
-        lastName: user.lastName,
-        emailAddress: user.emailAddress
+      _id: user._id.toString(),
+      firstName: user.firstName,
+      lastName: user.lastName,
+      emailAddress: user.emailAddress,
     };
-},
-
-
+  },
 };
 
 export default exportedMethods;

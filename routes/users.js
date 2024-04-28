@@ -20,20 +20,34 @@ router.get("/register", (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  let { firstNameInput, lastNameInput, emailAddressInput, passwordInput } =
-    req.body;
+  let {
+    firstNameInput,
+    lastNameInput,
+    emailAddressInput,
+    passwordInput,
+    confirmPasswordInput,
+  } = req.body;
+
+  if (passwordInput !== confirmPasswordInput) {
+    return res.status(400).render("register", {
+      error: "Password does not match",
+      title: "Register",
+    });
+  }
 
   try {
     firstNameInput = validation.validateString(firstNameInput, "First Name");
     lastNameInput = validation.validateString(lastNameInput, "Last Name");
     emailAddressInput = validation.validateString(emailAddressInput);
     passwordInput = validation.validateString(passwordInput);
+    confirmPasswordInput = validation.validateString(confirmPasswordInput);
 
     const result = await userData.registerUser(
       firstNameInput,
       lastNameInput,
       emailAddressInput,
-      passwordInput
+      passwordInput,
+      confirmPasswordInput
     );
 
     return res.redirect("/login");
