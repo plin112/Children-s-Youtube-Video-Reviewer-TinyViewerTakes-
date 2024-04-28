@@ -80,7 +80,7 @@ router
     } catch (error) {
       // console.error("Error adding review:", error);
       res.render("error", {
-        errorMessage: error,
+      errorMessage: error, title: "Error"
       });
     }
   });

@@ -64,7 +64,7 @@ router.get("/channels", async (req, res) => {
     }));
 
     const isLoggedIn = req.session.user ? true : false;
-    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message, sort: sort });
+    res.render("channels", { loggedIn: isLoggedIn, channels: channelsList, message: message, sort: sort, title: "Tiny Viewer Takes" });
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }

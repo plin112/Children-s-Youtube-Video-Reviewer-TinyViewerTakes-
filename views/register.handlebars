@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-    <link rel="stylesheet" href="/public/css/styles.css">
-</head>
-<body>
-    <main>
-        <h1>Register</h1>
+        <h1>{{title}}</h1>
         {{#if error}}
             <div style="color: red;">{{error}}</div>
         {{/if}}
@@ -35,7 +26,3 @@
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="/login">Click here to log-in</a></p>
-    </main>
-    <script src="/public/js/main.js"></script>
-</body>
-</html>
