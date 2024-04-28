@@ -46,11 +46,17 @@ router.post("/register", async (req, res) => {
       return res.status(400).send("Password does not match.");
     }
 
+    //TESTing
+    console.log("Error after password validation")
+
     // const saltRounds = 16;
     // const hashedPassword = await bcrypt.hash(registeration.passwordInput, saltRounds);
     const newUser = await registerUser(
       firstNameInput, lastNameInput, emailAddressInput, passwordInput
     );
+
+    //TESTing
+    console.log("Error after register user")
 
     console.log('User registered: ', newUser);
     //res.json(newUser);

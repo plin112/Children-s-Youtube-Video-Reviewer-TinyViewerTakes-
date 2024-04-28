@@ -71,13 +71,23 @@ const createChannel = async (
   validation.validateStringArray(categories, "categories");
   validation.validateNumber(startingAge, "Parental Guidance Age");
 
-  // Obtain connection to channel collection.
+  channelTitle = channelTitle.trim();
+  channelOwnerName = channelOwnerName.trim();
+  channelDescription = channelDescription.trim();
+  website = website.trim();
+ 
   const channelCollection = await getChannelCollection();
 
   // Check if a channel with the same title or website already exists
   const existingChannel = await channelCollection.findOne({
-    $or: [{ channelTitle: channelTitle }, { website: website }],
+    $or: [
+      { channelTitle: { $regex: new RegExp("^" + channelTitle + "$", "i") } },
+      { website: { $regex: new RegExp("^" + website + "$", "i") } }
+    ]
   });
+
+  console.log("Checking existence for title:", channelTitle, "and website:", website);
+  console.log("Checking existence for title:", existingChannel.channelTitle, "and website:", existingChannel.website);
 
   if (existingChannel) {
     if (existingChannel.channelTitle === channelTitle) {

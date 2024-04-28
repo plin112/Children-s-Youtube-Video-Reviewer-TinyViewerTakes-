@@ -134,7 +134,7 @@ router.post("/channels", async (req, res) => {
         categories,
         parseFloat(startingAge)
       );
-  
+
       const channelsList = await channelData.getAllChannel();
       res.render('channels', { channels: channelsList });
       

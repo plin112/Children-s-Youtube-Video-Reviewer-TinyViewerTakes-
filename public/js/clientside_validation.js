@@ -52,7 +52,6 @@ $(document).ready(function () {
     if (!isValid) {
         displayChannelErrorMsg(errorMessages);
     } else {
-      // If all validations pass, submit the form programmatically
       $.ajax({
         url: "/channels",
         method: "POST",
@@ -60,7 +59,7 @@ $(document).ready(function () {
         data: JSON.stringify(formData),
         success: function () {
           alert("Channel added successfully.");
-          window.location.href = "/channels";
+          window.location.reload();
         },
         error: function (xhr) {
           let errorMessage = xhr.responseText || "An unknown error occurred.";
@@ -72,7 +71,7 @@ $(document).ready(function () {
         },
       });
     }
-
+    
   });
 
   searchForm.submit(function (event) {
@@ -144,7 +143,7 @@ $(document).ready(function () {
   });
 
   $("#addReviewForm").submit(function (event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); 
 
     let errorMessages = [];
     const reviewTitle = $("#reviewTitle").val().trim();
