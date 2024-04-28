@@ -1,6 +1,3 @@
-//reference to lab 5 lecture code
-import { ObjectId } from "mongodb";
-
 const exportedMethods = {
   validateId(id, varName) {
     if (!id) throw `Error: You must provide a ${varName}`;

@@ -8,7 +8,6 @@ import {
 import validation from "../data/validation.js";
 const router = Router();
 
-//need authentication stuff??
 router
   // Get all reviews  for a specific channel
   .route("/channels/:channelId/reviews")
@@ -18,7 +17,6 @@ router
         req.params.channelId,
         "Channel ID URL Param"
       );
-      //await channelData.getChannelById(channelId);
       const reviews = await reviewData.getAllReviews(channelId);
       res.json(reviews);
     } catch (error) {
@@ -26,18 +24,11 @@ router
     }
   })
   .post(async (req, res) => {
-    //new review under a specific channel
-    // const userId = req.session.user._id;
-    // const { channelId } = req.params;
-
     try {
-      //console.log("Session Data:", req.session);
 
       if (!req.session || !req.session.user) {
         return res.status(401).render("login");
       }
-
-      //console.log(req.session.user);
 
       const userId = req.session.user._id;
       if (!userId) {
@@ -49,13 +40,8 @@ router
         return res.status(400).send("Channel ID is undefined");
       }
 
-      // const userId = req.session.users._id;
-      // const channelId = req.params.channelId;
       const { reviewTitle, reviewDescription, reviewRating, reviewerName } =
         req.body;
-      //const userId = req.user.id;
-      // just need to validate channelId, userId, reviewContent, and rating
-      // need to add userId to the createReview i think
 
       const newReview = await reviewData.createReview(
         channelId,
@@ -66,19 +52,12 @@ router
       );
 
       const channel = await channelData.getChannel(channelId);
-      // if (newReview) {
-      //   res.redirect(`/channels/${channelId}`);
-      //   //res.render("individualchannel", { channel: channel });
-      // } else {
-      //   res.status(500).send("Failed to create review");
-      // }
       if (!newReview) {
         throw new Error("Failed to create review");
       }
 
       res.redirect(`/channels/${channelId}`);
     } catch (error) {
-      // console.error("Error adding review:", error);
       res.render("error", {
       errorMessage: error, title: "Error"
       });
@@ -107,19 +86,12 @@ router
   })
   //remove a review by its Id
   .delete(async (req, res) => {
-    //const userId = req.user.id;
     if (!req.session || !req.session.user) {
-      //return res.status(401).send("You are not log in.");
       return res.status(401).render("login");
     }
     try {
       const userId = req.session.user._id;
       const revId = req.params.reviewId;
-      //need to ensure Id's match
-      //const review = await reviewData.getReview(reviewId);
-      /*if (review.userId !== userId) {
-                return res.status(403).json({ error: "You're not authorized to delete this review" });
-            }*/
 
       const updatedChannel = await reviewData.removeReview(revId, userId);
       return res.json(updatedChannel);
@@ -131,7 +103,6 @@ router
 
 // get  a comment
 router
-  //remove a review by its Id
   .route("/comment")
   .post(async (req, res) => {
     try {
@@ -157,7 +128,7 @@ router.post(
     try {
       const channelId = req.params.channelId;
       const reviewId = req.params.reviewId;
-      const userId = req.session.user._id; // Ensure your session handling is configured correctly
+      const userId = req.session.user._id;
       const commentText = req.body.comment;
 
       // Fetch user details to get the commenter's name
@@ -166,7 +137,7 @@ router.post(
 
       // Create the comment
       await commentData.createComment(channelId, reviewId, userId, commentText);
-      res.redirect(`/channels/${channelId}`); // Make sure this redirects to an appropriate page
+      res.redirect(`/channels/${channelId}`);
     } catch (error) {
       res.status(500).send("Failed to add comment: " + error.message);
     }

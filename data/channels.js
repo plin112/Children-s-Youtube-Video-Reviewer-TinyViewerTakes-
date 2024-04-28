@@ -148,88 +148,10 @@ const getChannel = async (channelId) => {
   return channel;
 };
 
-//REMOVE?
-//only for channel owner is authorizec to remove channel
-const removeChannel = async (channelId) => {
-  //validation: productId
-  channelId = validation.validateId(channelId);
-
-  const channelCollection = await getChannelCollection();
-  const deletionInfo = await channelCollection.findOneAndDelete({
-    _id: new ObjectId(channelId),
-  });
-
-  if (!deletionInfo)
-    throw `Error: Could not delete product with id of ${channelId}`;
-
-  return { ...deletionInfo, deleted: true };
-};
-
-//updating channel's keyword amd categories??
-//only for authorized channel user
-const updateChannel = async (
-  channelId,
-  channelTitle,
-  channelOwnerName,
-  channelDescription,
-  website,
-  keywords,
-  categories,
-  startingAge
-) => {
-  if (
-    !channelId ||
-    !channelTitle ||
-    !channelOwnerName ||
-    !channelDescription ||
-    !website ||
-    !keywords ||
-    !categories ||
-    !startingAge
-  )
-    throw "All fields need to be supplied";
-
-  // validations
-  validation.validateId(channelId, "channel-id");
-  validation.validateString(channelTitle, "channel-title");
-  validation.validateString(channelOwnerName, "channel-description");
-  validation.validateString(channelDescription, "channel-description");
-  validation.validateUrl(website);
-  validation.validateStringArray(keywords, "keywords");
-  validation.validateStringArray(categories, "categories");
-  validation.validateNumber(startingAge, "Starting Age");
-
-  const updatedChannel = {
-    channelTitle,
-    channelOwnerName,
-    channelDescription,
-    website,
-    keywords,
-    categories,
-    startingAge,
-  };
-
-  // update the product in the database
-  const channelCollection = await getChannelCollection();
-  const updateResult = await channelCollection.findOneAndUpdate(
-    { _id: new ObjectId(channelId) },
-    { $set: updatedChannel },
-    { returnDocument: "after" }
-  );
-
-  if (!updateResult) {
-    throw "Failed to update channel into the database";
-  }
-
-  return updateResult;
-};
-
 export {
   createChannel,
   getAllChannel,
   getChannel,
-  removeChannel,
-  updateChannel,
   searchChannels,
   searchKeywords,
 };

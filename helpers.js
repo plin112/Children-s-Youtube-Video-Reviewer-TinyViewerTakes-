@@ -87,33 +87,6 @@ function validate(params) {
   });
 }
 
-function isValidDate(dateString) {
-  //Regular expression to test that the date format is mm/dd/yyyy.
-  const regex = /^\d{2}\/\d{2}\/\d{4}$/;
-
-  //If the dateString does not match this format, then it is not a valid date.
-  if (!regex.test(dateString)) {
-    return false;
-  }
-
-  //Split the dateString into an array and convert each part to numbers.
-  const [month, day, year] = dateString.split("/").map(Number);
-
-  //Create a date object, only the month must be adjusted for indexing starting at zero.
-  const date = new Date(year, month - 1, day);
-
-  //Check if the date is valid.
-  if (
-    date.getFullYear() !== year ||
-    date.getMonth() + 1 !== month ||
-    date.getDate() !== day
-  ) {
-    return false;
-  }
-
-  return true;
-}
-
 //Function to calculate the new average rating after a review is added, deleted, or the rating is modified.
 function calculateNewAverage(reviews, newRating) {
   //Sum the newRating and all the ratings in the review array.
@@ -129,4 +102,4 @@ function calculateNewAverage(reviews, newRating) {
   return parseFloat(average.toFixed(2));
 }
 
-export { validate, isValidDate, calculateNewAverage };
+export { validate, calculateNewAverage };

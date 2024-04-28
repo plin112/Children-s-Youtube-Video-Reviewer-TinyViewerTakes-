@@ -9,6 +9,14 @@ router
     .post(async (req, res) => {
 
         try {
+
+            if (!ObjectId.isValid(reviewId) || !ObjectId.isValid(userId)) {
+                throw new Error("Invalid review, or user ID");
+            }
+            validation.validateString(text, "comment");
+
+
+
             const { reviewId, userId,text } = req.body;
 
             const newComment = await commentData.createComment(reviewId, userId,text);
@@ -33,24 +41,14 @@ router
     .route('/:commentId')
     .get(async (req, res) => {
         try {
+
+            if (!ObjectId.isValid(commentId)) {
+                throw new Error("Invalid comment ID");
+            }
+
             const commentId = req.params.commentId;
             const getComment = await commentData.getComment(commentId);
             res.status(201).json(getComment);
-        } catch (error) {
-            res.status(400).json({ error: error.toString() });
-        }
-    }) .put(async (req, res) => {
-        try { const commentId = req.params.commentId;
-            const updatedData= req.body;
-            const updateComment = await commentData.updateComment(commentId,updatedData);
-            res.status(201).json(updateComment);
-        } catch (error) {
-            res.status(400).json({ error: error.toString() });
-        }
-    }) .delete(async (req, res) => {
-        try { const commentId = req.params.commentId;
-            const updateComment = await commentData.removeComment(commentId);
-            res.status(201).json(updateComment);
         } catch (error) {
             res.status(400).json({ error: error.toString() });
         }

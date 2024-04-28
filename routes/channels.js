@@ -1,12 +1,8 @@
 import { Router } from "express";
 import { channelData } from "../data/index.js";
 import validation from "../data/validation.js";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const router = Router();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Redirect to the canonical channels route
 router.get("/", async (req, res) => {
@@ -39,9 +35,6 @@ router.get("/channels", async (req, res) => {
       channelsList = await channelData.getAllChannel();
     }
 
-    // Debug for sorting
-    //console.log("Before sorting:", JSON.stringify(channelsList, null, 2));
-
     // Sorting based on query parameter
     if (sort) {
       switch(sort) {
@@ -52,10 +45,6 @@ router.get("/channels", async (req, res) => {
           channelsList.sort((a, b) => parseFloat(b.startingAge) - parseFloat(a.startingAge));
           break;
       }
-
-      // Debug
-      console.log("After sorting:", JSON.stringify(channelsList, null, 2));
-
     }
 
     channelsList = channelsList.map(channel => ({
@@ -84,7 +73,7 @@ router.get("/channels/search", async (req, res) => {
     if (channelsList.length === 0) {
         res.json({ message: 'No channels found for your search.', channels: [] });
     } else {
-        res.json(channelsList); // assuming this returns an array of channels
+        res.json(channelsList);
     }
 } catch (error) {
     res.status(500).json({ errorMessage: "Internal Server Error" });
@@ -94,8 +83,6 @@ router.get("/channels/search", async (req, res) => {
 router.get("/channels/searchKeyword", async (req, res) => {
   try {
       const search_keyword = req.query.search_keywords;
-      //TEST
-      //console.log("Search keyword received: ", search_keyword);
 
       if (!search_keyword || !search_keyword.trim()) {
           res.status(400).render('error', { errorMessage: "Please provide a valid search keyword." });
@@ -103,9 +90,6 @@ router.get("/channels/searchKeyword", async (req, res) => {
       }
 
       let channelsList = await channelData.searchKeywords(search_keyword.trim());
-      //TEST
-      // console.log("Channels found:", channelsList);
-      // console.log("Number of channels found: ", channelsList.length);
 
       if (channelsList.length === 0) {
           res.json({ message: 'No channels found matching your keywords.', channels: [] });
@@ -140,8 +124,6 @@ router.post("/channels", async (req, res) => {
       validation.validateStringArray(keywords, "Keywords");
       validation.validateStringArray(categories, "Categories");
       validation.validateNumber(parseFloat(startingAge), "Starting Age");
-      //const keywordsArray = keywords ? keywords.split(',').map(kw => kw.trim()) : [];
-      //const categoriesArray = categories ? categories.split(',').map(cat => cat.trim()) : [];
   
       const newChannel = await channelData.createChannel(  
         channelTitle,
@@ -153,7 +135,6 @@ router.post("/channels", async (req, res) => {
         parseFloat(startingAge)
       );
   
-      //console.log("test")
       const channelsList = await channelData.getAllChannel();
       res.render('channels', { channels: channelsList });
       

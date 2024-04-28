@@ -36,13 +36,6 @@ router.post("/register", async (req, res) => {
       passwordInput
     );
 
-    // console.log(result);
-    // if (result.userInserted) {
-    //   return res.redirect("/login");
-    // } else {
-    //   throw new Error("Unexpected error occurred during registration.");
-    // }
-
     return res.redirect("/login");
   } catch (e) {
     return res.status(400).render("register", {
