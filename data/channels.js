@@ -75,21 +75,31 @@ const createChannel = async (
   channelOwnerName = channelOwnerName.trim();
   channelDescription = channelDescription.trim();
   website = website.trim();
- 
+
   const channelCollection = await getChannelCollection();
 
   // Check if a channel with the same title or website already exists
   const existingChannel = await channelCollection.findOne({
     $or: [
       { channelTitle: { $regex: new RegExp("^" + channelTitle + "$", "i") } },
-      { website: { $regex: new RegExp("^" + website + "$", "i") } }
-    ]
+      { website: { $regex: new RegExp("^" + website + "$", "i") } },
+    ],
   });
 
-  console.log("Checking existence for title:", channelTitle, "and website:", website);
-  console.log("Checking existence for title:", existingChannel.channelTitle, "and website:", existingChannel.website);
+  console.log(
+    "Checking existence for title:",
+    channelTitle,
+    "and website:",
+    website
+  );
 
   if (existingChannel) {
+    console.log(
+      "Checking existence for title:",
+      existingChannel.channelTitle,
+      "and website:",
+      existingChannel.website
+    );
     if (existingChannel.channelTitle === channelTitle) {
       throw "A channel with the same title already exists.";
     }
@@ -118,7 +128,7 @@ const createChannel = async (
       _id: insertResult.insertedId,
     };
   } catch (e) {
-    throw `Error inserting channel: ${e.message}`;
+    return `Error inserting channel: ${e}`;
   }
 };
 

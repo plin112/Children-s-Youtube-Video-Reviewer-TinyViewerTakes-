@@ -10,9 +10,7 @@ const exportedMethods = {
   },
 
   validateString(strVal, varName) {
-    // res.status(400).render('error', { errorMessage: `You need to supply a ${varName}`});
-
-    if (!strVal) throw `Error: You must supply a ${varName}!`;
+      if (!strVal) throw `Error: You must supply a ${varName}!`;
     if (typeof strVal !== "string") throw `Error: ${varName} must be a string!`;
     strVal = strVal.trim();
     if (strVal.length === 0)
@@ -80,9 +78,9 @@ const exportedMethods = {
     email = email.trim().toLowerCase();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      res.render("error");
+      throw "Email need to be in the form of xyz@xyz.xyz."
     }
-    return email; // Return the validated email
+    return email;
   },
 
   checkPassword(password) {

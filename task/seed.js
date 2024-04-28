@@ -115,9 +115,9 @@ const main = async () => {
     await db.dropDatabase();
 
     // Creating users
-    const user1 = await userData.registerUser('Sera', 'Montgomery', 'sera.montgomery@example.com', 'Password123!');
-    const user2 = await userData.registerUser('Khalid', 'Thompson', 'khalid.thompson@example.com', 'Password123!');
-    const user3 = await userData.registerUser('Priscilla', 'Wright', 'priscilla.wright@example.com', 'Password123!');
+    const user1 = await userData.registerUser('Sera', 'Montgomery', 'sera.montgomery@example.com', 'Password123!', 'Password123!');
+    const user2 = await userData.registerUser('Khalid', 'Thompson', 'khalid.thompson@example.com', 'Password123!', 'Password123!');
+    const user3 = await userData.registerUser('Priscilla', 'Wright', 'priscilla.wright@example.com', 'Password123!', 'Password123!');
 
     // Creating channels
     const channel1 = await createChannel("Channel One", "Channel One Inc", "Description for Channel One", "http://www.channelone.com", ["educational", "fun"], ["children", "learning"], 3);

@@ -136,11 +136,11 @@ router.post("/channels", async (req, res) => {
       );
 
       const channelsList = await channelData.getAllChannel();
-      res.render('channels', { channels: channelsList });
+      return res.render('channels', { channels: channelsList });
       
     } catch (error) {
         console.error("Error adding new channel:", error);
-        res.status(400).send(error);
+        return res.status(400).send(error);
     }
   } else {
       return res.status(401).json({
